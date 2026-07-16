@@ -1,0 +1,7 @@
+.env
+
+logs/*.jsonl
+
+# Test binaries
+*.test
+airline-support
