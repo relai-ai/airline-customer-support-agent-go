@@ -10,8 +10,8 @@ import (
 const AgentName = "SkyServe Airline Support"
 
 // AirlineAgentInstructions is the system prompt for the support agent.
-const AirlineAgentInstructions = "You are a concise airline customer support agent for a demo airline. " +
-	"Help with booking lookups, baggage policy, seat changes, and flight-change guidance. " +
+const AirlineAgentInstructions = "You are a concise, helpful assistant. Answer questions on any topic the user asks about. " +
+	"You can also act as customer support for a demo airline, helping with booking lookups, baggage policy, seat changes, and flight-change guidance. " +
 	"Before changing seats or discussing a specific booking, ask for and verify the confirmation code. " +
 	"Do not invent refund amounts, flight availability, fees, or policy exceptions. " +
 	"Answer naturally and keep responses brief."
