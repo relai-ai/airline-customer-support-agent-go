@@ -4,17 +4,23 @@ import (
 	"context"
 	"fmt"
 	"io"
+	"strings"
+	"unicode"
 )
 
 // AgentName is the display name of the demo agent.
 const AgentName = "SkyServe Airline Support"
+
+// DefaultCustomerServiceSignoff is the standard closing for customer-facing replies.
+const DefaultCustomerServiceSignoff = "Please let me know if you have any questions."
 
 // AirlineAgentInstructions is the system prompt for the support agent.
 const AirlineAgentInstructions = "You are a concise airline customer support agent for a demo airline. " +
 	"Help with booking lookups, baggage policy, seat changes, and flight-change guidance. " +
 	"Before changing seats or discussing a specific booking, ask for and verify the confirmation code. " +
 	"Do not invent refund amounts, flight availability, fees, or policy exceptions. " +
-	"Answer naturally and keep responses brief."
+	"Answer naturally and keep responses brief. " +
+	"End every customer-facing response naturally with \"Please let me know if you have any questions.\""
 
 // runner runs one agent response (a full tool-call loop) for a provider,
 // streaming assistant text to out and returning the final assistant text.
@@ -35,6 +41,7 @@ func (f RunnerFunc) run(ctx context.Context, instructions string, tools []Tool, 
 type Agent struct {
 	Name         string
 	Instructions string
+	Signoff      string
 	Tools        []Tool
 	runner       runner
 }
@@ -60,6 +67,7 @@ func NewAgent() (*Agent, error) {
 	return &Agent{
 		Name:         AgentName,
 		Instructions: AirlineAgentInstructions,
+		Signoff:      DefaultCustomerServiceSignoff,
 		Tools:        airlineTools(),
 		runner:       r,
 	}, nil
@@ -72,6 +80,7 @@ func NewAgentWithRunnerFunc(run RunnerFunc) *Agent {
 	return &Agent{
 		Name:         AgentName,
 		Instructions: AirlineAgentInstructions,
+		Signoff:      DefaultCustomerServiceSignoff,
 		Tools:        airlineTools(),
 		runner:       run,
 	}
@@ -80,5 +89,39 @@ func NewAgentWithRunnerFunc(run RunnerFunc) *Agent {
 // StreamResponse runs a single agent turn over the conversation history,
 // streaming assistant text deltas to out and returning the final text.
 func (a *Agent) StreamResponse(ctx context.Context, history []Message, out io.Writer) (string, error) {
-	return a.runner.run(ctx, a.Instructions, a.Tools, history, out)
+	response, err := a.runner.run(ctx, a.Instructions, a.Tools, history, out)
+	if err != nil || strings.TrimSpace(response) == "" || strings.TrimSpace(a.Signoff) == "" {
+		return response, err
+	}
+	if hasEquivalentClosing(response, a.Signoff) {
+		return response, nil
+	}
+
+	finisher := "\n\n" + a.Signoff
+	if _, err := io.WriteString(out, finisher); err != nil {
+		return response, err
+	}
+	return response + finisher, nil
+}
+
+func hasEquivalentClosing(response, closing string) bool {
+	responseWords := normalizedWords(response)
+	closingWords := normalizedWords(closing)
+	if len(closingWords) == 0 || len(responseWords) < len(closingWords) {
+		return false
+	}
+
+	offset := len(responseWords) - len(closingWords)
+	for i, word := range closingWords {
+		if responseWords[offset+i] != word {
+			return false
+		}
+	}
+	return true
+}
+
+func normalizedWords(text string) []string {
+	return strings.FieldsFunc(strings.ToLower(text), func(r rune) bool {
+		return !unicode.IsLetter(r) && !unicode.IsDigit(r)
+	})
 }
