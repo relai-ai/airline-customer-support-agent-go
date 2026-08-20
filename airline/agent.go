@@ -22,6 +22,15 @@ type runner interface {
 	run(ctx context.Context, instructions string, tools []Tool, history []Message, out io.Writer) (string, error)
 }
 
+// RunnerFunc adapts a plain function to the runner interface, letting callers
+// inject a deterministic agent turn (e.g. for local simulation) without a
+// model provider.
+type RunnerFunc func(ctx context.Context, instructions string, tools []Tool, history []Message, out io.Writer) (string, error)
+
+func (f RunnerFunc) run(ctx context.Context, instructions string, tools []Tool, history []Message, out io.Writer) (string, error) {
+	return f(ctx, instructions, tools, history, out)
+}
+
 // Agent is a terminal airline support agent bound to a model provider.
 type Agent struct {
 	Name         string
@@ -54,6 +63,18 @@ func NewAgent() (*Agent, error) {
 		Tools:        airlineTools(),
 		runner:       r,
 	}, nil
+}
+
+// NewAgentWithRunnerFunc builds the airline support agent with run in place
+// of a model-provider runner, for deterministic construction without
+// provider calls.
+func NewAgentWithRunnerFunc(run RunnerFunc) *Agent {
+	return &Agent{
+		Name:         AgentName,
+		Instructions: AirlineAgentInstructions,
+		Tools:        airlineTools(),
+		runner:       run,
+	}
 }
 
 // StreamResponse runs a single agent turn over the conversation history,

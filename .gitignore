@@ -5,3 +5,23 @@ logs/*.jsonl
 # Test binaries
 *.test
 /airline-support
+
+# RELAI local files
+.relai/config.toml
+.relai/.npmrc
+.relai/node_modules/
+.relai/tmp/
+.relai/runs/
+.relai/optimizer_runs/
+.relai/memory
+.relai/optimizer-state/
+.relai/optimizer-scope.json
+.relai/simulator.env
+.relai/init-session.json
+.relai/init-session.lock
+.relai/.init-session.*.tmp
+.relai/learning-env-create-session.json
+.relai/learning-env-create-session.lock
+.relai/.learning-env-create-session.*.tmp
+.relai/tag-records/
+.relai/
