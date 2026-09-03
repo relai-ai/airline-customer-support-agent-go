@@ -1,0 +1,17 @@
+{
+  "schema_version": "relai.learning_env_context.v1",
+  "agent": {
+    "entrypoint": "github.com/relai-ai/airline-customer-support-agent-go/airline:NewAgent",
+    "runner_summary": "The adapter accepts one non-empty string per turn, preserves prior user and assistant text as airline.Message history, and calls Agent.StreamResponse."
+  },
+  "components": [],
+  "log_notes": [
+    "Terminal sessions are JSONL under AIRLINE_SUPPORT_LOG_DIR or logs by default; the simulator adapter does not create or append session logs.",
+    "The application records only streamed provider text as its final response; the adapter returns that final text as AssistantMessage."
+  ],
+  "learning_env_guidance": [
+    "Use raw string FixedTurn content, not an object. Each simulation begins with an empty conversation history.",
+    "A live simulation requires OPENAI_API_KEY or ANTHROPIC_API_KEY. OPENAI_API_KEY is preferred when both are present; OPENAI_MODEL and ANTHROPIC_MODEL are optional overrides.",
+    "The internal lookup_booking, baggage_policy, and change_seat tools cannot be RELAI-mocked through the existing exported agent API."
+  ]
+}

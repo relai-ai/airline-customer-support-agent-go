@@ -1,0 +1,32 @@
+{
+  "schema_version": "relai.mock_manifest.v1",
+  "items": [
+    {
+      "id": "lookup_booking",
+      "target": "github.com/relai-ai/airline-customer-support-agent-go/airline:LookupBookingText",
+      "kind": "tool",
+      "final_policy": "do_not_mock",
+      "reason": "The application registers this local tool internally and exposes no construction-time tool override boundary.",
+      "source": "airline/tools.go",
+      "cannot_mock_reason": "The exported NewAgent and StreamResponse APIs do not accept tool replacement; the provider runners invoke internal Tool.Execute values directly."
+    },
+    {
+      "id": "baggage_policy",
+      "target": "github.com/relai-ai/airline-customer-support-agent-go/airline:BaggagePolicyText",
+      "kind": "tool",
+      "final_policy": "do_not_mock",
+      "reason": "The application registers this local tool internally and exposes no construction-time tool override boundary.",
+      "source": "airline/tools.go",
+      "cannot_mock_reason": "The exported NewAgent and StreamResponse APIs do not accept tool replacement; the provider runners invoke internal Tool.Execute values directly."
+    },
+    {
+      "id": "change_seat",
+      "target": "github.com/relai-ai/airline-customer-support-agent-go/airline:ChangeSeatText",
+      "kind": "tool",
+      "final_policy": "do_not_mock",
+      "reason": "The application registers this mutating local tool internally and exposes no construction-time tool override boundary.",
+      "source": "airline/tools.go",
+      "cannot_mock_reason": "The exported NewAgent and StreamResponse APIs do not accept tool replacement; the provider runners invoke internal Tool.Execute values directly."
+    }
+  ]
+}

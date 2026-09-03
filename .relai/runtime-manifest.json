@@ -1,0 +1,30 @@
+{
+  "schema_version": "relai.runtime_manifest.v1",
+  "env": [
+    {
+      "name": "OPENAI_API_KEY",
+      "required": false,
+      "sensitive": true,
+      "reason": "Set this key to select the OpenAI provider; it takes precedence when both provider keys are set."
+    },
+    {
+      "name": "ANTHROPIC_API_KEY",
+      "required": false,
+      "sensitive": true,
+      "reason": "Set this key to select the Anthropic provider when OPENAI_API_KEY is not set."
+    },
+    {
+      "name": "OPENAI_MODEL",
+      "required": false,
+      "sensitive": false,
+      "reason": "Optional OpenAI model override."
+    },
+    {
+      "name": "ANTHROPIC_MODEL",
+      "required": false,
+      "sensitive": false,
+      "reason": "Optional Anthropic model override."
+    }
+  ],
+  "files": []
+}
