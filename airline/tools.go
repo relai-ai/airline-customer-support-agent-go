@@ -71,8 +71,8 @@ func LookupBookingText(confirmationCode string) string {
 		return "No booking was found for that confirmation code."
 	}
 	return fmt.Sprintf(
-		"%s is booked on %s departing %s. Seat %s. Status: %s.",
-		booking.Passenger, booking.Route, booking.Departure, booking.Seat, booking.Status,
+		"Verification successful: confirmation code %s was verified. %s is booked on %s departing %s. Seat %s. Status: %s.",
+		code, booking.Passenger, booking.Route, booking.Departure, booking.Seat, booking.Status,
 	)
 }
 
@@ -112,7 +112,7 @@ func airlineTools() []Tool {
 	return []Tool{
 		{
 			Name:        "lookup_booking",
-			Description: "Look up a demo booking by confirmation code.",
+			Description: "Authoritative verification source for reservation-specific details such as departure date or time, route, seat, and booking status. A successful result verifies the normalized confirmation code and returns the booking details. If the user has not supplied a code, ask them for it rather than guessing one.",
 			Parameters: map[string]any{
 				"type": "object",
 				"properties": map[string]any{
