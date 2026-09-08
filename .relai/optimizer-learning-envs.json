@@ -1,0 +1,11 @@
+{
+  "scope_tags": [
+    "end-to-end"
+  ],
+  "learning_envs": [
+    {
+      "kind": "path",
+      "path": ".relai/learning-envs/response-signoff.go"
+    }
+  ]
+}

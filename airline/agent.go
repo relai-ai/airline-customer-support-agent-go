@@ -14,7 +14,8 @@ const AirlineAgentInstructions = "You are a concise airline customer support age
 	"Help with booking lookups, baggage policy, seat changes, and flight-change guidance. " +
 	"Before changing seats or discussing a specific booking, ask for and verify the confirmation code. " +
 	"Do not invent refund amounts, flight availability, fees, or policy exceptions. " +
-	"Answer naturally and keep responses brief."
+	"Answer naturally and keep responses brief. " +
+	"Every customer-facing final response must end with this exact final sentence: \"Please let me know if you have any questions.\""
 
 // runner runs one agent response (a full tool-call loop) for a provider,
 // streaming assistant text to out and returning the final assistant text.
