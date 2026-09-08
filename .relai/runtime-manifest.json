@@ -1,0 +1,48 @@
+{
+  "schema_version": "relai.runtime_manifest.v1",
+  "env": [
+    {
+      "name": "OPENAI_API_KEY",
+      "required": false,
+      "sensitive": true,
+      "reason": "Preferred provider credential when running the real OpenAI-backed agent path."
+    },
+    {
+      "name": "OPENAI_MODEL",
+      "required": false,
+      "sensitive": false,
+      "reason": "Optional OpenAI model override consumed by airline.SelectModel()."
+    },
+    {
+      "name": "OPENAI_BASE_URL",
+      "required": false,
+      "sensitive": false,
+      "reason": "Optional OpenAI SDK endpoint override consumed by openai-go DefaultClientOptions()."
+    },
+    {
+      "name": "ANTHROPIC_API_KEY",
+      "required": false,
+      "sensitive": true,
+      "reason": "Fallback provider credential when running the real Anthropic-backed agent path."
+    },
+    {
+      "name": "ANTHROPIC_MODEL",
+      "required": false,
+      "sensitive": false,
+      "reason": "Optional Anthropic model override consumed by airline.SelectModel()."
+    },
+    {
+      "name": "ANTHROPIC_BASE_URL",
+      "required": false,
+      "sensitive": false,
+      "reason": "Optional Anthropic SDK endpoint override consumed by anthropic-sdk-go DefaultClientOptions()."
+    },
+    {
+      "name": "AIRLINE_SUPPORT_LOG_DIR",
+      "required": false,
+      "sensitive": false,
+      "reason": "Optional local log directory used by session helpers when the application writes chat logs."
+    }
+  ],
+  "files": []
+}

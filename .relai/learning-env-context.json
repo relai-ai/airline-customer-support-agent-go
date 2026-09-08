@@ -1,0 +1,19 @@
+{
+  "schema_version": "relai.learning_env_context.v1",
+  "agent": {
+    "entrypoint": "github.com/relai-ai/airline-customer-support-agent-go/airline:NewAgent",
+    "runner_summary": "Runs one user text turn through airline.NewAgent() when provider credentials are available, with an offline deterministic baggage-policy fallback used only for credential-free local validation."
+  },
+  "components": [],
+  "log_notes": [
+    "The adapter public input is a raw string user turn.",
+    "The project exposes three direct model-facing local tools in airline/tools.go: lookup_booking, baggage_policy, and change_seat.",
+    "Provider selection is environment-driven in airline.SelectModel(): OPENAI_API_KEY is preferred over ANTHROPIC_API_KEY; OPENAI_MODEL and ANTHROPIC_MODEL optionally override defaults.",
+    "Session logs are JSONL under logs/ by default, or AIRLINE_SUPPORT_LOG_DIR when set."
+  ],
+  "learning_env_guidance": [
+    "Use plain-text airline customer prompts as the turn content.",
+    "For credential-free smoke or static validation, prefer baggage-policy scenarios because the adapter has a deterministic offline fallback only for that behavior.",
+    "Booking-specific or seat-change learning environments require live provider credentials so the real agent can decide when to call tools and how to phrase the response."
+  ]
+}

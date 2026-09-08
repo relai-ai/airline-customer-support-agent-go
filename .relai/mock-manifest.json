@@ -1,0 +1,32 @@
+{
+  "schema_version": "relai.mock_manifest.v1",
+  "items": [
+    {
+      "id": "lookup_booking",
+      "target": "github.com/relai-ai/airline-customer-support-agent-go/airline:LookupBookingText",
+      "kind": "function",
+      "final_policy": "do_not_mock",
+      "reason": "Pure local demo booking lookup over in-memory repository code; deterministic and directly callable without remote dependencies.",
+      "source": "airline/tools.go",
+      "cannot_mock_reason": null
+    },
+    {
+      "id": "baggage_policy",
+      "target": "github.com/relai-ai/airline-customer-support-agent-go/airline:BaggagePolicyText",
+      "kind": "function",
+      "final_policy": "do_not_mock",
+      "reason": "Pure local baggage policy helper with deterministic string output.",
+      "source": "airline/tools.go",
+      "cannot_mock_reason": null
+    },
+    {
+      "id": "change_seat",
+      "target": "github.com/relai-ai/airline-customer-support-agent-go/airline:ChangeSeatText",
+      "kind": "function",
+      "final_policy": "do_not_mock",
+      "reason": "Local deterministic seat-change helper over in-memory demo data; no hosted boundary to intercept.",
+      "source": "airline/tools.go",
+      "cannot_mock_reason": null
+    }
+  ]
+}
