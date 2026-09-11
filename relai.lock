@@ -1,0 +1,174 @@
+{
+  "schema_version": "relai.lock.v1",
+  "agent": {
+    "uuid": "agent-e4b6b377013d49e19729f02de40052b4",
+    "name": "go-airline"
+  },
+  "state": "f794c026f74e66c55649fcce3f263734d7331ded3c4f307113017d145ffb75da",
+  "pins": {
+    "files": {
+      "harbor": {
+        "README.md": {
+          "hash": "0a59468ae24ff5be4fe025c707b2e2411d916c975f01956e4b85753ace4af7c5"
+        },
+        "adapter/project_adapter.py": {
+          "hash": "801cfe4069acf536fc6776af8283104d39b815a1abf8ede799bfa3bf9b20f594"
+        },
+        "adapter/run.py": {
+          "hash": "43f3692b78b79863a01b8038fc56558a08f55165af349e6d1bac2aaf35d53dea"
+        },
+        "agent.toml": {
+          "hash": "42305be45b881fc6f572e8d54337574c927f21b97e213ed3fcaebfb5d38594ec"
+        },
+        "check.sh": {
+          "hash": "34d6c72ea8a019f553b59dbab96bead2ff4b5bf425b3be28427602aa97a3e812"
+        },
+        "harbor_agent.py": {
+          "hash": "d3e256341cc81ededbc73eea474e3a8fa2496229f6cd32fcdc416b289ed99c49"
+        },
+        "init-expectations.snapshot.json": {
+          "hash": "0db8b49eb50b2d2b6634c9e7ed60c4f247570f943d0be64194ab989d06fb0362"
+        },
+        "install.sh": {
+          "hash": "53b4e46403f833ea443ccfe107f2aba76ba07b54237aa2dafd6fe0dac25ac081"
+        },
+        "tasks/response-signoff/README.md": {
+          "hash": "fcae16c9ae59d15a8d997f36fd4c0a2850ee5c60ec5db6792e2e0addc403ddc9"
+        },
+        "tasks/response-signoff/environment/Dockerfile": {
+          "hash": "dad0448eaaa8bf6b7b2884c2e768f066c1e326d8dd4d23c7a05b38c503b9ba21"
+        },
+        "tasks/response-signoff/environment/project_adapter.py": {
+          "hash": "801cfe4069acf536fc6776af8283104d39b815a1abf8ede799bfa3bf9b20f594"
+        },
+        "tasks/response-signoff/environment/relai_harbor/adapter/run.py": {
+          "hash": "43f3692b78b79863a01b8038fc56558a08f55165af349e6d1bac2aaf35d53dea"
+        },
+        "tasks/response-signoff/environment/scenario.json": {
+          "hash": "af94804009105ef0bff57ae1b7bbee381accc8b7a664581e8068874a521d9c92"
+        },
+        "tasks/response-signoff/generated/build.json": {
+          "hash": "c61b489955dd3f3658e069427d43eb4dcb62103d9c702df8ad975276eaacd53c"
+        },
+        "tasks/response-signoff/generated/dependencies.json": {
+          "hash": "9c607e87e2e12d67a26af75b11fc2551feedaeebf29652d3083f6d5219d523b9"
+        },
+        "tasks/response-signoff/generated/runtime/dependencies/go.mod": {
+          "hash": "be3dcf85d44087b20a0e5b9c99353283475efa1008030ee3967488fbc73f72ad"
+        },
+        "tasks/response-signoff/generated/runtime/dependencies/go.sum": {
+          "hash": "accb36a3d575214d31407071d68d5867765e9fa4c452a01a15cf62d662126235"
+        },
+        "tasks/response-signoff/generated/runtime/inputs/project_adapter.py": {
+          "hash": "801cfe4069acf536fc6776af8283104d39b815a1abf8ede799bfa3bf9b20f594"
+        },
+        "tasks/response-signoff/generated/runtime/launcher/run.py": {
+          "hash": "43f3692b78b79863a01b8038fc56558a08f55165af349e6d1bac2aaf35d53dea"
+        },
+        "tasks/response-signoff/generated/runtime/recipe.json": {
+          "hash": "29b6787b76c0ef42c7a9e847d9a1238fe00ea58d77cc2e5cb957c1cbdf0ff8ba"
+        },
+        "tasks/response-signoff/instruction.md": {
+          "hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "tasks/response-signoff/task.toml": {
+          "hash": "40408a3a067b09415717b7e842469f7c8910734b8da1e3766d02155b8eff87f6"
+        },
+        "tasks/response-signoff/tests/Dockerfile": {
+          "hash": "13d6355662882d2e7d2b43d9fa7208d53d3b42e9ee12452cdceb95926a9580ae"
+        },
+        "tasks/response-signoff/tests/evaluate.py": {
+          "hash": "15d0bd4d82ba45da3b54dd324b289ac04e695f70b347cd938d9b281b7a58f417"
+        },
+        "tasks/response-signoff/tests/test.sh": {
+          "hash": "cbecc78426114efd969398d32f8284eead161d4466f1284e8f7b6442d3bfb2a0"
+        },
+        "tasks/smoke/README.md": {
+          "hash": "fcae16c9ae59d15a8d997f36fd4c0a2850ee5c60ec5db6792e2e0addc403ddc9"
+        },
+        "tasks/smoke/environment/Dockerfile": {
+          "hash": "dad0448eaaa8bf6b7b2884c2e768f066c1e326d8dd4d23c7a05b38c503b9ba21"
+        },
+        "tasks/smoke/environment/project_adapter.py": {
+          "hash": "0f52d89f76f31091245cd587832318e4a837fda73830611e9f2dea4248a1de20"
+        },
+        "tasks/smoke/environment/relai_harbor/adapter/run.py": {
+          "hash": "43f3692b78b79863a01b8038fc56558a08f55165af349e6d1bac2aaf35d53dea"
+        },
+        "tasks/smoke/environment/scenario.json": {
+          "hash": "bc506554f15af8c32d23d48f884f32333e59b676ecbcdb9ea23de174ef50230a"
+        },
+        "tasks/smoke/generated/build.json": {
+          "hash": "f9cdbc62bd14658f9a83ea261049b6176dae515d08ae07bf984d6895bb362b54"
+        },
+        "tasks/smoke/generated/runtime/inputs/project_adapter.py": {
+          "hash": "0f52d89f76f31091245cd587832318e4a837fda73830611e9f2dea4248a1de20"
+        },
+        "tasks/smoke/generated/runtime/launcher/run.py": {
+          "hash": "43f3692b78b79863a01b8038fc56558a08f55165af349e6d1bac2aaf35d53dea"
+        },
+        "tasks/smoke/generated/runtime/recipe.json": {
+          "hash": "ac085b2abf2360307d0e9cc16a40df2838572f1e8d9a85254bd22254ac6bcebf"
+        },
+        "tasks/smoke/instruction.md": {
+          "hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "tasks/smoke/relai-init-expectations.json": {
+          "hash": "af27ee8a00eb8f5231cb2a3aecfb44a0ad56092987ca0bdd2a0f91329971c2f6"
+        },
+        "tasks/smoke/task.toml": {
+          "hash": "0e476729d33bd5f4bfa652f4388e391ff6ca49359cae9d01db72202ac799dde2"
+        },
+        "tasks/smoke/tests/Dockerfile": {
+          "hash": "13d6355662882d2e7d2b43d9fa7208d53d3b42e9ee12452cdceb95926a9580ae"
+        },
+        "tasks/smoke/tests/evaluate.py": {
+          "hash": "8d01d6d35c57187d2a43e8c25ba264a68c5fa3be1f732e78b4711d5e896c8b19"
+        },
+        "tasks/smoke/tests/test.sh": {
+          "hash": "cbecc78426114efd969398d32f8284eead161d4466f1284e8f7b6442d3bfb2a0"
+        }
+      },
+      "records": {
+        "tests/learning-environments/response-signoff.json": {
+          "hash": "e5fbf6492eaedc93d31805911173e409883f38c0adcabb8db7d3951c176ce2a8"
+        }
+      },
+      "runtime-manifest.json": {
+        "hash": "83bab36948cb58d703e3053a8300f9fba6ae107e17080600a1692ff6a9299f99"
+      },
+      "simulator.env.example": {
+        "hash": "bf28fb010954addf32d75a952eb1c2996ec80ab2593df924bd16e94992731d61"
+      },
+      "wiki": {
+        "hypotheses/requirements.md": {
+          "hash": "cdff696d296a3ef784aec6db7776c1a4556e0eadde12307b89a069291f3659a0"
+        },
+        "index.md": {
+          "hash": "a3a73bcde40d2c144010b0fc3df07d06151f0b908539704947dc7e5084ea98c1"
+        },
+        "requirements/booking-lookup-accuracy.md": {
+          "hash": "60f829da8e5553e10e96da659c62f8a76b7086ae8bea02fd4b6419bd465b589c"
+        },
+        "requirements/booking-verification.md": {
+          "hash": "f87624272bd9b145355f06701354af9733723066bd0a4e3530820653defde6a5"
+        },
+        "requirements/nonfabrication.md": {
+          "hash": "f4ed1642057de42e94694883b370e81ac9fa5ccabc4cd8bf2876d9e832a8530a"
+        },
+        "requirements/required-sign-off.md": {
+          "hash": "735482b7d89277631b1d8a525b1043fc0216ac2a462dae8d9942435fa8f73285"
+        },
+        "requirements/response-brevity.md": {
+          "hash": "1d42b7408368f69d77edba8b3ff28f4dcfb869e1173a9701ff25356bb68ee233"
+        },
+        "requirements/seat-change.md": {
+          "hash": "96d0bb9cdac641030cc8a113279913c6357387dea05a10eeb14a2d631410db81"
+        },
+        "tests/learning-environments/response-signoff.md": {
+          "hash": "e088820f3d735e83517f92d4966c0b78f558a2918cdd1f9f7aea98d0c347d8b8"
+        }
+      }
+    }
+  }
+}
