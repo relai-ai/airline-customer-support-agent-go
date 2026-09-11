@@ -24,6 +24,7 @@ func (r *openaiRunner) run(
 	history []Message,
 	out io.Writer,
 ) (string, error) {
+	recorder := newATIFRecorder()
 	toolIndex := make(map[string]Tool, len(tools))
 	toolParams := make([]openai.ChatCompletionToolUnionParam, 0, len(tools))
 	for _, t := range tools {
@@ -47,46 +48,38 @@ func (r *openaiRunner) run(
 
 	for {
 		stream := r.client.Chat.Completions.NewStreaming(ctx, openai.ChatCompletionNewParams{
-			Model:    openai.ChatModel(r.model),
-			Messages: messages,
-			Tools:    toolParams,
+			Model: openai.ChatModel(r.model), Messages: messages, Tools: toolParams,
 		})
-
 		acc := openai.ChatCompletionAccumulator{}
 		for stream.Next() {
 			chunk := stream.Current()
 			acc.AddChunk(chunk)
 			if len(chunk.Choices) > 0 {
 				if delta := chunk.Choices[0].Delta.Content; delta != "" {
-					if _, err := io.WriteString(out, delta); err != nil {
-						return "", err
-					}
+					if _, err := io.WriteString(out, delta); err != nil { return "", err }
 				}
 			}
 		}
-		if err := stream.Err(); err != nil {
-			return "", err
-		}
-		if len(acc.Choices) == 0 {
-			return "", nil
-		}
+		if err := stream.Err(); err != nil { return "", err }
+		if len(acc.Choices) == 0 { return "", nil }
 
 		message := acc.Choices[0].Message
 		if len(message.ToolCalls) == 0 {
+			recorder.appendAgent(message.Content, nil, nil)
 			return message.Content, nil
 		}
-
 		messages = append(messages, message.ToParam())
+		calls := make([]atifToolCall, 0, len(message.ToolCalls))
+		results := make([]atifResult, 0, len(message.ToolCalls))
 		for _, call := range message.ToolCalls {
 			var args map[string]any
-			if call.Function.Arguments != "" {
-				_ = json.Unmarshal([]byte(call.Function.Arguments), &args)
-			}
+			if call.Function.Arguments != "" { _ = json.Unmarshal([]byte(call.Function.Arguments), &args) }
 			result := "Unknown tool."
-			if tool, ok := toolIndex[call.Function.Name]; ok {
-				result = tool.Execute(args)
-			}
+			if tool, ok := toolIndex[call.Function.Name]; ok { result = tool.Execute(args) }
+			calls = append(calls, atifToolCall{ToolCallID: call.ID, FunctionName: call.Function.Name, Arguments: args})
+			results = append(results, atifResult{SourceCallID: call.ID, Content: result})
 			messages = append(messages, openai.ToolMessage(result, call.ID))
 		}
+		recorder.appendAgent(message.Content, calls, results)
 	}
 }
