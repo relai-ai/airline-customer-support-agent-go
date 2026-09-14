@@ -83,6 +83,8 @@ func (r *anthropicRunner) run(
 		messages = append(messages, message.ToParam())
 
 		var toolResults []anthropic.ContentBlockParamUnion
+		var calls []atifToolCall
+		var results []atifToolResult
 		for _, block := range message.Content {
 			if use, ok := block.AsAny().(anthropic.ToolUseBlock); ok {
 				var args map[string]any
@@ -93,13 +95,18 @@ func (r *anthropicRunner) run(
 				if tool, ok := toolIndex[use.Name]; ok {
 					result = tool.Execute(args)
 				}
+				calls = append(calls, atifToolCall{ToolCallID: use.ID, FunctionName: use.Name, Arguments: args})
+				results = append(results, atifToolResult{SourceCallID: use.ID, Content: result})
 				toolResults = append(toolResults, anthropic.NewToolResultBlock(use.ID, result, false))
 			}
 		}
 
+		text := anthropicText(message)
 		if len(toolResults) == 0 {
-			return anthropicText(message), nil
+			RecordATIFModelEvent(text, nil, nil)
+			return text, nil
 		}
+		RecordATIFModelEvent(text, calls, results)
 		messages = append(messages, anthropic.NewUserMessage(toolResults...))
 	}
 }

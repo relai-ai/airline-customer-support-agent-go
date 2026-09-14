@@ -5,3 +5,6 @@ logs/*.jsonl
 # Test binaries
 *.test
 /airline-support
+
+# RELAI local files
+.relai/

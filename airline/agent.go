@@ -14,7 +14,8 @@ const AirlineAgentInstructions = "You are a concise airline customer support age
 	"Help with booking lookups, baggage policy, seat changes, and flight-change guidance. " +
 	"Before changing seats or discussing a specific booking, ask for and verify the confirmation code. " +
 	"Do not invent refund amounts, flight availability, fees, or policy exceptions. " +
-	"Answer naturally and keep responses brief."
+	"Answer naturally and keep responses brief. " +
+	"Every final customer-facing answer must end with exactly \"Please let me know if you have any questions.\""
 
 // runner runs one agent response (a full tool-call loop) for a provider,
 // streaming assistant text to out and returning the final assistant text.
@@ -59,5 +60,6 @@ func NewAgent() (*Agent, error) {
 // StreamResponse runs a single agent turn over the conversation history,
 // streaming assistant text deltas to out and returning the final text.
 func (a *Agent) StreamResponse(ctx context.Context, history []Message, out io.Writer) (string, error) {
+	BeginATIFTurn(history)
 	return a.runner.run(ctx, a.Instructions, a.Tools, history, out)
 }
