@@ -59,5 +59,6 @@ func NewAgent() (*Agent, error) {
 // StreamResponse runs a single agent turn over the conversation history,
 // streaming assistant text deltas to out and returning the final text.
 func (a *Agent) StreamResponse(ctx context.Context, history []Message, out io.Writer) (string, error) {
+	BeginATIFTurn(history)
 	return a.runner.run(ctx, a.Instructions, a.Tools, history, out)
 }

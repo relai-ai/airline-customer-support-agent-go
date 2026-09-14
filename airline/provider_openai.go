@@ -73,10 +73,13 @@ func (r *openaiRunner) run(
 
 		message := acc.Choices[0].Message
 		if len(message.ToolCalls) == 0 {
+			RecordATIFModelEvent(message.Content, nil, nil)
 			return message.Content, nil
 		}
 
 		messages = append(messages, message.ToParam())
+		calls := make([]atifToolCall, 0, len(message.ToolCalls))
+		results := make([]atifToolResult, 0, len(message.ToolCalls))
 		for _, call := range message.ToolCalls {
 			var args map[string]any
 			if call.Function.Arguments != "" {
@@ -86,7 +89,10 @@ func (r *openaiRunner) run(
 			if tool, ok := toolIndex[call.Function.Name]; ok {
 				result = tool.Execute(args)
 			}
+			calls = append(calls, atifToolCall{ToolCallID: call.ID, FunctionName: call.Function.Name, Arguments: args})
+			results = append(results, atifToolResult{SourceCallID: call.ID, Content: result})
 			messages = append(messages, openai.ToolMessage(result, call.ID))
 		}
+		RecordATIFModelEvent(message.Content, calls, results)
 	}
 }
