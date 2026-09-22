@@ -1,0 +1,287 @@
+{
+  "schema_version": "relai.lock.v1",
+  "agent": {
+    "uuid": "agent-357e35db64d14d83b27823ecbcefa04b",
+    "name": "prod-go2"
+  },
+  "state": "3a7084a663c6c425bd9dab22a9a4665aa17b6fe5d8193cd0ec4326038b747c42",
+  "pins": {
+    "files": {
+      "challenge-runs": {
+        "active.json": {
+          "hash": "bec4064ad0bedcd89a0c653d9aa9306b3258dae74987eaa22a1bc9ed620b99bc"
+        },
+        "challenge-19098-1-builder-session.lock": {
+          "hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "challenge-19098-1-simulation.json": {
+          "hash": "bd658ef50b5a68f5a50e372992e68cd9f78b382766060107d7533585253bb33b"
+        },
+        "challenge.lock": {
+          "hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      "harbor": {
+        "README.md": {
+          "hash": "51c99813f2b8686da7108b0a91279138bcf54efc80628768689a556a85046a1e"
+        },
+        "adapter/airline_adapter.sh": {
+          "hash": "bd466adc56dea29a83827b16568b3e77d8171c820312300460a73a17e84ac0a5"
+        },
+        "adapter/run.py": {
+          "hash": "43f3692b78b79863a01b8038fc56558a08f55165af349e6d1bac2aaf35d53dea"
+        },
+        "agent.toml": {
+          "hash": "bdf12828ac7ccb7d3e3bb3566407d5d8c17d33c2337dd3cc0644b8be3e2754f5"
+        },
+        "check.sh": {
+          "hash": "95e5511afcbbad87554d554b29075313e7df17ae362858c68031146294b0f349"
+        },
+        "harbor_agent.py": {
+          "hash": "cc98d50a33d5a2b269e15526f9d37f4974ef1e084b63c0fd3b1192aebfee9bf7"
+        },
+        "init-expectations.snapshot.json": {
+          "hash": "44eaa5aa8e7f497e8ec9d8eff600b882cf4755abf40fa22d6f0ec8e5a41d377b"
+        },
+        "install.sh": {
+          "hash": "c1b9e4a5d0a7dcd489f84f7a70f4a93bc042793de336b3097e2e32b8e110df6d"
+        },
+        "tasks/.stage-challenge-19098/README.md": {
+          "hash": "fcae16c9ae59d15a8d997f36fd4c0a2850ee5c60ec5db6792e2e0addc403ddc9"
+        },
+        "tasks/.stage-challenge-19098/environment/Dockerfile": {
+          "hash": "60ee09cb1c4c203e7102233cb12f607678a8f57a2c35db803201a3617f58df07"
+        },
+        "tasks/.stage-challenge-19098/environment/airline_adapter.sh": {
+          "hash": "bd466adc56dea29a83827b16568b3e77d8171c820312300460a73a17e84ac0a5"
+        },
+        "tasks/.stage-challenge-19098/environment/project_launcher.py": {
+          "hash": "43f3692b78b79863a01b8038fc56558a08f55165af349e6d1bac2aaf35d53dea"
+        },
+        "tasks/.stage-challenge-19098/environment/relai_harbor/adapter/run.py": {
+          "hash": "43f3692b78b79863a01b8038fc56558a08f55165af349e6d1bac2aaf35d53dea"
+        },
+        "tasks/.stage-challenge-19098/environment/scenario.json": {
+          "hash": "3146320139e0793ff6110f5fe7546c9fc2af84637e9de2fe7cba51500f587252"
+        },
+        "tasks/.stage-challenge-19098/generated/build.json": {
+          "hash": "51685e90b1620982b86a91ffc9e5d043aceeeeb246d1ee054222f8d36680e98b"
+        },
+        "tasks/.stage-challenge-19098/generated/dependencies.json": {
+          "hash": "9c607e87e2e12d67a26af75b11fc2551feedaeebf29652d3083f6d5219d523b9"
+        },
+        "tasks/.stage-challenge-19098/generated/runtime/dependencies/go.mod": {
+          "hash": "be3dcf85d44087b20a0e5b9c99353283475efa1008030ee3967488fbc73f72ad"
+        },
+        "tasks/.stage-challenge-19098/generated/runtime/dependencies/go.sum": {
+          "hash": "accb36a3d575214d31407071d68d5867765e9fa4c452a01a15cf62d662126235"
+        },
+        "tasks/.stage-challenge-19098/generated/runtime/inputs/airline_adapter.sh": {
+          "hash": "bd466adc56dea29a83827b16568b3e77d8171c820312300460a73a17e84ac0a5"
+        },
+        "tasks/.stage-challenge-19098/generated/runtime/launcher/run.py": {
+          "hash": "43f3692b78b79863a01b8038fc56558a08f55165af349e6d1bac2aaf35d53dea"
+        },
+        "tasks/.stage-challenge-19098/generated/runtime/recipe.json": {
+          "hash": "6a654a7d56a89104982b42917137a2386e7ac0407d21392270160044c24a28c9"
+        },
+        "tasks/.stage-challenge-19098/instruction.md": {
+          "hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "tasks/.stage-challenge-19098/task.toml": {
+          "hash": "3b5414d417c4900fa7a24a26f44f30bfb1ea11d8ee53ada0716ce564f43c5fed"
+        },
+        "tasks/.stage-challenge-19098/tests/Dockerfile": {
+          "hash": "13d6355662882d2e7d2b43d9fa7208d53d3b42e9ee12452cdceb95926a9580ae"
+        },
+        "tasks/.stage-challenge-19098/tests/evaluate.py": {
+          "hash": "0934b225e4b94b2351b128e8affd2fc517d3b4747ea728ee5b9cfaf30bc99917"
+        },
+        "tasks/.stage-challenge-19098/tests/test.sh": {
+          "hash": "9d42764198b2a430dccec1a03beba85089b04e5019c4172711093f73286ba0fa"
+        },
+        "tasks/booking-lookup-bypass-unknown-code/README.md": {
+          "hash": "fcae16c9ae59d15a8d997f36fd4c0a2850ee5c60ec5db6792e2e0addc403ddc9"
+        },
+        "tasks/booking-lookup-bypass-unknown-code/environment/Dockerfile": {
+          "hash": "60ee09cb1c4c203e7102233cb12f607678a8f57a2c35db803201a3617f58df07"
+        },
+        "tasks/booking-lookup-bypass-unknown-code/environment/airline_adapter.sh": {
+          "hash": "bd466adc56dea29a83827b16568b3e77d8171c820312300460a73a17e84ac0a5"
+        },
+        "tasks/booking-lookup-bypass-unknown-code/environment/project_launcher.py": {
+          "hash": "43f3692b78b79863a01b8038fc56558a08f55165af349e6d1bac2aaf35d53dea"
+        },
+        "tasks/booking-lookup-bypass-unknown-code/environment/relai_harbor/adapter/run.py": {
+          "hash": "43f3692b78b79863a01b8038fc56558a08f55165af349e6d1bac2aaf35d53dea"
+        },
+        "tasks/booking-lookup-bypass-unknown-code/environment/scenario.json": {
+          "hash": "3146320139e0793ff6110f5fe7546c9fc2af84637e9de2fe7cba51500f587252"
+        },
+        "tasks/booking-lookup-bypass-unknown-code/generated/build.json": {
+          "hash": "51685e90b1620982b86a91ffc9e5d043aceeeeb246d1ee054222f8d36680e98b"
+        },
+        "tasks/booking-lookup-bypass-unknown-code/generated/dependencies.json": {
+          "hash": "9c607e87e2e12d67a26af75b11fc2551feedaeebf29652d3083f6d5219d523b9"
+        },
+        "tasks/booking-lookup-bypass-unknown-code/generated/runtime/dependencies/go.mod": {
+          "hash": "be3dcf85d44087b20a0e5b9c99353283475efa1008030ee3967488fbc73f72ad"
+        },
+        "tasks/booking-lookup-bypass-unknown-code/generated/runtime/dependencies/go.sum": {
+          "hash": "accb36a3d575214d31407071d68d5867765e9fa4c452a01a15cf62d662126235"
+        },
+        "tasks/booking-lookup-bypass-unknown-code/generated/runtime/inputs/airline_adapter.sh": {
+          "hash": "bd466adc56dea29a83827b16568b3e77d8171c820312300460a73a17e84ac0a5"
+        },
+        "tasks/booking-lookup-bypass-unknown-code/generated/runtime/launcher/run.py": {
+          "hash": "43f3692b78b79863a01b8038fc56558a08f55165af349e6d1bac2aaf35d53dea"
+        },
+        "tasks/booking-lookup-bypass-unknown-code/generated/runtime/recipe.json": {
+          "hash": "6a654a7d56a89104982b42917137a2386e7ac0407d21392270160044c24a28c9"
+        },
+        "tasks/booking-lookup-bypass-unknown-code/instruction.md": {
+          "hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "tasks/booking-lookup-bypass-unknown-code/task.toml": {
+          "hash": "3b5414d417c4900fa7a24a26f44f30bfb1ea11d8ee53ada0716ce564f43c5fed"
+        },
+        "tasks/booking-lookup-bypass-unknown-code/tests/Dockerfile": {
+          "hash": "13d6355662882d2e7d2b43d9fa7208d53d3b42e9ee12452cdceb95926a9580ae"
+        },
+        "tasks/booking-lookup-bypass-unknown-code/tests/evaluate.py": {
+          "hash": "0934b225e4b94b2351b128e8affd2fc517d3b4747ea728ee5b9cfaf30bc99917"
+        },
+        "tasks/booking-lookup-bypass-unknown-code/tests/test.sh": {
+          "hash": "9d42764198b2a430dccec1a03beba85089b04e5019c4172711093f73286ba0fa"
+        },
+        "tasks/smoke/README.md": {
+          "hash": "fcae16c9ae59d15a8d997f36fd4c0a2850ee5c60ec5db6792e2e0addc403ddc9"
+        },
+        "tasks/smoke/environment/Dockerfile": {
+          "hash": "d6f949ce1e72142ff44b74ba81cc0b18d6411e88f21bd1fb5b98b25636739ee7"
+        },
+        "tasks/smoke/environment/airline_adapter.sh": {
+          "hash": "bd466adc56dea29a83827b16568b3e77d8171c820312300460a73a17e84ac0a5"
+        },
+        "tasks/smoke/environment/relai_harbor/adapter/run.py": {
+          "hash": "43f3692b78b79863a01b8038fc56558a08f55165af349e6d1bac2aaf35d53dea"
+        },
+        "tasks/smoke/environment/scenario.json": {
+          "hash": "3b7f9ced31cb5805ef032e87161bb7cf9793bd339744a7b8354594b14ce36933"
+        },
+        "tasks/smoke/generated/build.json": {
+          "hash": "ce5138e3c09b2ee7d588c79efc0711388fc30e5d7ab015e92351991a906282d7"
+        },
+        "tasks/smoke/generated/runtime/inputs/airline_adapter.sh": {
+          "hash": "bd466adc56dea29a83827b16568b3e77d8171c820312300460a73a17e84ac0a5"
+        },
+        "tasks/smoke/generated/runtime/launcher/run.py": {
+          "hash": "43f3692b78b79863a01b8038fc56558a08f55165af349e6d1bac2aaf35d53dea"
+        },
+        "tasks/smoke/generated/runtime/recipe.json": {
+          "hash": "3bf0fd135e133b603c33d951e9915f4c96d68a4b14811081e0a86a1ebc0248e8"
+        },
+        "tasks/smoke/instruction.md": {
+          "hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "tasks/smoke/relai-init-expectations.json": {
+          "hash": "0b513b6027d8a31996851560a7ec8b68487ecae42cd590e7fdca18b8bba0ddff"
+        },
+        "tasks/smoke/task.toml": {
+          "hash": "eb916e2949cad7503e20c6e9df0c1a31549792a7b4ec3c54432761fc09c10f82"
+        },
+        "tasks/smoke/tests/Dockerfile": {
+          "hash": "13d6355662882d2e7d2b43d9fa7208d53d3b42e9ee12452cdceb95926a9580ae"
+        },
+        "tasks/smoke/tests/evaluate.py": {
+          "hash": "e451d648d5076d05d3c4c744207442b1cfb47564894faeccf78a6161f2151cf6"
+        },
+        "tasks/smoke/tests/test.sh": {
+          "hash": "a19614647be6dc048ee54da57a655b340b06e3c25f05438c216544477de043c7"
+        }
+      },
+      "records": {
+        "hypotheses/booking-lookup-can-be-bypassed-by-model.json": {
+          "hash": "cd5fcc161b88c0e14da4444af3cc045d16c0d994f4bdb117f85200157318d502"
+        },
+        "hypotheses/invented-flight-change-fee-or-availability.json": {
+          "hash": "890ef3cdfc29b18caafc17c24d6fbb6074e4206f2c6b1c001f6c318e7cc0dcb4"
+        },
+        "hypotheses/premium-cabin-label-falls-back-to-standard-baggage.json": {
+          "hash": "6a9e9eb6da16a7c29406916afdc426661de48a5f50e954d13985f72b57b09b0a"
+        },
+        "hypotheses/refund-amount-guarantee-under-user-pressure.json": {
+          "hash": "2be535c4085215be7a57b2dd0f004630a4f1332a0253d58706f6f5e06996c387"
+        },
+        "hypotheses/specific-booking-discussion-without-verification.json": {
+          "hash": "13fa7948b8012e94371b895c2c3d9191eb74fb054ebdd839e171ab45703dd47f"
+        },
+        "tests/behavioral-tests/booking-lookup-bypass-unknown-code.json": {
+          "hash": "5e169fa95d311c4e5becad7bd1cd6418970445a0b13f6cdd2a24076142259cca"
+        },
+        "wiki-bootstrap-v1": {
+          "hash": "3f8779915d04c4c43a5d5df1761b3987bd17626809ecb4e10eab6151ea211670"
+        }
+      },
+      "runtime-manifest.json": {
+        "hash": "52ba90ab1989781014eb9e4eb4a6be604e04295e68fbe2567fae8e7a7f4e1616"
+      },
+      "simulator.env.example": {
+        "hash": "eba30d7c1de902073cf413b0575421bb385e7b9da7a500804814aad99e1f9858"
+      },
+      "weakness-curation.lock": {
+        "hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "wiki": {
+        "hypotheses/open-questions.md": {
+          "hash": "92ca62934374bf63ab0d13218e19f259ffabef5cb2c9a9608d48a7d3ec38f3bf"
+        },
+        "hypotheses/open-questions/off-topic-request-handling.md": {
+          "hash": "57ed85872eca30efcca5909745dda37752482c46b3ae9977da2fb86decbabfce"
+        },
+        "hypotheses/requirements.md": {
+          "hash": "6c52ebdb154ede7159bacccac8d5f06f8b80355ad70f20ffb139edb1985b33aa"
+        },
+        "hypotheses/risks.md": {
+          "hash": "78e2bd0648a2f11125b1490db99691903a46c65c1e8d21bad9cf6315f62bb903"
+        },
+        "hypotheses/risks/booking-lookup-can-be-bypassed-by-model.md": {
+          "hash": "36d297b145d51b66774f9fb0f4b11dcdcebb3750c4fb0ed4e6c9970bde408865"
+        },
+        "hypotheses/risks/invented-flight-change-fee-or-availability.md": {
+          "hash": "0c8347828c8a5d78e622eaf63a9b698760d6e7f9e9db6a475cc92c597f7aa11f"
+        },
+        "hypotheses/risks/premium-cabin-label-falls-back-to-standard-baggage.md": {
+          "hash": "fdd3aa9b182b0dd5060ce392b66d19e3e0c03460b51d268dec992183271d92b1"
+        },
+        "hypotheses/risks/refund-amount-guarantee-under-user-pressure.md": {
+          "hash": "a3d3ab73a401b2e25b90f8c4d1fb54d71eff4384bebfc544325e2bef0a96fb6b"
+        },
+        "hypotheses/risks/specific-booking-discussion-without-verification.md": {
+          "hash": "c1bd498e10c713c101029c637c0ba57004842515ab069abd8d22016965733b36"
+        },
+        "index.md": {
+          "hash": "c1dc71e6dc578c9421573de1c1ca4eb40880658c64ed7439c41e8d6c214b3b81"
+        },
+        "requirements/baggage-policy.md": {
+          "hash": "0a35f21f3a3b0e556a488f6b3225d6cbbcee086312b8c27b337e028e60809234"
+        },
+        "requirements/booking-lookup.md": {
+          "hash": "226da509d5d36b0417c581a729c05986287b6c1eacbf3b57cb04633d6059a1df"
+        },
+        "requirements/confirmation-code-verification.md": {
+          "hash": "91eca548854a0a63e8b628d2d57d5bb8273ad1260e8eae61ad3573c2ac1db2f6"
+        },
+        "requirements/no-invented-details.md": {
+          "hash": "7a6dca25c7c31e673dd178659c535489ba7d3aa404d71aed653caff1424a5083"
+        },
+        "requirements/seat-changes.md": {
+          "hash": "ba4123903e31d19f613a9d210952a8e98bc131899cd9ed27c45e8e0408596f4a"
+        },
+        "tests/behavioral-tests/booking-lookup-bypass-unknown-code.md": {
+          "hash": "52b170cc69a042f57335d6edce4e26b0b9ddf6d430a2a239b6afe791d95b2a1f"
+        }
+      }
+    }
+  }
+}

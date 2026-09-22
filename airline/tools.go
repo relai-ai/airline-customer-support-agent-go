@@ -112,7 +112,7 @@ func airlineTools() []Tool {
 	return []Tool{
 		{
 			Name:        "lookup_booking",
-			Description: "Look up a demo booking by confirmation code.",
+			Description: "Authoritative read-only source for verifying a demo booking by confirmation code. Use it before making booking-specific claims whenever a code is supplied; no additional user permission is required.",
 			Parameters: map[string]any{
 				"type": "object",
 				"properties": map[string]any{

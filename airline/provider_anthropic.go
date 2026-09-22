@@ -12,12 +12,13 @@ import (
 const anthropicMaxTokens = 1024
 
 type anthropicRunner struct {
-	client anthropic.Client
-	model  string
+	client   anthropic.Client
+	model    string
+	recorder *atifRecorder
 }
 
-func newAnthropicRunner(model string) *anthropicRunner {
-	return &anthropicRunner{client: anthropic.NewClient(), model: model}
+func newAnthropicRunner(model string, recorder *atifRecorder) *anthropicRunner {
+	return &anthropicRunner{client: anthropic.NewClient(), model: model, recorder: recorder}
 }
 
 func (r *anthropicRunner) run(
@@ -25,6 +26,7 @@ func (r *anthropicRunner) run(
 	instructions string,
 	tools []Tool,
 	history []Message,
+	preflight *toolObservation,
 	out io.Writer,
 ) (string, error) {
 	toolIndex := make(map[string]Tool, len(tools))
@@ -50,6 +52,7 @@ func (r *anthropicRunner) run(
 			messages = append(messages, anthropic.NewAssistantMessage(anthropic.NewTextBlock(m.Content)))
 		}
 	}
+	messages = appendAnthropicPreflight(messages, preflight)
 
 	system := []anthropic.TextBlockParam{{Text: instructions}}
 
@@ -93,6 +96,7 @@ func (r *anthropicRunner) run(
 				if tool, ok := toolIndex[use.Name]; ok {
 					result = tool.Execute(args)
 				}
+				r.recorder.recordToolCall(use.ID, use.Name, args, result)
 				toolResults = append(toolResults, anthropic.NewToolResultBlock(use.ID, result, false))
 			}
 		}
@@ -102,6 +106,18 @@ func (r *anthropicRunner) run(
 		}
 		messages = append(messages, anthropic.NewUserMessage(toolResults...))
 	}
+}
+
+func appendAnthropicPreflight(messages []anthropic.MessageParam, observation *toolObservation) []anthropic.MessageParam {
+	if observation == nil {
+		return messages
+	}
+	messages = append(messages, anthropic.NewAssistantMessage(
+		anthropic.NewToolUseBlock(observation.CallID, observation.Arguments, observation.ToolName),
+	))
+	return append(messages, anthropic.NewUserMessage(
+		anthropic.NewToolResultBlock(observation.CallID, observation.Result, false),
+	))
 }
 
 func anthropicText(message anthropic.Message) string {
