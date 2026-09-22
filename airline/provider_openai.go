@@ -23,6 +23,7 @@ func (r *openaiRunner) run(
 	instructions string,
 	tools []Tool,
 	history []Message,
+	preflight *toolObservation,
 	out io.Writer,
 ) (string, error) {
 	toolIndex := make(map[string]Tool, len(tools))
@@ -45,6 +46,7 @@ func (r *openaiRunner) run(
 			messages = append(messages, openai.AssistantMessage(m.Content))
 		}
 	}
+	messages = appendOpenAIPreflight(messages, preflight)
 
 	for {
 		stream := r.client.Chat.Completions.NewStreaming(ctx, openai.ChatCompletionNewParams{
@@ -91,4 +93,25 @@ func (r *openaiRunner) run(
 			messages = append(messages, openai.ToolMessage(result, call.ID))
 		}
 	}
+}
+
+func appendOpenAIPreflight(messages []openai.ChatCompletionMessageParamUnion, observation *toolObservation) []openai.ChatCompletionMessageParamUnion {
+	if observation == nil {
+		return messages
+	}
+	arguments, _ := json.Marshal(observation.Arguments)
+	messages = append(messages, openai.ChatCompletionMessageParamUnion{
+		OfAssistant: &openai.ChatCompletionAssistantMessageParam{
+			ToolCalls: []openai.ChatCompletionMessageToolCallUnionParam{{
+				OfFunction: &openai.ChatCompletionMessageFunctionToolCallParam{
+					ID: observation.CallID,
+					Function: openai.ChatCompletionMessageFunctionToolCallFunctionParam{
+						Name:      observation.ToolName,
+						Arguments: string(arguments),
+					},
+				},
+			}},
+		},
+	})
+	return append(messages, openai.ToolMessage(observation.Result, observation.CallID))
 }
