@@ -28,6 +28,7 @@ type Agent struct {
 	Instructions string
 	Tools        []Tool
 	runner       runner
+	recorder     *atifRecorder
 }
 
 // NewAgent builds the airline support agent using the provider selected from
@@ -38,12 +39,13 @@ func NewAgent() (*Agent, error) {
 		return nil, err
 	}
 
+	recorder := newATIFRecorder()
 	var r runner
 	switch selection.Provider {
 	case "openai":
-		r = newOpenAIRunner(selection.Model)
+		r = newOpenAIRunner(selection.Model, recorder)
 	case "anthropic":
-		r = newAnthropicRunner(selection.Model)
+		r = newAnthropicRunner(selection.Model, recorder)
 	default:
 		return nil, fmt.Errorf("unsupported provider %q", selection.Provider)
 	}
@@ -53,11 +55,27 @@ func NewAgent() (*Agent, error) {
 		Instructions: AirlineAgentInstructions,
 		Tools:        airlineTools(),
 		runner:       r,
+		recorder:     recorder,
 	}, nil
 }
 
 // StreamResponse runs a single agent turn over the conversation history,
 // streaming assistant text deltas to out and returning the final text.
 func (a *Agent) StreamResponse(ctx context.Context, history []Message, out io.Writer) (string, error) {
-	return a.runner.run(ctx, a.Instructions, a.Tools, history, out)
+	if len(history) > 0 {
+		last := history[len(history)-1]
+		if last.Role == "user" {
+			if err := a.recorder.recordUser(last.Content); err != nil {
+				return "", err
+			}
+		}
+	}
+	response, err := a.runner.run(ctx, a.Instructions, a.Tools, history, out)
+	if err != nil {
+		return "", err
+	}
+	if err := a.recorder.recordAssistant(response); err != nil {
+		return "", err
+	}
+	return response, nil
 }

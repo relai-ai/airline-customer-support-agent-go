@@ -9,12 +9,13 @@ import (
 )
 
 type openaiRunner struct {
-	client openai.Client
-	model  string
+	client   openai.Client
+	model    string
+	recorder *atifRecorder
 }
 
-func newOpenAIRunner(model string) *openaiRunner {
-	return &openaiRunner{client: openai.NewClient(), model: model}
+func newOpenAIRunner(model string, recorder *atifRecorder) *openaiRunner {
+	return &openaiRunner{client: openai.NewClient(), model: model, recorder: recorder}
 }
 
 func (r *openaiRunner) run(
@@ -86,6 +87,7 @@ func (r *openaiRunner) run(
 			if tool, ok := toolIndex[call.Function.Name]; ok {
 				result = tool.Execute(args)
 			}
+			r.recorder.recordToolCall(call.ID, call.Function.Name, args, result)
 			messages = append(messages, openai.ToolMessage(result, call.ID))
 		}
 	}

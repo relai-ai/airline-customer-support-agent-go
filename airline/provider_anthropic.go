@@ -12,12 +12,13 @@ import (
 const anthropicMaxTokens = 1024
 
 type anthropicRunner struct {
-	client anthropic.Client
-	model  string
+	client   anthropic.Client
+	model    string
+	recorder *atifRecorder
 }
 
-func newAnthropicRunner(model string) *anthropicRunner {
-	return &anthropicRunner{client: anthropic.NewClient(), model: model}
+func newAnthropicRunner(model string, recorder *atifRecorder) *anthropicRunner {
+	return &anthropicRunner{client: anthropic.NewClient(), model: model, recorder: recorder}
 }
 
 func (r *anthropicRunner) run(
@@ -93,6 +94,7 @@ func (r *anthropicRunner) run(
 				if tool, ok := toolIndex[use.Name]; ok {
 					result = tool.Execute(args)
 				}
+				r.recorder.recordToolCall(use.ID, use.Name, args, result)
 				toolResults = append(toolResults, anthropic.NewToolResultBlock(use.ID, result, false))
 			}
 		}
