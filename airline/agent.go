@@ -19,7 +19,7 @@ const AirlineAgentInstructions = "You are a concise airline customer support age
 // runner runs one agent response (a full tool-call loop) for a provider,
 // streaming assistant text to out and returning the final assistant text.
 type runner interface {
-	run(ctx context.Context, instructions string, tools []Tool, history []Message, out io.Writer) (string, error)
+	run(ctx context.Context, instructions string, tools []Tool, history []Message, out io.Writer, recorder *atifRecorder) (string, error)
 }
 
 // Agent is a terminal airline support agent bound to a model provider.
@@ -59,5 +59,5 @@ func NewAgent() (*Agent, error) {
 // StreamResponse runs a single agent turn over the conversation history,
 // streaming assistant text deltas to out and returning the final text.
 func (a *Agent) StreamResponse(ctx context.Context, history []Message, out io.Writer) (string, error) {
-	return a.runner.run(ctx, a.Instructions, a.Tools, history, out)
+	return a.runner.run(ctx, a.Instructions, a.Tools, history, out, newATIFRecorder())
 }

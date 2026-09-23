@@ -23,6 +23,7 @@ func (r *openaiRunner) run(
 	tools []Tool,
 	history []Message,
 	out io.Writer,
+	recorder *atifRecorder,
 ) (string, error) {
 	toolIndex := make(map[string]Tool, len(tools))
 	toolParams := make([]openai.ChatCompletionToolUnionParam, 0, len(tools))
@@ -73,6 +74,7 @@ func (r *openaiRunner) run(
 
 		message := acc.Choices[0].Message
 		if len(message.ToolCalls) == 0 {
+			recorder.agentMessage(message.Content)
 			return message.Content, nil
 		}
 
@@ -82,10 +84,12 @@ func (r *openaiRunner) run(
 			if call.Function.Arguments != "" {
 				_ = json.Unmarshal([]byte(call.Function.Arguments), &args)
 			}
+			recorder.toolCall(call.ID, call.Function.Name, args)
 			result := "Unknown tool."
 			if tool, ok := toolIndex[call.Function.Name]; ok {
 				result = tool.Execute(args)
 			}
+			recorder.toolResult(call.ID, result)
 			messages = append(messages, openai.ToolMessage(result, call.ID))
 		}
 	}
