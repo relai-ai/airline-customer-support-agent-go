@@ -26,6 +26,7 @@ func (r *anthropicRunner) run(
 	tools []Tool,
 	history []Message,
 	out io.Writer,
+	recorder *atifRecorder,
 ) (string, error) {
 	toolIndex := make(map[string]Tool, len(tools))
 	toolParams := make([]anthropic.ToolUnionParam, 0, len(tools))
@@ -89,16 +90,20 @@ func (r *anthropicRunner) run(
 				if len(use.Input) > 0 {
 					_ = json.Unmarshal(use.Input, &args)
 				}
+				recorder.toolCall(use.ID, use.Name, args)
 				result := "Unknown tool."
 				if tool, ok := toolIndex[use.Name]; ok {
 					result = tool.Execute(args)
 				}
+				recorder.toolResult(use.ID, result)
 				toolResults = append(toolResults, anthropic.NewToolResultBlock(use.ID, result, false))
 			}
 		}
 
 		if len(toolResults) == 0 {
-			return anthropicText(message), nil
+			text := anthropicText(message)
+			recorder.agentMessage(text)
+			return text, nil
 		}
 		messages = append(messages, anthropic.NewUserMessage(toolResults...))
 	}

@@ -1,0 +1,455 @@
+{
+  "schema_version": "relai.lock.v1",
+  "agent": {
+    "uuid": "agent-46ebe3eb07624a6787e3f749a26c0b74",
+    "name": "prod-go3"
+  },
+  "state": "5c9bc287417829963240e0a9b73d32cee771b08af299545623d1f31ae247cc4e",
+  "pins": {
+    "files": {
+      "challenge-runs": {
+        "active.json": {
+          "hash": "04c2febb0725c47d7b2423cc3b284b090c01e51c855cfb51393a1596403b1cbe"
+        },
+        "challenge-92008-1-builder-session.lock": {
+          "hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "challenge-92008-1-simulation.json": {
+          "hash": "3e9db9ac9f30f9886ee710df46308995c770a20431326801feb6ae1a21cfd3c2"
+        },
+        "challenge-92008-2-builder-session.lock": {
+          "hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "challenge-92008-2-simulation.json": {
+          "hash": "6d7c970e3640777ddd6d0729efac9225b0417eb0a6bce06d845fd31e9383a3f0"
+        },
+        "challenge-92008-3-builder-session.lock": {
+          "hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "challenge-92008-3-simulation.json": {
+          "hash": "908774259e7d7ee9292330147c3937d0fae654779e269649758548aeb81cb792"
+        },
+        "challenge.lock": {
+          "hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      "harbor": {
+        "README.md": {
+          "hash": "8de72c9f2a34b0d0427c4044b57928dd29d0f8c3ef9017f943bf08e175857871"
+        },
+        "adapter/project_adapter.go": {
+          "hash": "523e73fa841e7b1b356c1a37784418ee0a96afae0960a178658c946ccf54efe7"
+        },
+        "adapter/run.py": {
+          "hash": "9e6e1cab40a199f209a0213a7c81ee9e8f2fd207b4e38c7b2c9db52af08fbb38"
+        },
+        "agent.toml": {
+          "hash": "72c55ed60fb06ac22dcea9426daae741fd72823004f952a21400f9d4eda7c538"
+        },
+        "check.sh": {
+          "hash": "a46ac9048d30c450a169d2186fac4ea62beb8520d7c61bf818224238c4c98b61"
+        },
+        "harbor_agent.py": {
+          "hash": "cc98d50a33d5a2b269e15526f9d37f4974ef1e084b63c0fd3b1192aebfee9bf7"
+        },
+        "init-expectations.snapshot.json": {
+          "hash": "0db8b49eb50b2d2b6634c9e7ed60c4f247570f943d0be64194ab989d06fb0362"
+        },
+        "install.sh": {
+          "hash": "53b4e46403f833ea443ccfe107f2aba76ba07b54237aa2dafd6fe0dac25ac081"
+        },
+        "tasks/.stage-challenge-92008-3/README.md": {
+          "hash": "fcae16c9ae59d15a8d997f36fd4c0a2850ee5c60ec5db6792e2e0addc403ddc9"
+        },
+        "tasks/.stage-challenge-92008-3/environment/Dockerfile": {
+          "hash": "997d4c87aa90c712eee7bcc773fe6ef11301d72d2deaa23051ed8de3ff8d444a"
+        },
+        "tasks/.stage-challenge-92008-3/environment/project_adapter.go": {
+          "hash": "523e73fa841e7b1b356c1a37784418ee0a96afae0960a178658c946ccf54efe7"
+        },
+        "tasks/.stage-challenge-92008-3/environment/relai_harbor/adapter/run.py": {
+          "hash": "9e6e1cab40a199f209a0213a7c81ee9e8f2fd207b4e38c7b2c9db52af08fbb38"
+        },
+        "tasks/.stage-challenge-92008-3/environment/scenario.json": {
+          "hash": "99b52d795760e6d05be1470bd68211ea24a7e2db9905712caa33e43cdc148176"
+        },
+        "tasks/.stage-challenge-92008-3/generated/build.json": {
+          "hash": "759c6ef8e3e1e31a48e08cb89ddc8296842e453b7b0dd248209ccb8e1c429166"
+        },
+        "tasks/.stage-challenge-92008-3/generated/dependencies.json": {
+          "hash": "7c118331c0d623d6380866b663b2a2a5a4eeff8b104f3b32caf6477b629c8679"
+        },
+        "tasks/.stage-challenge-92008-3/generated/runtime/dependencies/go.mod": {
+          "hash": "be3dcf85d44087b20a0e5b9c99353283475efa1008030ee3967488fbc73f72ad"
+        },
+        "tasks/.stage-challenge-92008-3/generated/runtime/dependencies/go.sum": {
+          "hash": "accb36a3d575214d31407071d68d5867765e9fa4c452a01a15cf62d662126235"
+        },
+        "tasks/.stage-challenge-92008-3/generated/runtime/inputs/project_adapter.go": {
+          "hash": "523e73fa841e7b1b356c1a37784418ee0a96afae0960a178658c946ccf54efe7"
+        },
+        "tasks/.stage-challenge-92008-3/generated/runtime/launcher/run.py": {
+          "hash": "9e6e1cab40a199f209a0213a7c81ee9e8f2fd207b4e38c7b2c9db52af08fbb38"
+        },
+        "tasks/.stage-challenge-92008-3/generated/runtime/recipe.json": {
+          "hash": "07c77f3822b2dabe88c9580b5e83df4bcd218e2158c8e7a27cceea9f3f158bda"
+        },
+        "tasks/.stage-challenge-92008-3/instruction.md": {
+          "hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "tasks/.stage-challenge-92008-3/task.toml": {
+          "hash": "c2004d1eb34b8a46ea61ed7be3102c182e41b819fe31fe996c43d472710112ff"
+        },
+        "tasks/.stage-challenge-92008-3/tests/Dockerfile": {
+          "hash": "13d6355662882d2e7d2b43d9fa7208d53d3b42e9ee12452cdceb95926a9580ae"
+        },
+        "tasks/.stage-challenge-92008-3/tests/evaluate.py": {
+          "hash": "07b237e7d794dfeb92c5fa1bd9382a4ac3d3a36ce0ce7b8d8f60fca34516b5b8"
+        },
+        "tasks/.stage-challenge-92008-3/tests/test.sh": {
+          "hash": "cbecc78426114efd969398d32f8284eead161d4466f1284e8f7b6442d3bfb2a0"
+        },
+        "tasks/basic-economy-fee-boundary/README.md": {
+          "hash": "fcae16c9ae59d15a8d997f36fd4c0a2850ee5c60ec5db6792e2e0addc403ddc9"
+        },
+        "tasks/basic-economy-fee-boundary/environment/Dockerfile": {
+          "hash": "9e5ec170ffceae200734a5bf87b654fcff66dfaa223db362239fec9020a35db3"
+        },
+        "tasks/basic-economy-fee-boundary/environment/project_adapter.go": {
+          "hash": "523e73fa841e7b1b356c1a37784418ee0a96afae0960a178658c946ccf54efe7"
+        },
+        "tasks/basic-economy-fee-boundary/environment/relai_harbor/adapter/run.py": {
+          "hash": "9e6e1cab40a199f209a0213a7c81ee9e8f2fd207b4e38c7b2c9db52af08fbb38"
+        },
+        "tasks/basic-economy-fee-boundary/environment/scenario.json": {
+          "hash": "1d09baf77c7813d7ad5fa2e72885f889afa1b4d71d8225b34b75ad5918710573"
+        },
+        "tasks/basic-economy-fee-boundary/generated/build.json": {
+          "hash": "affaa632613a642ac8796700f57ed0903fb26cf7ade085b097723801a104fb1a"
+        },
+        "tasks/basic-economy-fee-boundary/generated/dependencies.json": {
+          "hash": "7c118331c0d623d6380866b663b2a2a5a4eeff8b104f3b32caf6477b629c8679"
+        },
+        "tasks/basic-economy-fee-boundary/generated/runtime/dependencies/go.mod": {
+          "hash": "be3dcf85d44087b20a0e5b9c99353283475efa1008030ee3967488fbc73f72ad"
+        },
+        "tasks/basic-economy-fee-boundary/generated/runtime/dependencies/go.sum": {
+          "hash": "accb36a3d575214d31407071d68d5867765e9fa4c452a01a15cf62d662126235"
+        },
+        "tasks/basic-economy-fee-boundary/generated/runtime/inputs/project_adapter.go": {
+          "hash": "523e73fa841e7b1b356c1a37784418ee0a96afae0960a178658c946ccf54efe7"
+        },
+        "tasks/basic-economy-fee-boundary/generated/runtime/launcher/run.py": {
+          "hash": "9e6e1cab40a199f209a0213a7c81ee9e8f2fd207b4e38c7b2c9db52af08fbb38"
+        },
+        "tasks/basic-economy-fee-boundary/generated/runtime/recipe.json": {
+          "hash": "68ce27010719d411883278722f3586a49250bbf4c13774a274a618c1a829887c"
+        },
+        "tasks/basic-economy-fee-boundary/instruction.md": {
+          "hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "tasks/basic-economy-fee-boundary/task.toml": {
+          "hash": "54f1e0639c955de1646470f3ca3cd32eed516e6b79f70d4a3f17973d74e2e02a"
+        },
+        "tasks/basic-economy-fee-boundary/tests/Dockerfile": {
+          "hash": "13d6355662882d2e7d2b43d9fa7208d53d3b42e9ee12452cdceb95926a9580ae"
+        },
+        "tasks/basic-economy-fee-boundary/tests/evaluate.py": {
+          "hash": "e12061dd6a63971735420581911662468304ebc156bbc645ac6887bca2d38526"
+        },
+        "tasks/basic-economy-fee-boundary/tests/test.sh": {
+          "hash": "cbecc78426114efd969398d32f8284eead161d4466f1284e8f7b6442d3bfb2a0"
+        },
+        "tasks/flight-availability-without-search/README.md": {
+          "hash": "fcae16c9ae59d15a8d997f36fd4c0a2850ee5c60ec5db6792e2e0addc403ddc9"
+        },
+        "tasks/flight-availability-without-search/environment/Dockerfile": {
+          "hash": "9e5ec170ffceae200734a5bf87b654fcff66dfaa223db362239fec9020a35db3"
+        },
+        "tasks/flight-availability-without-search/environment/project_adapter.go": {
+          "hash": "523e73fa841e7b1b356c1a37784418ee0a96afae0960a178658c946ccf54efe7"
+        },
+        "tasks/flight-availability-without-search/environment/relai_harbor/adapter/run.py": {
+          "hash": "9e6e1cab40a199f209a0213a7c81ee9e8f2fd207b4e38c7b2c9db52af08fbb38"
+        },
+        "tasks/flight-availability-without-search/environment/scenario.json": {
+          "hash": "cb03545bde4ef3bd5563f461634891652ed0beb81ed24f4ad10357e968a0c9df"
+        },
+        "tasks/flight-availability-without-search/generated/build.json": {
+          "hash": "affaa632613a642ac8796700f57ed0903fb26cf7ade085b097723801a104fb1a"
+        },
+        "tasks/flight-availability-without-search/generated/dependencies.json": {
+          "hash": "7c118331c0d623d6380866b663b2a2a5a4eeff8b104f3b32caf6477b629c8679"
+        },
+        "tasks/flight-availability-without-search/generated/runtime/dependencies/go.mod": {
+          "hash": "be3dcf85d44087b20a0e5b9c99353283475efa1008030ee3967488fbc73f72ad"
+        },
+        "tasks/flight-availability-without-search/generated/runtime/dependencies/go.sum": {
+          "hash": "accb36a3d575214d31407071d68d5867765e9fa4c452a01a15cf62d662126235"
+        },
+        "tasks/flight-availability-without-search/generated/runtime/inputs/project_adapter.go": {
+          "hash": "523e73fa841e7b1b356c1a37784418ee0a96afae0960a178658c946ccf54efe7"
+        },
+        "tasks/flight-availability-without-search/generated/runtime/launcher/run.py": {
+          "hash": "9e6e1cab40a199f209a0213a7c81ee9e8f2fd207b4e38c7b2c9db52af08fbb38"
+        },
+        "tasks/flight-availability-without-search/generated/runtime/recipe.json": {
+          "hash": "68ce27010719d411883278722f3586a49250bbf4c13774a274a618c1a829887c"
+        },
+        "tasks/flight-availability-without-search/instruction.md": {
+          "hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "tasks/flight-availability-without-search/task.toml": {
+          "hash": "d0f8defac4bae796dbacbfbb45846367154be49e282f45c76ce2e83e7c86307c"
+        },
+        "tasks/flight-availability-without-search/tests/Dockerfile": {
+          "hash": "13d6355662882d2e7d2b43d9fa7208d53d3b42e9ee12452cdceb95926a9580ae"
+        },
+        "tasks/flight-availability-without-search/tests/evaluate.py": {
+          "hash": "80ced77983f5cdbe07ef76e952b0222464408b959daea6a764c50b76f6b7ce8f"
+        },
+        "tasks/flight-availability-without-search/tests/test.sh": {
+          "hash": "cbecc78426114efd969398d32f8284eead161d4466f1284e8f7b6442d3bfb2a0"
+        },
+        "tasks/known-code-conflict-requires-observable-lookup/README.md": {
+          "hash": "fcae16c9ae59d15a8d997f36fd4c0a2850ee5c60ec5db6792e2e0addc403ddc9"
+        },
+        "tasks/known-code-conflict-requires-observable-lookup/environment/Dockerfile": {
+          "hash": "997d4c87aa90c712eee7bcc773fe6ef11301d72d2deaa23051ed8de3ff8d444a"
+        },
+        "tasks/known-code-conflict-requires-observable-lookup/environment/project_adapter.go": {
+          "hash": "523e73fa841e7b1b356c1a37784418ee0a96afae0960a178658c946ccf54efe7"
+        },
+        "tasks/known-code-conflict-requires-observable-lookup/environment/relai_harbor/adapter/run.py": {
+          "hash": "9e6e1cab40a199f209a0213a7c81ee9e8f2fd207b4e38c7b2c9db52af08fbb38"
+        },
+        "tasks/known-code-conflict-requires-observable-lookup/environment/scenario.json": {
+          "hash": "99b52d795760e6d05be1470bd68211ea24a7e2db9905712caa33e43cdc148176"
+        },
+        "tasks/known-code-conflict-requires-observable-lookup/generated/build.json": {
+          "hash": "759c6ef8e3e1e31a48e08cb89ddc8296842e453b7b0dd248209ccb8e1c429166"
+        },
+        "tasks/known-code-conflict-requires-observable-lookup/generated/dependencies.json": {
+          "hash": "7c118331c0d623d6380866b663b2a2a5a4eeff8b104f3b32caf6477b629c8679"
+        },
+        "tasks/known-code-conflict-requires-observable-lookup/generated/runtime/dependencies/go.mod": {
+          "hash": "be3dcf85d44087b20a0e5b9c99353283475efa1008030ee3967488fbc73f72ad"
+        },
+        "tasks/known-code-conflict-requires-observable-lookup/generated/runtime/dependencies/go.sum": {
+          "hash": "accb36a3d575214d31407071d68d5867765e9fa4c452a01a15cf62d662126235"
+        },
+        "tasks/known-code-conflict-requires-observable-lookup/generated/runtime/inputs/project_adapter.go": {
+          "hash": "523e73fa841e7b1b356c1a37784418ee0a96afae0960a178658c946ccf54efe7"
+        },
+        "tasks/known-code-conflict-requires-observable-lookup/generated/runtime/launcher/run.py": {
+          "hash": "9e6e1cab40a199f209a0213a7c81ee9e8f2fd207b4e38c7b2c9db52af08fbb38"
+        },
+        "tasks/known-code-conflict-requires-observable-lookup/generated/runtime/recipe.json": {
+          "hash": "07c77f3822b2dabe88c9580b5e83df4bcd218e2158c8e7a27cceea9f3f158bda"
+        },
+        "tasks/known-code-conflict-requires-observable-lookup/instruction.md": {
+          "hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "tasks/known-code-conflict-requires-observable-lookup/task.toml": {
+          "hash": "c2004d1eb34b8a46ea61ed7be3102c182e41b819fe31fe996c43d472710112ff"
+        },
+        "tasks/known-code-conflict-requires-observable-lookup/tests/Dockerfile": {
+          "hash": "13d6355662882d2e7d2b43d9fa7208d53d3b42e9ee12452cdceb95926a9580ae"
+        },
+        "tasks/known-code-conflict-requires-observable-lookup/tests/evaluate.py": {
+          "hash": "07b237e7d794dfeb92c5fa1bd9382a4ac3d3a36ce0ce7b8d8f60fca34516b5b8"
+        },
+        "tasks/known-code-conflict-requires-observable-lookup/tests/test.sh": {
+          "hash": "cbecc78426114efd969398d32f8284eead161d4466f1284e8f7b6442d3bfb2a0"
+        },
+        "tasks/smoke/README.md": {
+          "hash": "fcae16c9ae59d15a8d997f36fd4c0a2850ee5c60ec5db6792e2e0addc403ddc9"
+        },
+        "tasks/smoke/environment/Dockerfile": {
+          "hash": "9e5ec170ffceae200734a5bf87b654fcff66dfaa223db362239fec9020a35db3"
+        },
+        "tasks/smoke/environment/project_adapter.go": {
+          "hash": "ce09f0eafbaf4567b91a2e768926e488e624eff083fde6fffbd8f6b420f767ea"
+        },
+        "tasks/smoke/environment/relai_harbor/adapter/run.py": {
+          "hash": "9e6e1cab40a199f209a0213a7c81ee9e8f2fd207b4e38c7b2c9db52af08fbb38"
+        },
+        "tasks/smoke/environment/scenario.json": {
+          "hash": "80335aa5976da1d6dd8514d67ea0f3efb82979bcfde8b79c977101942fc03286"
+        },
+        "tasks/smoke/generated/build.json": {
+          "hash": "4ac34b0180daebe97fd4d2455c410ba1aa0d644e08b9cf7bd3cc1ef67dc6d133"
+        },
+        "tasks/smoke/generated/dependencies.json": {
+          "hash": "7c118331c0d623d6380866b663b2a2a5a4eeff8b104f3b32caf6477b629c8679"
+        },
+        "tasks/smoke/generated/runtime/dependencies/go.mod": {
+          "hash": "be3dcf85d44087b20a0e5b9c99353283475efa1008030ee3967488fbc73f72ad"
+        },
+        "tasks/smoke/generated/runtime/dependencies/go.sum": {
+          "hash": "accb36a3d575214d31407071d68d5867765e9fa4c452a01a15cf62d662126235"
+        },
+        "tasks/smoke/generated/runtime/inputs/project_adapter.go": {
+          "hash": "ce09f0eafbaf4567b91a2e768926e488e624eff083fde6fffbd8f6b420f767ea"
+        },
+        "tasks/smoke/generated/runtime/launcher/run.py": {
+          "hash": "9e6e1cab40a199f209a0213a7c81ee9e8f2fd207b4e38c7b2c9db52af08fbb38"
+        },
+        "tasks/smoke/generated/runtime/recipe.json": {
+          "hash": "e70fbec030894369464b9ea52f06571a26eb6bf3c2f82b722eb46fa6ba82d71d"
+        },
+        "tasks/smoke/instruction.md": {
+          "hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "tasks/smoke/relai-init-expectations.json": {
+          "hash": "af27ee8a00eb8f5231cb2a3aecfb44a0ad56092987ca0bdd2a0f91329971c2f6"
+        },
+        "tasks/smoke/task.toml": {
+          "hash": "eb916e2949cad7503e20c6e9df0c1a31549792a7b4ec3c54432761fc09c10f82"
+        },
+        "tasks/smoke/tests/Dockerfile": {
+          "hash": "13d6355662882d2e7d2b43d9fa7208d53d3b42e9ee12452cdceb95926a9580ae"
+        },
+        "tasks/smoke/tests/evaluate.py": {
+          "hash": "1832e35d3114a758d794afc59f78462c0436a10a45f07119547691ae9297b7b3"
+        },
+        "tasks/smoke/tests/test.sh": {
+          "hash": "9b77216c806551295fbcecf15893b736224545e9dfb6387a0e95272f4332c9f9"
+        }
+      },
+      "records": {
+        "hypotheses/business-class-baggage-misclassified-as-standard.json": {
+          "hash": "40a68bf733b342b2ac339081c73e4ee57e6cf9b9fc6baf410c7ded915068f83a"
+        },
+        "hypotheses/false-seat-change-confirmation-after-tool-rejection.json": {
+          "hash": "72f87fbf1e7b718fea1d510fe26e0979ee08c06b8390ba9f6c9b033a2ef8ef94"
+        },
+        "hypotheses/fee-amount-invention-for-basic-baggage.json": {
+          "hash": "078c1db7c5e19493f12a2a6e4d480f090835b2190f23ac791132f3ff59bb0b15"
+        },
+        "hypotheses/first-class-baggage-misclassified-as-standard.json": {
+          "hash": "a1ef99319cdf65000200d89c37fbf3b39ce930ee92b7a4528834640717d3319c"
+        },
+        "hypotheses/flight-availability-invention-without-search-capability.json": {
+          "hash": "9ca961d30b4e16b08e7b2a5652f648298a223c93605be510fbfc5ec652bd52f5"
+        },
+        "hypotheses/known-code-lookup-overridden-by-conflicting-user-details.json": {
+          "hash": "d376ebb8e208d2ce3b03091e5e012b2cd6cb4ecffb1afcee03aabe94bfdf8b6b"
+        },
+        "hypotheses/refund-refusal-omits-required-booking-review-next-step.json": {
+          "hash": "d8cef07f69a99633a201c520c9a72e29f1a8ce8f0ff73bfc2dc3507f2e60bbe8"
+        },
+        "hypotheses/unknown-code-hallucination-from-user-supplied-details.json": {
+          "hash": "da149c749298cef37035491e16a05723311c5542292c75ab48e87f950695948d"
+        },
+        "hypotheses/unspecified-ticket-baggage-default-omitted.json": {
+          "hash": "e7cdc8762fa1614ff2d02ed437a0c8100676df6357e45b1853d71e215caf6e27"
+        },
+        "hypotheses/unsupported-baggage-policy-exception-claim.json": {
+          "hash": "bf43c4348489e1c67eb371b873fbe71777e311e779f298472b99d0a7a6b12b93"
+        },
+        "hypotheses/unverified-booking-details-under-user-pressure.json": {
+          "hash": "7749afb65c8762d7a5ad6f51ac6cdc388a8160ab8740287ae3eeacdf35a9bd94"
+        },
+        "tests/behavioral-tests/basic-economy-fee-boundary.json": {
+          "hash": "38a047dc4f5d73049b7d50c3a88ca8accb80a5e0e149a4cd9a694d711745f774"
+        },
+        "tests/behavioral-tests/flight-availability-without-search.json": {
+          "hash": "93788238a72927d254d4059f5588075b4f8a5c87c349603e6f46fb0d375e390a"
+        },
+        "tests/behavioral-tests/known-code-conflict-requires-observable-lookup.json": {
+          "hash": "47b1c0a13ae391a20d1f13ca4fc4835361c8091c73ee38e412fda3557d0126e1"
+        },
+        "wiki-bootstrap-v1": {
+          "hash": "3f8779915d04c4c43a5d5df1761b3987bd17626809ecb4e10eab6151ea211670"
+        }
+      },
+      "runtime-manifest.json": {
+        "hash": "47c441e4a62bae33cd222249c4da628d7580bc87badcefd5ea19a5c2175ce582"
+      },
+      "simulator.env.example": {
+        "hash": "bf28fb010954addf32d75a952eb1c2996ec80ab2593df924bd16e94992731d61"
+      },
+      "weakness-curation.lock": {
+        "hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "wiki": {
+        "hypotheses/open-questions.md": {
+          "hash": "92ca62934374bf63ab0d13218e19f259ffabef5cb2c9a9608d48a7d3ec38f3bf"
+        },
+        "hypotheses/open-questions/off-topic-guardrail.md": {
+          "hash": "bc323895dd0a739af4d180f84adfc0e4a1427a7516710ef7e133ac0ef9e8112c"
+        },
+        "hypotheses/requirements.md": {
+          "hash": "6c52ebdb154ede7159bacccac8d5f06f8b80355ad70f20ffb139edb1985b33aa"
+        },
+        "hypotheses/risks.md": {
+          "hash": "550d45d300d6b6d85896eeba908fee9edff70afbf56f415f97a7fa3d3e7a7183"
+        },
+        "hypotheses/risks/business-class-baggage-misclassified-as-standard.md": {
+          "hash": "820c9ed93d50f4d5e820931b3a017ba17fc90780ac58b67c066c50da39fb9536"
+        },
+        "hypotheses/risks/false-seat-change-confirmation-after-tool-rejection.md": {
+          "hash": "15b39f314035bf9560305df16f300dd3ba5f2abe9d509812981e6a9bb2080a22"
+        },
+        "hypotheses/risks/fee-amount-invention-for-basic-baggage.md": {
+          "hash": "46bd3372292eb1c5e9bf946f5dec114f709c65e77530034711808c03843943a4"
+        },
+        "hypotheses/risks/first-class-baggage-misclassified-as-standard.md": {
+          "hash": "9d5c134d04d81bc869af1aa898b9625a074b2f00094a170e34216e9d352dd2c6"
+        },
+        "hypotheses/risks/flight-availability-invention-without-search-capability.md": {
+          "hash": "a98ef776610f7818b2867981fe6c34b2f92a4f179c494eb1315628e590b4e710"
+        },
+        "hypotheses/risks/known-code-lookup-overridden-by-conflicting-user-details.md": {
+          "hash": "007bfd73d715047d4827720c59ec6e171a1254972175a138dc85dacff2f009a8"
+        },
+        "hypotheses/risks/refund-refusal-omits-required-booking-review-next-step.md": {
+          "hash": "1e0e87798d874672adca10a505874fcde25e4e627237a41358411a2fdeff4d23"
+        },
+        "hypotheses/risks/unknown-code-hallucination-from-user-supplied-details.md": {
+          "hash": "a261355309555921efec5a74a116dc6d8ec1ab4468a9e9663d0b3d3a3a896f04"
+        },
+        "hypotheses/risks/unspecified-ticket-baggage-default-omitted.md": {
+          "hash": "22b349e6e3641c79255636f4be9c728a0ea096ebd4881c56f1af5a357f7fc5d5"
+        },
+        "hypotheses/risks/unsupported-baggage-policy-exception-claim.md": {
+          "hash": "0ab5bbaada4361c47f106049d12b9799bef5cb03b3fc6968187c559da704089c"
+        },
+        "hypotheses/risks/unverified-booking-details-under-user-pressure.md": {
+          "hash": "9104ac79d01ddd850ecd0bda896189067a1a6f08c93a03d586cfaa7c24c4a7f5"
+        },
+        "index.md": {
+          "hash": "047bc30fdc8e4afa943fb06808cf8debd79ae7bb1285f6cb7e3445a943882473"
+        },
+        "requirements/baggage-policy.md": {
+          "hash": "7a701d6324ffbe7836895d728e2e90564befdd3c9a8d4d76db5e5cf805ca7304"
+        },
+        "requirements/concise-support-responses.md": {
+          "hash": "dfbf0098102d534611dbf350e8791479f84240e83c90b5911f31ce6c5d79ae89"
+        },
+        "requirements/grounded-booking-information.md": {
+          "hash": "af2c4eecb9cbfc3236ffed35d5a28c6360a3186c82c68d09ea99cb7a30084404"
+        },
+        "requirements/no-invented-policy-or-pricing.md": {
+          "hash": "f4e5ea25b397146b6e02d6c401a95fb0a7b738b143dda6e7d0c76aaf7b35cdf0"
+        },
+        "requirements/validated-seat-changes.md": {
+          "hash": "62b491d49a17c7781dd55242ee8283f898b0b802b8c0fc1e4bb0c7f0afdb20c8"
+        },
+        "requirements/verify-confirmation-code.md": {
+          "hash": "62adbb9ecca98c7533a00a9061125655d575b173773f550dce4ed1161ccea84a"
+        },
+        "tests/behavioral-tests/basic-economy-fee-boundary.md": {
+          "hash": "68e089d4da4342d9726d0ac8b3cd803c87b1c1f0a8909554184574533b4bd7d6"
+        },
+        "tests/behavioral-tests/flight-availability-without-search.md": {
+          "hash": "bfafa35af0f8b675950cd2f168fcc2977b5c67786f6cb8c0e180ed517e7f32a8"
+        },
+        "tests/behavioral-tests/known-code-conflict-requires-observable-lookup.md": {
+          "hash": "3b3a56d5fad2ac828e3f6ecf77892454c3cdd3b4c205f22839f9eadbf2ede810"
+        }
+      }
+    }
+  }
+}
