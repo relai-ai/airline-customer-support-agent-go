@@ -1,6 +1,6 @@
 {
   "name": "RELAI staff-guided airline demo",
-  "image": "mcr.microsoft.com/devcontainers/go:1-1.24-bookworm",
+  "build": { "dockerfile": "Dockerfile" },
   "features": {
     "ghcr.io/devcontainers/features/node:1": { "version": "22" },
     "ghcr.io/devcontainers/features/python:1": { "version": "3.12" },
