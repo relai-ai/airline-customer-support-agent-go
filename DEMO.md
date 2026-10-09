@@ -14,7 +14,8 @@ RELAI plugin and current command help for the demonstration.
    Codespaces → Create codespace**. Check the billing owner. Use a staff-owned
    codespace on the demo laptop; do not give visitors the staff GitHub login.
 2. Wait for the setup hook. Open a new terminal and run `relai setup --check`.
-   Verify Docker is running with `docker info`.
+   Run `bash .devcontainer/verify.sh` to check installed tools, Docker readiness,
+   and the Go build, vet, and tests. This does not make model calls.
 3. Run `relai setup --agent codex` and complete browser authorization with the
    intended demo RELAI account/workspace. Never copy personal OAuth files into
    the repository or prebuild.
@@ -47,13 +48,36 @@ The visitor starts after setup and the first optimization, with the file explore
 and coding-agent terminal visible together. Staff explains which artifacts are
 preloaded and which work is happening live.
 
+## Reusing this setup for other agents
+
+This repository owns the airline environment only. A shared playground service
+can live in the dashboard monorepo and select this repository as one template.
+Other agents should provide their own workspace configuration and demo fixtures.
+Keep session-management services and cloud deployment infrastructure out of this
+agent repository.
+
+Record the full commit SHA used for each rehearsed demo (`git rev-parse HEAD`).
+Use that same revision for subsequent sessions; a moving branch is not a stable
+demo checkpoint. The base image and devcontainer features still receive updates,
+so retain the rehearsed workspace and check recorded tool versions after rebuilding.
+
 ## Between sessions
+
+For a fresh visitor session, create a **new** Codespace from the rehearsed
+revision. Do not share staff account credentials or reuse a previous visitor's
+modified files. GitHub account access and billing still apply; the workspace URL
+is not an anonymous visitor link.
 
 Preserve useful feedback and sanitized results. Restore the prepared checkpoint
 only in the disposable demo workspace, and restore or recreate corresponding
 backend state as needed. A Git reset alone does not reset backend records.
 Use independent workspaces and validated backend identities for concurrent demos.
 Stop unused codespaces and revoke temporary credentials after the event.
+Delete disposable Codespaces when finished to remove their files and storage;
+stopping alone preserves them. GitHub idle timeout is not an absolute session
+expiration, and deleting a Codespace does not delete RELAI backend records or
+revoke provider credentials. Those steps remain staff responsibilities until the
+shared playground service implements them.
 
 ## Prebuilds and versions
 
@@ -70,7 +94,8 @@ or CLI update. If the installer changes, review it before updating its checksum.
 ## Verification
 
 Run `go build ./...`, `go vet ./...`, `go test ./...`, and `bash -n start.sh`.
-Check `.devcontainer/setup.sh` with `bash -n` as well. Then verify a real Codespaces
+Check `.devcontainer/setup.sh` and `.devcontainer/verify.sh` with `bash -n` as well.
+Then verify a real Codespaces
 cold launch, Docker readiness, login, plugin availability, and the complete live
 loop. Credentials and model usage are required for the live loop; installation
 and unit checks do not prove it.
