@@ -1,0 +1,16 @@
+{
+  "schema_version": 2,
+  "setup_commands": [],
+  "assets": [
+    {
+      "source": "scenario.json",
+      "destination": "/app/scenario.json"
+    }
+  ],
+  "verifier_command": "python3 /tests/evaluate.py",
+  "trajectory_example": null,
+  "rendered_sha256": {
+    "environment/Dockerfile": "c55d546ca89189f14a87ef0f009a43161edcaa69f1ad6fc2086f973cd8fed90b",
+    "tests/test.sh": "d05932f788f7232e4525e96f52a66a2c026efc62b149189bf2e1387dcd7595bb"
+  }
+}

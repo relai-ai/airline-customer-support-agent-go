@@ -1,8 +1,9 @@
 # Airline E2B environment
 
 This template prepares the airline source, Go, Node, Python, Codex, RELAI, uv,
-Docker and Compose. It is an environment checkpoint, not the optimized onboarding
-sample: model access, RELAI session seeding and the second failure are separate.
+Docker and Compose, plus the optimized source and sanitized regression evidence.
+Model access, RELAI session seeding and the second demonstrated failure remain
+separate. See `demo/README.md` for measured results and limitations.
 
 Authenticate on the host with `npx --yes @e2b/cli@2.21.2 auth login`, then run
 `bash .e2b/build.sh`. Record the resulting template/build IDs before promoting it.
