@@ -18,6 +18,36 @@
   "remaining": [
     "authenticated IDE launch against staging",
     "full RELAI evaluation, optimization and verification",
-    "new-build session reset and expiration cleanup"
-  ]
+    "backend credential revocation and scheduled staging cleanup"
+  ],
+  "startup_probe": {
+    "sandbox_id": "i8tkdiaq2jva192nkblxg",
+    "status": "passed",
+    "checks": [
+      "Docker and Compose ready",
+      "code-server 4.141.0 available",
+      "RELAI 0.2.9 available",
+      "scenarios and extension present",
+      "no preparer RELAI config"
+    ]
+  },
+  "reset_probe": {
+    "sandbox_id": "iu39s16ttxzzjr88ghfqu",
+    "status": "passed",
+    "checks": [
+      "previous sandbox marker absent",
+      "Docker ready",
+      "no preparer RELAI config"
+    ]
+  },
+  "expiration_probe": {
+    "sandbox_id": "iz3egrungjlf6uq2i0h45",
+    "timeout_seconds": 30,
+    "status": "passed",
+    "checks": [
+      "no commands executed after creation",
+      "absent from running and paused lists after deadline"
+    ]
+  },
+  "all_owned_probe_sandboxes_cleaned_up": true
 }
