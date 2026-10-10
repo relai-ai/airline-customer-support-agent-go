@@ -3,12 +3,12 @@ ARG TARGETARCH
 
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates curl git nodejs npm python3 python3-venv sudo && rm -rf /var/lib/apt/lists/*
-RUN install -m 0755 -d /etc/apt/keyrings && curl -fsSL https://download.docker.com/linux/debian/gpg -o /etc/apt/keyrings/docker.asc && chmod a+r /etc/apt/keyrings/docker.asc && echo "deb [arch=${TARGETARCH} signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/debian bookworm stable" > /etc/apt/sources.list.d/docker.list && apt-get update && apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin && rm -rf /var/lib/apt/lists/*
+RUN TARGETARCH="${TARGETARCH:-$(dpkg --print-architecture)}" && install -m 0755 -d /etc/apt/keyrings && curl -fsSL https://download.docker.com/linux/debian/gpg -o /etc/apt/keyrings/docker.asc && chmod a+r /etc/apt/keyrings/docker.asc && echo "deb [arch=${TARGETARCH} signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/debian bookworm stable" > /etc/apt/sources.list.d/docker.list && apt-get update && apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin && rm -rf /var/lib/apt/lists/*
 RUN (id user >/dev/null 2>&1 || useradd --create-home --shell /bin/bash user) && usermod -aG docker user && echo 'user ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/playground
 RUN ln -sf /usr/local/go/bin/go /usr/local/bin/go && ln -sf /usr/local/go/bin/gofmt /usr/local/bin/gofmt
 ENV PATH=/home/user/.local/bin:/usr/local/go/bin:/usr/local/bin:/usr/bin:/bin
 ARG CODE_SERVER_VERSION=4.141.0
-RUN case "${TARGETARCH}:${CODE_SERVER_VERSION}" in \
+RUN TARGETARCH="${TARGETARCH:-$(dpkg --print-architecture)}" && case "${TARGETARCH}:${CODE_SERVER_VERSION}" in \
       amd64:4.141.0) checksum=65bcd20b524d03eb1b5adb7f360244599ef0e5b74089a46a982d32c074b97a29 ;; \
       arm64:4.141.0) checksum=e5cc78da1d631c6cf6162f9b18eeaa8ee9d3239e1a88bb99d0602cdc5fa1852d ;; \
       *) echo 'Unsupported code-server version or architecture' >&2; exit 1 ;; \

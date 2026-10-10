@@ -1,0 +1,23 @@
+{
+  "built_at": "2026-10-10",
+  "project": "playground-dev",
+  "template_id": "i1atd35xm9d495f89hp7",
+  "build_id": "1f5f9303-a553-4da8-9ddd-6d29c7102b21",
+  "base_source_commit": "750071a",
+  "build_inputs": {
+    ".e2b/Dockerfile": "1ae6677223af08fc894261fb1df5e09abb8097d7b2eb5b6ab0f5c9c45436aa0d",
+    ".e2b/start.sh": "d74b039acb234daae2a8c04dd704312c82339c345e09b9c86faed86254f37e42"
+  },
+  "checks": [
+    "real E2B template build succeeded",
+    "pinned code-server archive checksum verified",
+    "go test ./... passed inside image",
+    "go vet ./... passed inside image",
+    "Docker daemon startup/readiness passed"
+  ],
+  "remaining": [
+    "authenticated IDE launch against staging",
+    "full RELAI evaluation, optimization and verification",
+    "new-build session reset and expiration cleanup"
+  ]
+}
