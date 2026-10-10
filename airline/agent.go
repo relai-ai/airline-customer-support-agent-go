@@ -28,6 +28,7 @@ type Agent struct {
 	Instructions string
 	Tools        []Tool
 	runner       runner
+	trace        *atifRecorder
 }
 
 // NewAgent builds the airline support agent using the provider selected from
@@ -53,11 +54,21 @@ func NewAgent() (*Agent, error) {
 		Instructions: AirlineAgentInstructions,
 		Tools:        airlineTools(),
 		runner:       r,
+		trace:        newATIFRecorder(),
 	}, nil
 }
 
 // StreamResponse runs a single agent turn over the conversation history,
 // streaming assistant text deltas to out and returning the final text.
 func (a *Agent) StreamResponse(ctx context.Context, history []Message, out io.Writer) (string, error) {
+	if a.trace != nil {
+		for i := len(history) - 1; i >= 0; i-- {
+			if history[i].Role == "user" {
+				a.trace.user(history[i].Content)
+				break
+			}
+		}
+		ctx = context.WithValue(ctx, atifKey{}, a.trace)
+	}
 	return a.runner.run(ctx, a.Instructions, a.Tools, history, out)
 }

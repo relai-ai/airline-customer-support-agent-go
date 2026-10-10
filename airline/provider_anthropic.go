@@ -80,6 +80,17 @@ func (r *anthropicRunner) run(
 			return "", err
 		}
 
+		trace := recorder(ctx)
+		step := -1
+		if trace != nil {
+			var calls []map[string]any
+			for _, block := range message.Content {
+				if use, ok := block.AsAny().(anthropic.ToolUseBlock); ok {
+					calls = append(calls, map[string]any{"tool_call_id": use.ID, "function_name": use.Name, "arguments": observedArguments(string(use.Input))})
+				}
+			}
+			step = trace.model(anthropicText(message), r.model, calls)
+		}
 		messages = append(messages, message.ToParam())
 
 		var toolResults []anthropic.ContentBlockParamUnion
@@ -93,6 +104,7 @@ func (r *anthropicRunner) run(
 				if tool, ok := toolIndex[use.Name]; ok {
 					result = tool.Execute(args)
 				}
+				trace.result(step, use.ID, result)
 				toolResults = append(toolResults, anthropic.NewToolResultBlock(use.ID, result, false))
 			}
 		}
