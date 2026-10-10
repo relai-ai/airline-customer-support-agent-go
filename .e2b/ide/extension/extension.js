@@ -3,7 +3,8 @@ const fs = require('node:fs/promises');
 const crypto = require('node:crypto');
 const path = require('node:path');
 function activate(context) {
-  let panel;
+  let panel, terminal;
+  context.subscriptions.push(vscode.window.onDidCloseTerminal(closed => { if (closed === terminal) terminal = undefined; }));
   const open = async () => {
     if (panel) { panel.reveal(); return; }
     panel = vscode.window.createWebviewPanel('relai', 'RELAI · Investigate & improve', vscode.ViewColumn.One, { enableScripts: true, retainContextWhenHidden: true, localResourceRoots: [vscode.Uri.file(context.extensionPath)] });
@@ -36,6 +37,9 @@ function activate(context) {
         } else if (msg.action === 'cancel') {
           await api('/investigation/cancel', 'POST', { jobId: msg.id });
           current.webview.postMessage({ type: 'state', ...await api('/investigation') });
+        } else if (msg.action === 'terminal') {
+          if (!terminal) terminal = vscode.window.createTerminal({ name: 'RELAI · Terminal', cwd: '/home/user/airline' });
+          terminal.show();
         } else if (msg.action === 'evidence') {
           await vscode.commands.executeCommand('markdown.showPreview', vscode.Uri.file('/home/user/airline/demo/checkpoint/PLAYGROUND.md'));
         } else if (msg.action === 'changes') {
