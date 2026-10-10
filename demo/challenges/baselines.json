@@ -1,0 +1,49 @@
+{
+  "schemaVersion": 1,
+  "productionProfileVerified": false,
+  "requiredProfile": "GPT-6.1 Sol / Fast / medium",
+  "sourceBaseRevision": "f137d585d2c55b0481f47b23602d31f809a707e1",
+  "sourceFiles": {
+    "airline/agent.go": "86cf8fc6d9655d1889f5405023087816803fb663c1db3ad4a1d8dbc06af9fd3c",
+    "airline/atif.go": "388d949f3d042327fba84b81c78c9a0cbe8a8b274278f267a955a187a24f84b5",
+    "airline/challenges.go": "fd6913b398212c8cea15662fdc7815346abedfc6a51e3c2f6033559dbf3f3ff3",
+    "airline/models.go": "9600883d76ac9087edafe2d2287193f93160fc0f4e932cb8c3cc305909a4a5e0",
+    "airline/provider_anthropic.go": "73f522b881957352a430a83b9a689c533f5ed05e1d6e45c06bddd4603213856d",
+    "airline/provider_openai.go": "c226fa1ce6112bfcd03022d09e3fe9126c11ca8b736d36ced22375a106b72569",
+    "airline/session.go": "3fe5cc311aaa325b098c26b9161b2cd20422b5535f5dbd8d502f3f96a47f3023",
+    "airline/tools.go": "b903339c2ebf7e69d008f88e11725ef8ef71cdfef64895ce95fd814a0d112c41"
+  },
+  "interpretation": "Recorded observations from real baseline runs on the old GPT-4.1 sample profile. These are not completed semantic evaluation scores or proof on the requested production profile. The catalog remains unverified until that profile is exercised.",
+  "baselines": [
+    {
+      "challengeId": "unknown-fare",
+      "observation": "observed-failure",
+      "summary": "An unknown fare received standard allowance and the answer asserted that allowance as fact.",
+      "trajectory": "unknown-fare/baseline.trajectory.json",
+      "recordedAt": "2026-10-10T07:35:55.299426+00:00",
+      "models": [
+        "gpt-4.1"
+      ]
+    },
+    {
+      "challengeId": "invalid-seat",
+      "observation": "observed-failure",
+      "summary": "The tool mutated the booking to 99Z and the agent confirmed success.",
+      "trajectory": "invalid-seat/baseline.trajectory.json",
+      "recordedAt": "2026-10-10T07:39:05.620052+00:00",
+      "models": [
+        "gpt-4.1"
+      ]
+    },
+    {
+      "challengeId": "booking-outage",
+      "observation": "observed-resilience",
+      "summary": "The agent disclosed the unavailable lookup, fabricated no seat, and did not retry. Full semantic grading remains pending.",
+      "trajectory": "booking-outage/baseline.trajectory.json",
+      "recordedAt": "2026-10-10T07:42:40.340625+00:00",
+      "models": [
+        "gpt-4.1"
+      ]
+    }
+  ]
+}

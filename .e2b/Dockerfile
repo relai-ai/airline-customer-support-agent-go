@@ -14,6 +14,13 @@ COPY airline/ ./airline/
 COPY cmd/ ./cmd/
 COPY benchmarks/ ./benchmarks/
 COPY demo/checkpoint/ ./demo/checkpoint/
+COPY demo/challenges/ ./demo/challenges/
+# Public RELAI test definitions only. Never include local auth/config or run state.
+COPY .relai/harbor/ ./.relai/harbor/
+COPY .relai/evals-wiki/ ./.relai/evals-wiki/
+COPY .relai/runtime-manifest.json ./.relai/runtime-manifest.json
+COPY .relai/.internal/records/ ./.relai/.internal/records/
+COPY .relai/.internal/layout.json ./.relai/.internal/layout.json
 COPY start.sh README.md DEMO.md ./
 COPY .devcontainer/setup.sh ./.devcontainer/setup.sh
 COPY .e2b/start.sh /usr/local/bin/start-playground

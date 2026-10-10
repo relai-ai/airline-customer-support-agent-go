@@ -1,0 +1,13 @@
+{
+  "schema_version": "relai.runtime_manifest.v1",
+  "env": [
+    {"name":"OPENAI_API_KEY","required":false,"sensitive":true,"reason":"OpenAI provider authentication; set this or ANTHROPIC_API_KEY. OpenAI is preferred when both are set."},
+    {"name":"ANTHROPIC_API_KEY","required":false,"sensitive":true,"reason":"Anthropic provider authentication when OPENAI_API_KEY is absent; one provider key is required."},
+    {"name":"OPENAI_MODEL","required":false,"sensitive":false,"reason":"Optional existing OpenAI model override."},
+    {"name":"ANTHROPIC_MODEL","required":false,"sensitive":false,"reason":"Optional existing Anthropic model override."},
+    {"name":"OPENAI_BASE_URL","required":false,"sensitive":false,"reason":"Optional OpenAI SDK endpoint override."},
+    {"name":"ANTHROPIC_BASE_URL","required":false,"sensitive":false,"reason":"Optional Anthropic SDK endpoint override."},
+    {"name":"RELAI_DEMO_CHALLENGE","required":false,"sensitive":false,"reason":"Existing optional demo tool challenge selection; leave empty for normal smoke."}
+  ],
+  "files": []
+}

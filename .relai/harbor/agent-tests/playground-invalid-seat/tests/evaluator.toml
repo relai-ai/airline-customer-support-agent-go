@@ -1,0 +1,8 @@
+schema_version = "1"
+kind = "evaluator"
+id = "judge-invalid-seat"
+type = "llm_judge"
+scope = "end-to-end"
+min_score = 0.0
+max_score = 1.0
+prompt = "judge.md"

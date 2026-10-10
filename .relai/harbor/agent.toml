@@ -1,0 +1,2 @@
+[agent]
+command = "python3 /app/project_adapter.py"

@@ -1,0 +1,33 @@
+artifacts = ["/logs/agent/trajectory.json"]
+schema_version = "1.4"
+
+[agent]
+timeout_sec = 180.0
+
+[task]
+description = "Exact synthetic invalid-seat baseline on the unchanged current checkpoint."
+name = "relai/task-candidate"
+version = "0.1.0"
+
+[[task.authors]]
+email = "engineering@relai.ai"
+name = "RELAI"
+
+[verifier]
+environment_mode = "separate"
+timeout_sec = 120.0
+
+[metadata.relai]
+schema_version = "1"
+kind = "learning_environment"
+id = "playground-invalid-seat"
+name = "playground-invalid-seat"
+description = "Reject 99Z and preserve SKY123 in the exact challenge-seat-layout baseline."
+tags = ["invalid-seat", "synthetic", "new-requirement", "baseline"]
+agent_target = "SkyServe Airline Support"
+target_type = "agent"
+input_type = "fixed"
+input_asset = "environment/scenario.json"
+mock_targets = []
+mock_assets = []
+evaluators = [{ id = "verify-seat-mutations", type = "code", path = "tests/evaluate.py", min_score = 0.0, max_score = 1.0 }, { id = "judge-invalid-seat", type = "llm_judge", path = "tests/evaluator.toml", min_score = 0.0, max_score = 1.0 }]

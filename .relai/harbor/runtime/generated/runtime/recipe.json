@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "base_image": "golang:1.24-bookworm",
+  "commands": [
+    "apt-get update && apt-get install -y --no-install-recommends python3 ca-certificates && rm -rf /var/lib/apt/lists/*",
+    "cd /app/dependencies && go mod download && go mod verify",
+    "command -v python3 >/dev/null 2>&1 || { echo 'RELAI Harbor requires python3 for its launcher; provide it in base_image or install it in runtime setup.' >&2; exit 1; }",
+    "(command -v python3 >/dev/null 2>&1 || { echo 'RELAI explicit dependency inputs require python3 for checksum checks; it is also required by the Harbor launcher. Provide python3 in base_image.' >&2; exit 1; }) && python3 -c 'import base64,hashlib,json,pathlib; expected=json.loads(base64.b64decode(\"eyIvYXBwL2RlcGVuZGVuY2llcy9nby5tb2QiOiJiZTNkY2Y4NWQ0NDA4N2IyMGEwZTViOWM5OTM1MzI4MzQ3NWVmYTEwMDgwMzBlZTM5Njc0ODhmYmM3M2Y3MmFkIiwiL2FwcC9kZXBlbmRlbmNpZXMvZ28uc3VtIjoiYWNjYjM2YTNkNTc1MjE0ZDMxNDA3MDcxZDY4ZDU4Njc3NjVlOWZhNGM0NTJhMDFhMTVjZjYyZDY2MjEyNjIzNSJ9\")); assert all(hashlib.sha256(pathlib.Path(p).read_bytes()).hexdigest()==h for p,h in expected.items()), \"explicit staged dependency input changed\"'"
+  ],
+  "files": [
+    {
+      "source": "generated/runtime/inputs/import_probe.go",
+      "destination": "/app/import_probe.go",
+      "sha256": "81092b7cd442eaf3c4c0cbca05294bb5867d9be6773b853e3135f2fe9ecef816"
+    },
+    {
+      "source": "generated/runtime/inputs/project_adapter.go",
+      "destination": "/app/project_adapter.go",
+      "sha256": "4f57bbfdabcceed6fe2c0e34472794235bdcbab078013b0ff7e04ba3ad86603e"
+    },
+    {
+      "source": "generated/runtime/inputs/project_adapter.py",
+      "destination": "/app/project_adapter.py",
+      "sha256": "067158d508e9ff3bb2679fa31e9d10b047712c1ba853386a8559b173e29ae2e9"
+    },
+    {
+      "source": "generated/runtime/launcher/run.py",
+      "destination": "/app/relai-harbor/adapter/run.py",
+      "sha256": "6ec52d213791b6acde44bf94935d8d482f73c6ba94ad3aee3c4ac4012547053d"
+    },
+    {
+      "source": "generated/runtime/dependencies/go.mod",
+      "destination": "/app/dependencies/go.mod",
+      "sha256": "be3dcf85d44087b20a0e5b9c99353283475efa1008030ee3967488fbc73f72ad"
+    },
+    {
+      "source": "generated/runtime/dependencies/go.sum",
+      "destination": "/app/dependencies/go.sum",
+      "sha256": "accb36a3d575214d31407071d68d5867765e9fa4c452a01a15cf62d662126235"
+    }
+  ]
+}

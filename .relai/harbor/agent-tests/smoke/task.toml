@@ -1,0 +1,26 @@
+schema_version = "1.4"
+artifacts = ["/logs/agent/trajectory.json"]
+
+[task]
+name = "relai/harbor-smoke"
+version = "0.1.0"
+description = "RELAI Harbor smoke task"
+authors = [{ name = "RELAI", email = "engineering@relai.ai" }]
+
+[verifier]
+timeout_sec = 120.0
+environment_mode = "separate"
+
+[agent]
+timeout_sec = 180.0
+
+[environment]
+build_timeout_sec = 120.0
+
+[metadata.relai]
+schema_version = "1"
+kind = "learning_environment"
+id = "smoke"
+name = "RELAI Harbor smoke task"
+input_type = "fixed"
+input_asset = "environment/scenario.json"

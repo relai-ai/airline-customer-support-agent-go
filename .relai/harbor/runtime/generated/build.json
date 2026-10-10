@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "mode": "managed",
+  "base_image": "golang:1.24-bookworm",
+  "dependency_install": null,
+  "adapter_command": "python3 /app/project_adapter.py",
+  "trajectory_example": null,
+  "setup_commands": [],
+  "runtime_setup_commands": [
+    "apt-get update && apt-get install -y --no-install-recommends python3 ca-certificates && rm -rf /var/lib/apt/lists/*",
+    "cd /app/dependencies && go mod download && go mod verify"
+  ],
+  "generated_language_paths": false,
+  "runtime_assets": [
+    "project_adapter.py",
+    "project_adapter.go",
+    "import_probe.go"
+  ],
+  "assets": [
+    {
+      "source": "import_probe.go",
+      "destination": "/app/import_probe.go"
+    },
+    {
+      "source": "project_adapter.go",
+      "destination": "/app/project_adapter.go"
+    },
+    {
+      "source": "project_adapter.py",
+      "destination": "/app/project_adapter.py"
+    },
+    {
+      "source": "relai_harbor/adapter/run.py",
+      "destination": "/app/relai_harbor/adapter/run.py"
+    }
+  ],
+  "runtime_executables": [
+    "python3",
+    "go"
+  ],
+  "probe_commands": [
+    "cd /workspace && GOCACHE=/tmp/relai-go-build GOMODCACHE=/go/pkg/mod GOPROXY=off go run -mod=readonly /app/import_probe.go"
+  ],
+  "verifier_command": null,
+  "rendered_sha256": {
+    "generated/runtime/recipe.json": "1558591895408bc336247cb9975bee8617c1976ad3d309252c24bb0296a92081"
+  }
+}

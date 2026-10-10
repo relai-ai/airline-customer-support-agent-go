@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"io"
+	"os"
 )
 
 // AgentName is the display name of the demo agent.
@@ -54,13 +55,17 @@ func NewAgent() (*Agent, error) {
 		return nil, fmt.Errorf("unsupported provider %q", selection.Provider)
 	}
 
-	return &Agent{
+	agent := &Agent{
 		Name:         AgentName,
 		Instructions: AirlineAgentInstructions,
 		Tools:        airlineTools(),
 		runner:       r,
 		trace:        newATIFRecorder(),
-	}, nil
+	}
+	if err := ApplyDemoChallenge(agent, os.Getenv("RELAI_DEMO_CHALLENGE")); err != nil {
+		return nil, err
+	}
+	return agent, nil
 }
 
 // StreamResponse runs a single agent turn over the conversation history,

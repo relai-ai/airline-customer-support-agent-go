@@ -31,3 +31,13 @@ checkpoint integrity, and automatic 30-second kill verification in RELAI
 The CLI remote-exec operation extends the sandbox timeout; do not use it during
 an expiry-only probe. These results do not validate a browser editor or model
 credentials. Build selection is guarded against the personal E2B project.
+
+## Follow-up challenge package (pending new build)
+
+The template definition now includes three labeled challenge scenarios and prepared
+RELAI test definitions. Recorded GPT-4.1 baselines are under `demo/challenges`:
+wrong fare attribution and invalid seat mutation were observed; the controlled
+outage was handled without fabrication. The existing verified build above does
+not contain this new package. Rebuild and validate it after backend credential and
+requested-model integration are ready. The package does not contain host auth,
+`.relai/config.toml`, `.relai/simulator.env`, or internal run directories.
