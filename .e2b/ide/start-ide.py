@@ -6,6 +6,14 @@ env = json.loads((root / 'environment.json').read_text())
 required = {'RELAI_API_BASE', 'RELAI_TEAM_API_KEY', 'PLAYGROUND_API_BASE', 'PLAYGROUND_SESSION_ID'}
 if not required.issubset(env) or any(not isinstance(v, str) for v in env.values()):
     raise SystemExit('Session environment is incomplete')
+# Harbor's CLI proxy reads project API settings, rather than the shell's
+# RELAI_TEAM_API_KEY. Keep this ignored configuration scoped to this session.
+config = pathlib.Path('/home/user/airline/.relai/config.toml')
+config.parent.mkdir(parents=True, exist_ok=True)
+config.touch(mode=0o600, exist_ok=True)
+config.chmod(0o600)
+config.write_text('[api]\nurl = ' + json.dumps(env['RELAI_API_BASE']) +
+                  '\nkey = ' + json.dumps(env['RELAI_TEAM_API_KEY']) + '\n')
 # Idempotent retries: don't start another server. Credentials remain session-scoped.
 try:
     urllib.request.urlopen('http://127.0.0.1:8080/healthz', timeout=1)
