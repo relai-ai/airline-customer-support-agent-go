@@ -32,6 +32,8 @@ function activate(context) {
         } else if (msg.action === 'approve' && typeof msg.approved === 'boolean') {
           await api('/investigation/approval', 'POST', { callId: msg.id, approved: msg.approved });
           current.webview.postMessage({ type: 'state', ...await api('/investigation') });
+        } else if (msg.action === 'continue') {
+          current.webview.postMessage({ type: 'state', ...await api('/investigation/continue', 'POST', {}) });
         } else if (msg.action === 'refresh') {
           current.webview.postMessage({ type: 'state', ...await api('/investigation') });
         } else if (msg.action === 'cancel') {
