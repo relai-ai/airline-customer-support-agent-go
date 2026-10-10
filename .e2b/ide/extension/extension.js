@@ -31,13 +31,16 @@ function activate(context) {
           await api('/investigation', 'POST', { challengeId: msg.id });
           current.webview.postMessage({ type: 'state', ...await api('/investigation') });
         } else if (msg.action === 'send' && typeof msg.prompt === 'string' && msg.prompt.trim()) {
-          current.webview.postMessage({ type: 'state', ...await api('/investigation/turn', 'POST', { prompt: msg.prompt, turnId: crypto.randomUUID() }) });
+          current.webview.postMessage({ type: 'state', ...await api('/investigation/turn', 'POST', { prompt: msg.prompt, ...(msg.runWorkflow === true ? { runWorkflow: true } : {}), turnId: crypto.randomUUID() }) });
         } else if (msg.action === 'approve' && typeof msg.approved === 'boolean') {
           await api('/investigation/approval', 'POST', { callId: msg.id, approved: msg.approved });
           current.webview.postMessage({ type: 'state', ...await api('/investigation') });
         } else if (msg.action === 'continue') {
           current.webview.postMessage({ type: 'state', ...await api('/investigation/continue', 'POST', {}) });
         } else if (msg.action === 'refresh') {
+          current.webview.postMessage({ type: 'state', ...await api('/investigation') });
+        } else if (msg.action === 'stop') {
+          await api('/investigation/abandon-turn', 'POST', {});
           current.webview.postMessage({ type: 'state', ...await api('/investigation') });
         } else if (msg.action === 'cancel') {
           await api('/investigation/cancel', 'POST', { jobId: msg.id });

@@ -50,9 +50,20 @@ then starts the IDE. Browser HTTP/WebSocket access is authenticated by the
 playground service on an isolated per-session origin; code-server itself is
 reachable only through that proxy. Do not enable public E2B traffic.
 
-The panel shows recorded before/after evidence, then offers three follow-up
-scenarios. The assistant proposes commands for approval; the terminal, files,
-tests, and changes are real. Recorded GPT-4.1 scores are not evidence of current
+The panel offers three scenarios with their common agent-problem categories,
+then one choice between the RELAI playground coding assistant and a manual
+terminal. The assistant simulates the workflow used with Codex, Claude Code or
+Cursor; it is not an embedded instance of those products. Its editable starting
+request authorizes the selected scenario's real test, evaluation, optimization
+when needed, and verification in the temporary sample. Commands continue without
+repeated approval clicks; Stop revokes continuation and cancels running commands.
+Older sessions without workflow consent still require command approval.
+
+Routine commands and output stay in collapsed details. The final comparison
+quotes completed command results, with source command receipts and explicit
+missing checks. Model interpretation is labeled separately; no score is inferred
+from command success and a passing baseline does not force optimization.
+The terminal, files, tests, and changes are real. Recorded GPT-4.1 scores are not evidence of current
 production-profile performance. The Go agent supports explicit
 `AIRLINE_MODEL_PROVIDER=relai` routing through the same restricted gateway.
 
