@@ -6,6 +6,11 @@ RUN install -m 0755 -d /etc/apt/keyrings && curl -fsSL https://download.docker.c
 RUN (id user >/dev/null 2>&1 || useradd --create-home --shell /bin/bash user) && usermod -aG docker user && echo 'user ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/playground
 RUN ln -sf /usr/local/go/bin/go /usr/local/bin/go && ln -sf /usr/local/go/bin/gofmt /usr/local/bin/gofmt
 ENV PATH=/home/user/.local/bin:/usr/local/go/bin:/usr/local/bin:/usr/bin:/bin
+ARG CODE_SERVER_VERSION=4.141.0
+RUN curl -fsSL "https://github.com/coder/code-server/releases/download/v${CODE_SERVER_VERSION}/code-server-${CODE_SERVER_VERSION}-linux-amd64.tar.gz" -o /tmp/code-server.tgz && echo '65bcd20b524d03eb1b5adb7f360244599ef0e5b74089a46a982d32c074b97a29  /tmp/code-server.tgz' | sha256sum -c - && mkdir -p /opt/code-server && tar -xzf /tmp/code-server.tgz --strip-components=1 -C /opt/code-server && ln -s /opt/code-server/bin/code-server /usr/local/bin/code-server && rm /tmp/code-server.tgz
+COPY .e2b/ide/start-ide.py /opt/playground/start-ide.py
+COPY .e2b/ide/extension/ /opt/playground/extensions/relai.relai-playground-0.1.0/
+RUN chmod -R a+rX /opt/playground && chown -R user:user /opt/playground/extensions
 WORKDIR /home/user/airline
 
 # Explicit allowlist: never copy .env, logs, .git, OAuth state or local RELAI config.

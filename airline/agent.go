@@ -47,6 +47,11 @@ func NewAgent() (*Agent, error) {
 
 	var r runner
 	switch selection.Provider {
+	case "relai":
+		r, err = newRelaiRunner()
+		if err != nil {
+			return nil, err
+		}
 	case "openai":
 		r = newOpenAIRunner(selection.Model)
 	case "anthropic":

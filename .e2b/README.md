@@ -41,3 +41,23 @@ outage was handled without fabrication. The existing verified build above does
 not contain this new package. Rebuild and validate it after backend credential and
 requested-model integration are ready. The package does not contain host auth,
 `.relai/config.toml`, `.relai/simulator.env`, or internal run directories.
+
+## Browser IDE (requires a new template build)
+
+The image now includes pinned code-server 4.141.0 and the RELAI Playground
+extension. The service injects a temporary gateway token outside the repository,
+then starts the IDE. Browser HTTP/WebSocket access is authenticated by the
+playground service on an isolated per-session origin; code-server itself is
+reachable only through that proxy. Do not enable public E2B traffic.
+
+The panel shows recorded before/after evidence, then offers three follow-up
+scenarios. The assistant proposes commands for approval; the terminal, files,
+tests, and changes are real. Recorded GPT-4.1 scores are not evidence of current
+production-profile performance. The Go agent supports explicit
+`AIRLINE_MODEL_PROVIDER=relai` routing through the same restricted gateway.
+
+Build a separate local image for fixture testing:
+`docker build --platform linux/amd64 -f .e2b/Dockerfile -t relai-airline-ide:local .`
+Run the dashboard repository's `scripts/ide-smoke.ts` with Node/tsx to verify
+startup, the extension, WebSockets and access revocation without live AI calls.
+The earlier E2B build IDs above do not contain this IDE.

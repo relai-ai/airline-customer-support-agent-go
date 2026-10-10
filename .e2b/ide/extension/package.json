@@ -1,0 +1,6 @@
+{
+  "name": "relai-playground", "displayName": "RELAI Playground", "publisher": "relai",
+  "version": "0.1.0", "engines": {"vscode": "^1.95.0"}, "main": "./extension.js",
+  "activationEvents": ["onStartupFinished"],
+  "contributes": {"commands": [{"command": "relai.playground", "title": "RELAI: Open playground assistant"}]}
+}

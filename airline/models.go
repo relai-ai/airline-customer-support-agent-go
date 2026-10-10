@@ -23,6 +23,9 @@ type ModelSelection struct {
 // Python and TypeScript versions of this agent. The concrete model can be
 // overridden with OPENAI_MODEL / ANTHROPIC_MODEL.
 func SelectModel() (ModelSelection, error) {
+	if os.Getenv("AIRLINE_MODEL_PROVIDER") == "relai" {
+		return ModelSelection{Provider: "relai", Model: "relai-session-profile"}, nil
+	}
 	if os.Getenv("OPENAI_API_KEY") != "" {
 		return ModelSelection{
 			Provider: "openai",
