@@ -37,6 +37,8 @@ function activate(context) {
         } else if (msg.action === 'cancel') {
           await api('/investigation/cancel', 'POST', { jobId: msg.id });
           current.webview.postMessage({ type: 'state', ...await api('/investigation') });
+        } else if (msg.action === 'assistant') {
+          await vscode.commands.executeCommand('workbench.action.closePanel');
         } else if (msg.action === 'terminal') {
           if (!terminal) terminal = vscode.window.createTerminal({ name: 'RELAI · Terminal', cwd: '/home/user/airline' });
           terminal.show();

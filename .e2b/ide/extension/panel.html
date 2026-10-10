@@ -19,7 +19,7 @@ p{margin:14px 0 20px}h2{margin:0 0 16px}h3{font-size:14px;margin:24px 0 8px}.car
 const vscode=acquireVsCodeApi(), el=id=>document.getElementById(id);let catalog=[],busy=false,timer;
 let selectedId=null, mode=null;const savedChoice=vscode.getState();
 function showMode(){el('mode-choice').hidden=!selectedId||Boolean(mode);el('assistant-mode').hidden=mode!=='assistant';el('terminal-mode').hidden=mode!=='terminal';el('switch-mode').hidden=!mode;}
-function chooseMode(value){if(!selectedId)return;mode=value;showMode();vscode.setState({mode,challengeId:selectedId});if(mode==='terminal')post('terminal');else el('next-step').scrollIntoView({block:'nearest'});}
+function chooseMode(value){if(!selectedId)return;mode=value;showMode();vscode.setState({mode,challengeId:selectedId});if(mode==='terminal')post('terminal');else{post('assistant');el('next-step').scrollIntoView({block:'nearest'});}}
 el('use-assistant').onclick=()=>chooseMode('assistant');el('use-terminal').onclick=()=>chooseMode('terminal');el('reopen-terminal').onclick=()=>post('terminal');el('switch-mode').onclick=()=>{mode=null;showMode();vscode.setState({challengeId:selectedId});el('mode-choice').scrollIntoView({block:'nearest'});};
 function post(action,fields={}){vscode.postMessage({action,...fields});}
 function text(tag,value){const e=document.createElement(tag);e.textContent=value;return e;}
