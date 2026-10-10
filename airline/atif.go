@@ -98,6 +98,11 @@ func (r *atifRecorder) snapshot() {
 			defer os.Remove(name)
 			_, err = f.Write(raw)
 			if err == nil {
+				// Harbor reads the exported, redacted trace as a different user.
+				// Set its readable mode before the atomic publication.
+				err = f.Chmod(0644)
+			}
+			if err == nil {
 				err = f.Sync()
 			}
 			closeErr := f.Close()

@@ -19,6 +19,13 @@ func TestATIFOrderedRedactedSnapshots(t *testing.T) {
 		go func() { defer wg.Done(); r.user("hello test-sensitive-value") }()
 	}
 	wg.Wait()
+	info, err := os.Stat(r.path)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if info.Mode().Perm() != 0644 {
+		t.Fatalf("exported trace must be readable by Harbor: %o", info.Mode().Perm())
+	}
 	step := r.model("", "observed-test-model", []map[string]any{{"tool_call_id": "test-call", "function_name": "test-fixture", "arguments": map[string]any{"AuThOrIzAtIoN": "private", "safe": "value"}}})
 	r.result(step, "test-call", `{"password":"hidden"}`)
 	b, err := os.ReadFile(r.path)

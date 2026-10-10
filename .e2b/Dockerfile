@@ -31,7 +31,7 @@ COPY .relai/evals-wiki/ ./.relai/evals-wiki/
 COPY .relai/runtime-manifest.json ./.relai/runtime-manifest.json
 COPY .relai/.internal/records/ ./.relai/.internal/records/
 COPY .relai/.internal/layout.json ./.relai/.internal/layout.json
-COPY start.sh README.md DEMO.md ./
+COPY .gitignore start.sh README.md DEMO.md ./
 COPY .devcontainer/setup.sh ./.devcontainer/setup.sh
 COPY .e2b/start.sh /usr/local/bin/start-playground
 RUN chmod 755 /usr/local/bin/start-playground && chown -R user:user /home/user/airline
