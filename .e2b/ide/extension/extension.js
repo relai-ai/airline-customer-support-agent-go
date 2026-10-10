@@ -12,6 +12,7 @@ function activate(context) {
     current.onDidDispose(() => { panel = undefined; });
     const nonce = crypto.randomBytes(24).toString('hex');
     const env = JSON.parse(await fs.readFile('/home/user/.playground/environment.json', 'utf8'));
+    const modeKey = 'relai.playground.mode.' + env.PLAYGROUND_SESSION_ID;
     const base = env.PLAYGROUND_API_BASE + '/sessions/' + env.PLAYGROUND_SESSION_ID;
     const api = async (suffix, method = 'GET', body) => {
       const response = await fetch(base + suffix, { method, headers: { Authorization: 'Token ' + env.RELAI_TEAM_API_KEY, 'Content-Type': 'application/json' }, redirect: 'error', signal: AbortSignal.timeout(130000), ...(body ? { body: JSON.stringify(body) } : {}) });
@@ -23,7 +24,9 @@ function activate(context) {
         // Explicit action allowlist. Webview cannot choose URLs, paths or credentials.
         if (msg.action === 'load') {
           const [catalog, evidence, investigation] = await Promise.all([api('/challenges'), fs.readFile('/home/user/airline/demo/checkpoint/results.json', 'utf8').then(JSON.parse), api('/investigation')]);
-          current.webview.postMessage({ type: 'loaded', catalog, evidence, ...investigation });
+          current.webview.postMessage({ type: 'loaded', catalog, evidence, workMode: context.workspaceState.get(modeKey), ...investigation });
+        } else if (msg.action === 'mode' && [null, 'assistant', 'terminal'].includes(msg.mode) && typeof msg.challengeId === 'string') {
+          await context.workspaceState.update(modeKey, { mode: msg.mode, challengeId: msg.challengeId });
         } else if (msg.action === 'choose') {
           await api('/investigation', 'POST', { challengeId: msg.id });
           current.webview.postMessage({ type: 'state', ...await api('/investigation') });
