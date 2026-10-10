@@ -3,6 +3,7 @@ package airline
 import "testing"
 
 func TestSelectModelPrefersOpenAI(t *testing.T) {
+	t.Setenv("AIRLINE_MODEL_PROVIDER", "")
 	t.Setenv("OPENAI_API_KEY", "openai-key")
 	t.Setenv("ANTHROPIC_API_KEY", "")
 	t.Setenv("OPENAI_MODEL", "")
@@ -20,6 +21,7 @@ func TestSelectModelPrefersOpenAI(t *testing.T) {
 }
 
 func TestSelectModelUsesAnthropicWhenOpenAIAbsent(t *testing.T) {
+	t.Setenv("AIRLINE_MODEL_PROVIDER", "")
 	t.Setenv("OPENAI_API_KEY", "")
 	t.Setenv("ANTHROPIC_API_KEY", "anthropic-key")
 	t.Setenv("ANTHROPIC_MODEL", "")
@@ -37,6 +39,7 @@ func TestSelectModelUsesAnthropicWhenOpenAIAbsent(t *testing.T) {
 }
 
 func TestSelectModelPrefersOpenAIWhenBothKeysSet(t *testing.T) {
+	t.Setenv("AIRLINE_MODEL_PROVIDER", "")
 	t.Setenv("OPENAI_API_KEY", "openai-key")
 	t.Setenv("ANTHROPIC_API_KEY", "anthropic-key")
 
@@ -50,6 +53,7 @@ func TestSelectModelPrefersOpenAIWhenBothKeysSet(t *testing.T) {
 }
 
 func TestSelectModelHonorsModelOverride(t *testing.T) {
+	t.Setenv("AIRLINE_MODEL_PROVIDER", "")
 	t.Setenv("OPENAI_API_KEY", "openai-key")
 	t.Setenv("ANTHROPIC_API_KEY", "")
 	t.Setenv("OPENAI_MODEL", "gpt-4.1-mini")
@@ -64,6 +68,7 @@ func TestSelectModelHonorsModelOverride(t *testing.T) {
 }
 
 func TestSelectModelRequiresAKey(t *testing.T) {
+	t.Setenv("AIRLINE_MODEL_PROVIDER", "")
 	t.Setenv("OPENAI_API_KEY", "")
 	t.Setenv("ANTHROPIC_API_KEY", "")
 

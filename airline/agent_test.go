@@ -32,6 +32,7 @@ func (r *recordingAgentRunner) run(_ context.Context, instructions string, tools
 func TestAgentInstructionsPropagateOnSuccessiveTurns(t *testing.T) {
 	for _, provider := range []string{"openai", "anthropic"} {
 		t.Run(provider, func(t *testing.T) {
+			t.Setenv("AIRLINE_MODEL_PROVIDER", "")
 			t.Setenv("OPENAI_API_KEY", "")
 			t.Setenv("ANTHROPIC_API_KEY", "")
 			t.Setenv(strings.ToUpper(provider)+"_API_KEY", "test-key")
