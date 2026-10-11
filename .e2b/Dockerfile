@@ -35,7 +35,7 @@ COPY .devcontainer/setup.sh ./.devcontainer/setup.sh
 COPY .e2b/start.sh /usr/local/bin/start-playground
 RUN chmod 755 /usr/local/bin/start-playground && chown -R user:user /home/user/airline
 USER user
-RUN bash .devcontainer/setup.sh && go test ./... && go vet ./...
+RUN git config --global user.name "RELAI Playground" && git config --global user.email "engineering@relai.ai" && bash .devcontainer/setup.sh && go test ./... && go vet ./...
 
 # Keep UI iteration independent of tool installation.
 USER root
