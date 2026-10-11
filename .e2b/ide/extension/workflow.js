@@ -1,0 +1,14 @@
+// Shared by the webview and its regression tests; no runtime or credentials.
+const workflowSteps = {
+  prepare: { label: '1. Prepare the test', action: 'Prepare test', guidance: 'Review or edit this request. The assistant will explain the test and assertions before evaluation.', prompt: 'Use RELAI to investigate this scenario and prepare a repeatable test. Explain the test, assertions, and relevant code. Stop before evaluation and tell me what we will measure next.' },
+  evaluate: { label: '2. Evaluate the agent', action: 'Run evaluation', guidance: 'Measure the starting agent. The assistant will show its actual response, tool trace, score, and missed assertions.', prompt: 'Run the prepared RELAI test against the current agent. Show its actual response, tool calls, score, assertion results, and evidence locations. Explain whether it demonstrates a failure and recommend the next step. Stop before optimization.' },
+  optimize: { label: '3. Improve the agent', action: 'Run optimization', guidance: 'Use the measured failure to improve the agent. Review the optimizer’s changes and report before verification.', prompt: 'Use RELAI optimization to improve the demonstrated failure without weakening the test. Preserve existing behavior. Show accepted and rejected changes, the code diff, scores, optimizer branch, and any remaining limitations. Stop before separate verification.' },
+  verify: { label: '4. Verify and check regressions', action: 'Run verification', guidance: 'Check the optimizer’s resulting branch and existing tests. If the baseline passed, verify the unchanged agent.', prompt: 'Verify the accepted RELAI optimizer branch, or the unchanged baseline if it passed. Rerun the target test and existing regressions. Show actual responses, scores, regression results, and evidence locations. Explain anything still unverified. Stop before the final comparison.' },
+  compare: { label: '5. Compare the results', action: 'Compare results', guidance: 'Review what changed, whether it worked, and which existing behaviors still pass.', prompt: 'Compare the actual baseline and verified results. Show before/after responses and scores, explain the reviewed code or prompt changes, summarize regressions and limitations, and link the evidence. Explain how to use this same RELAI workflow on my own agent.' },
+};
+function workflowView(i) {
+  const step = i.nextStep || i.step || 'prepare';
+  return step === 'complete' ? { step, label: 'Results ready', action: 'Send message', guidance: 'Review the comparison below or ask a follow-up question.', prompt: '' } : { step, ...workflowSteps[step] };
+}
+function shouldPrefill(draft, previousPreset) { return !draft.trim() || draft === previousPreset; }
+if (typeof module !== 'undefined') module.exports = { workflowSteps, workflowView, shouldPrefill };

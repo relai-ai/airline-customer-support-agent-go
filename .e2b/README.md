@@ -53,10 +53,11 @@ reachable only through that proxy. Do not enable public E2B traffic.
 The panel offers three scenarios with their common agent-problem categories,
 then one choice between the RELAI playground coding assistant and a manual
 terminal. The assistant simulates the workflow used with Codex, Claude Code or
-Cursor; it is not an embedded instance of those products. Its editable starting
-request authorizes the selected scenario's real test, evaluation, optimization
-when needed, and verification in the temporary sample. Commands continue without
-repeated approval clicks; Stop revokes continuation and cancels running commands.
+Cursor; it is not an embedded instance of those products. Each editable prompt authorizes one step: prepare the test, evaluate, optimize a
+measured failure, verify the resulting branch and regressions, then compare.
+Routine commands continue within that step; the assistant explains its results
+and pauses before prefilling the next request. An unsent draft is never overwritten.
+Stop revokes continuation and cancels running commands.
 Older sessions without workflow consent still require command approval.
 
 Routine commands and output stay in collapsed details. The final comparison
@@ -72,3 +73,15 @@ Build a separate local image for fixture testing:
 Run the dashboard repository's `scripts/ide-smoke.ts` with Node/tsx to verify
 startup, the extension, WebSockets and access revocation without live AI calls.
 The earlier E2B build IDs above do not contain this IDE.
+
+
+The sample baggage tool currently falls back to standard allowances for unknown
+fares. This is existing implementation behavior, not an injected defect; the
+prepared unknown-fare test evaluates whether the full agent turn handles it
+correctly. A model may still pass, so only live evaluation establishes a failure.
+Optimizer setup must use the CLI's interactive scope selection, never a hand-written
+scope artifact. Tests and evaluators are not optimizer edit targets.
+
+Extension handoff/draft regression checks: `node --test .e2b/ide/extension/workflow.test.js`.
+The companion playground service must support `step` requests and `finish_step`
+handoffs before promoting this template. Backend APIs are unchanged.

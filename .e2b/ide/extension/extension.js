@@ -31,7 +31,7 @@ function activate(context) {
           await api('/investigation', 'POST', { challengeId: msg.id });
           current.webview.postMessage({ type: 'state', ...await api('/investigation') });
         } else if (msg.action === 'send' && typeof msg.prompt === 'string' && msg.prompt.trim()) {
-          current.webview.postMessage({ type: 'state', ...await api('/investigation/turn', 'POST', { prompt: msg.prompt, ...(msg.runWorkflow === true ? { runWorkflow: true } : {}), turnId: crypto.randomUUID() }) });
+          current.webview.postMessage({ type: 'state', ...await api('/investigation/turn', 'POST', { prompt: msg.prompt, ...(msg.runWorkflow === true ? { runWorkflow: true } : {}), ...(typeof msg.step === "string" ? { step: msg.step } : {}), turnId: crypto.randomUUID() }) });
         } else if (msg.action === 'approve' && typeof msg.approved === 'boolean') {
           await api('/investigation/approval', 'POST', { callId: msg.id, approved: msg.approved });
           current.webview.postMessage({ type: 'state', ...await api('/investigation') });
@@ -57,7 +57,7 @@ function activate(context) {
         }
       } catch (error) { current.webview.postMessage({ type: 'error', message: error.message }); }
     });
-    current.webview.html = (await fs.readFile(path.join(context.extensionPath, 'panel.html'), 'utf8')).replaceAll('NONCE', nonce);
+    current.webview.html = (await fs.readFile(path.join(context.extensionPath, 'panel.html'), 'utf8')).replace('WORKFLOW_HELPERS', await fs.readFile(path.join(context.extensionPath, 'workflow.js'), 'utf8')).replaceAll('NONCE', nonce);
   };
   context.subscriptions.push(vscode.commands.registerCommand('relai.playground', open));
   void open().catch(() => vscode.window.showErrorMessage('RELAI playground could not open. Check session provisioning.'));
