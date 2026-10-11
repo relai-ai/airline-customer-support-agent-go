@@ -3,19 +3,10 @@
 import json, os, pathlib, subprocess, time, urllib.request
 root = pathlib.Path('/home/user/.playground')
 env = json.loads((root / 'environment.json').read_text())
-required = {'RELAI_API_BASE', 'RELAI_TEAM_API_KEY', 'PLAYGROUND_API_BASE', 'PLAYGROUND_SESSION_ID'}
-if not required.issubset(env) or any(not isinstance(v, str) for v in env.values()):
-    raise SystemExit('Session environment is incomplete')
-# Harbor's CLI proxy reads project API settings, rather than the shell's
-# RELAI_TEAM_API_KEY. Keep this ignored configuration scoped to this session.
-config = pathlib.Path('/home/user/airline/.relai/config.toml')
-config.parent.mkdir(parents=True, exist_ok=True)
-config.touch(mode=0o600, exist_ok=True)
-config.chmod(0o600)
-env['RELAI_API_URL'] = env['RELAI_API_BASE']
-env['RELAI_API_KEY'] = env['RELAI_TEAM_API_KEY']
-config.write_text('[api]\nurl = ' + json.dumps(env['RELAI_API_BASE']) +
-                  '\nkey = ' + json.dumps(env['RELAI_TEAM_API_KEY']) + '\n')
+from session_config import provision_cli
+env = provision_cli(pathlib.Path('/home/user/airline'), env)
+from local_gateway import ensure_bridge
+ensure_bridge(env['RELAI_API_BASE'])
 # Supported CLI setup runs with the session credential in the child environment,
 # never in arguments or a provider-key prompt. Scope is prepared in the template.
 setup = subprocess.run(['relai', 'setup', '--theme', 'light'],

@@ -40,6 +40,8 @@ RUN git config --global user.name "RELAI Playground" && git config --global user
 # Keep UI iteration independent of tool installation.
 USER root
 COPY .e2b/ide/start-ide.py /opt/playground/start-ide.py
+COPY .e2b/ide/session_config.py /opt/playground/session_config.py
+COPY .e2b/ide/local_gateway.py /opt/playground/local_gateway.py
 COPY .e2b/ide/try-agent.py /opt/playground/try-agent.py
 COPY .e2b/ide/extension/ /opt/playground/extensions/relai.relai-playground-0.1.0/
 RUN chmod -R a+rX /opt/playground && chown -R user:user /opt/playground/extensions
