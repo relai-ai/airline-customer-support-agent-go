@@ -6,6 +6,8 @@ import (
 	"io"
 	"net/http"
 	"net/http/httptest"
+	"os"
+	"path/filepath"
 	"testing"
 )
 
@@ -37,13 +39,36 @@ func TestRelaiGatewayToolRoundtrip(t *testing.T) {
 	t.Setenv("RELAI_API_BASE", server.URL+"/runtime/test/")
 	t.Setenv("RELAI_TEAM_API_KEY", "pg_test")
 	t.Setenv("AIRLINE_MODEL_PROVIDER", "relai")
+	t.Setenv("RELAI_SESSION_MODEL", "openai/test-pinned-model")
+	t.Setenv("RELAI_ATIF_TRAJECTORY_PATH", filepath.Join(t.TempDir(), "trajectory.json"))
+	trace := newATIFRecorder()
 	runner, err := newRelaiRunner()
 	if err != nil {
 		t.Fatal(err)
 	}
-	result, err := runner.run(context.Background(), "Help with flights", []Tool{{Name: "lookup", Parameters: map[string]any{"type": "object"}, Execute: func(map[string]any) string { return "12A" }}}, []Message{{Role: "user", Content: "My seat?"}}, io.Discard)
+	result, err := runner.run(context.WithValue(context.Background(), atifKey{}, trace), "Help with flights", []Tool{{Name: "lookup", Parameters: map[string]any{"type": "object"}, Execute: func(map[string]any) string { return "12A" }}}, []Message{{Role: "user", Content: "My seat?"}}, io.Discard)
 	if err != nil || result != "Your seat is 12A." || calls != 2 {
 		t.Fatalf("result=%q calls=%d error=%v", result, calls, err)
+	}
+	raw, err := os.ReadFile(trace.path)
+	if err != nil {
+		t.Fatal(err)
+	}
+	var trajectory struct {
+		Steps []struct {
+			Model string `json:"model_name"`
+		} `json:"steps"`
+	}
+	if err := json.Unmarshal(raw, &trajectory); err != nil {
+		t.Fatal(err)
+	}
+	if len(trajectory.Steps) != 2 {
+		t.Fatalf("expected both model turns, got %d", len(trajectory.Steps))
+	}
+	for _, step := range trajectory.Steps {
+		if step.Model != "openai/test-pinned-model" {
+			t.Fatalf("configured model missing: %q", step.Model)
+		}
 	}
 }
 func TestRelaiGatewayRejectsRedirect(t *testing.T) {

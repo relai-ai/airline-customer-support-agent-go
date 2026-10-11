@@ -87,7 +87,9 @@ func (r *relaiRunner) run(ctx context.Context, instructions string, tools []Tool
 			for _, c := range result.Calls {
 				calls = append(calls, map[string]any{"tool_call_id": c.ID, "function_name": c.Name, "arguments": c.Arguments})
 			}
-			step = trace.model(result.Content, "", calls)
+			// The gateway supplies the authenticated, pinned configuration; this
+			// is not a provider-reported model or a client model override.
+			step = trace.model(result.Content, os.Getenv("RELAI_SESSION_MODEL"), calls)
 		}
 		if len(result.Calls) == 0 {
 			if result.Content == "" {

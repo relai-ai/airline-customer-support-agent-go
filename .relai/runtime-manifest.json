@@ -72,6 +72,12 @@
       "required": false,
       "sensitive": true,
       "reason": "CLI-compatible temporary session-scoped gateway token; never a shared provider key."
+    },
+    {
+      "name": "RELAI_SESSION_MODEL",
+      "required": false,
+      "sensitive": false,
+      "reason": "Configured model name from the authenticated pinned session profile; trace metadata only, never a provider override."
     }
   ],
   "files": []
