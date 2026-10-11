@@ -8,7 +8,8 @@
   "setup_commands": [],
   "runtime_setup_commands": [
     "apt-get update && apt-get install -y --no-install-recommends python3 ca-certificates && rm -rf /var/lib/apt/lists/*",
-    "cd /app/dependencies && go mod download && go mod verify"
+    "cd /app/dependencies && go mod download && go mod verify",
+    "cd /app/dependencies && GOCACHE=/tmp/relai-go-build GOMAXPROCS=1 GOGC=50 go build -p=1 github.com/openai/openai-go/v3 github.com/anthropics/anthropic-sdk-go"
   ],
   "generated_language_paths": false,
   "runtime_assets": [
@@ -39,10 +40,10 @@
     "go"
   ],
   "probe_commands": [
-    "cd /workspace && GOCACHE=/tmp/relai-go-build GOMODCACHE=/go/pkg/mod GOPROXY=off go run -mod=readonly /app/import_probe.go"
+    "cd /workspace && GOCACHE=/tmp/relai-go-build GOMODCACHE=/go/pkg/mod GOPROXY=off GOMAXPROCS=1 GOGC=50 go run -p=1 -mod=readonly /app/import_probe.go"
   ],
   "verifier_command": null,
   "rendered_sha256": {
-    "generated/runtime/recipe.json": "1558591895408bc336247cb9975bee8617c1976ad3d309252c24bb0296a92081"
+    "generated/runtime/recipe.json": "50da4d0c48dfc14a1a50421a7b32916524d8711406f327af59a32804afb61b89"
   }
 }

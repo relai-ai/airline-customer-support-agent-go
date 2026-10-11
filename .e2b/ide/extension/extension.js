@@ -30,6 +30,8 @@ function activate(context) {
         } else if (msg.action === 'choose') {
           await api('/investigation', 'POST', { challengeId: msg.id });
           current.webview.postMessage({ type: 'state', ...await api('/investigation') });
+        } else if (msg.action === 'try-agent' && typeof msg.prompt === 'string' && msg.prompt.trim()) {
+          current.webview.postMessage({ type: 'state', ...await api('/investigation/try-agent', 'POST', { prompt: msg.prompt, turnId: crypto.randomUUID() }) });
         } else if (msg.action === 'send' && typeof msg.prompt === 'string' && msg.prompt.trim()) {
           current.webview.postMessage({ type: 'state', ...await api('/investigation/turn', 'POST', { prompt: msg.prompt, ...(msg.runWorkflow === true ? { runWorkflow: true } : {}), ...(typeof msg.step === "string" ? { step: msg.step } : {}), turnId: crypto.randomUUID() }) });
         } else if (msg.action === 'approve' && typeof msg.approved === 'boolean') {
@@ -47,6 +49,8 @@ function activate(context) {
           current.webview.postMessage({ type: 'state', ...await api('/investigation') });
         } else if (msg.action === 'assistant') {
           await vscode.commands.executeCommand('workbench.action.closePanel');
+          await vscode.commands.executeCommand('workbench.action.closeSidebar');
+          await vscode.commands.executeCommand('workbench.action.closeAuxiliaryBar');
         } else if (msg.action === 'terminal') {
           if (!terminal) terminal = vscode.window.createTerminal({ name: 'RELAI · Terminal', cwd: '/home/user/airline' });
           terminal.show();

@@ -5,6 +5,9 @@ mkdir -p /logs/verifier
 python3 /tests/evaluate.py
 )
 relai_status=$?
+# Record the leaf exit status so a verifier that reports no score is an
+# execution failure, never a verdict.
+printf '{"exit_status":%s}\n' "$relai_status" > /logs/verifier/relai_task_verifier_status.json
 # Preserve custom scoring without requiring the fallback's Python runtime.
 if [ -e /logs/verifier/reward.json ] || [ -e /logs/verifier/reward.txt ]; then
     relai_reward_status=0

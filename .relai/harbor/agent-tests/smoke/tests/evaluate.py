@@ -11,6 +11,19 @@ def evaluate():
     assert [s['step_id'] for s in steps] == list(range(1, len(steps)+1))
     assert len([s for s in steps if s['source'] == 'user']) >= 2
     assert all(s.get('message') for s in steps if s['source'] == 'agent')
+    # Each observed user turn must have a nonempty final assistant response,
+    # not just a tool-call message, before the next user arrives.
+    turns = []
+    current = None
+    for step in steps:
+        if step['source'] == 'user':
+            current = []
+            turns.append(current)
+        elif step['source'] == 'agent':
+            if current is None:
+                raise ValueError('Agent step without preceding user')
+            current.append(step)
+    assert all(t and not t[-1].get('tool_calls') and str(t[-1].get('message', '')).strip() for t in turns)
     found = set()
     for step in steps:
         results = step.get('observation', {}).get('results', [])

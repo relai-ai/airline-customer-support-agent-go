@@ -87,7 +87,7 @@ func (r *relaiRunner) run(ctx context.Context, instructions string, tools []Tool
 			for _, c := range result.Calls {
 				calls = append(calls, map[string]any{"tool_call_id": c.ID, "function_name": c.Name, "arguments": c.Arguments})
 			}
-			step = trace.model(result.Content, "relai-session-profile", calls)
+			step = trace.model(result.Content, "", calls)
 		}
 		if len(result.Calls) == 0 {
 			if result.Content == "" {

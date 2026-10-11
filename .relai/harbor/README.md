@@ -13,3 +13,7 @@ New tasks keep Harbor-required `instruction.md` empty. Author scenario inputs an
 Runtime credentials belong in `.relai/simulator.env` and are forwarded only to Harbor's agent phase.
 
 On SELinux-enabled Docker daemons, RELAI requests a shared container relabel only for a disposable per-run workspace snapshot under `.relai/tmp`; it never relabels checkout content or masks. It labels only the new CLI-owned Harbor job directory for container writes.
+
+## Prepared playground runtime constraint
+
+Compile the locked external OpenAI and Anthropic Go SDK dependencies into the managed runtime image using GOCACHE=/tmp/relai-go-build before trials. This is dependency-only preparation: never copy or prebuild project source into the image. Continue importing the fresh /workspace snapshot in every evaluation. The local nested Docker runtime cannot apply per-trial CPU/memory cgroup limits; rely on the enclosing sandbox limits instead. Keep the three scenarios, evaluator descriptors, rubrics and assertions unchanged.

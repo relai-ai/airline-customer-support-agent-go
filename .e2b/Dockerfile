@@ -13,9 +13,6 @@ RUN TARGETARCH="${TARGETARCH:-$(dpkg --print-architecture)}" && case "${TARGETAR
       arm64:4.141.0) checksum=e5cc78da1d631c6cf6162f9b18eeaa8ee9d3239e1a88bb99d0602cdc5fa1852d ;; \
       *) echo 'Unsupported code-server version or architecture' >&2; exit 1 ;; \
     esac && curl -fsSL "https://github.com/coder/code-server/releases/download/v${CODE_SERVER_VERSION}/code-server-${CODE_SERVER_VERSION}-linux-${TARGETARCH}.tar.gz" -o /tmp/code-server.tgz && echo "${checksum}  /tmp/code-server.tgz" | sha256sum -c - && mkdir -p /opt/code-server && tar -xzf /tmp/code-server.tgz --strip-components=1 -C /opt/code-server && ln -s /opt/code-server/bin/code-server /usr/local/bin/code-server && rm /tmp/code-server.tgz
-COPY .e2b/ide/start-ide.py /opt/playground/start-ide.py
-COPY .e2b/ide/extension/ /opt/playground/extensions/relai.relai-playground-0.1.0/
-RUN chmod -R a+rX /opt/playground && chown -R user:user /opt/playground/extensions
 WORKDIR /home/user/airline
 
 # Explicit allowlist: never copy .env, logs, .git, OAuth state or local RELAI config.
@@ -31,9 +28,19 @@ COPY .relai/evals-wiki/ ./.relai/evals-wiki/
 COPY .relai/runtime-manifest.json ./.relai/runtime-manifest.json
 COPY .relai/.internal/records/ ./.relai/.internal/records/
 COPY .relai/.internal/layout.json ./.relai/.internal/layout.json
+# Exact nonsecret output of the approved interactive RELAI scope selection.
+COPY .e2b/ide/optimizer-scope.json ./.relai/.internal/optimizer-scope.json
 COPY .gitignore start.sh README.md DEMO.md ./
 COPY .devcontainer/setup.sh ./.devcontainer/setup.sh
 COPY .e2b/start.sh /usr/local/bin/start-playground
 RUN chmod 755 /usr/local/bin/start-playground && chown -R user:user /home/user/airline
 USER user
 RUN bash .devcontainer/setup.sh && go test ./... && go vet ./...
+
+# Keep UI iteration independent of tool installation.
+USER root
+COPY .e2b/ide/start-ide.py /opt/playground/start-ide.py
+COPY .e2b/ide/try-agent.py /opt/playground/try-agent.py
+COPY .e2b/ide/extension/ /opt/playground/extensions/relai.relai-playground-0.1.0/
+RUN chmod -R a+rX /opt/playground && chown -R user:user /opt/playground/extensions
+USER user

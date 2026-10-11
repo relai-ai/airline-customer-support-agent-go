@@ -15,6 +15,6 @@
   "trajectory_example": null,
   "rendered_sha256": {
     "environment/Dockerfile": "bc9b0e4f16e2f9a226e5d50029cbb857b709b5390039d24777a96349e27d1147",
-    "tests/test.sh": "d05932f788f7232e4525e96f52a66a2c026efc62b149189bf2e1387dcd7595bb"
+    "tests/test.sh": "ef3c1d8e2b0df1df24fa74774b0c61329d79766555bb6add28433f5bad89ae00"
   }
 }

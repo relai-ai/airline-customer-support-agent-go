@@ -12,8 +12,17 @@ config = pathlib.Path('/home/user/airline/.relai/config.toml')
 config.parent.mkdir(parents=True, exist_ok=True)
 config.touch(mode=0o600, exist_ok=True)
 config.chmod(0o600)
+env['RELAI_API_URL'] = env['RELAI_API_BASE']
+env['RELAI_API_KEY'] = env['RELAI_TEAM_API_KEY']
 config.write_text('[api]\nurl = ' + json.dumps(env['RELAI_API_BASE']) +
                   '\nkey = ' + json.dumps(env['RELAI_TEAM_API_KEY']) + '\n')
+# Supported CLI setup runs with the session credential in the child environment,
+# never in arguments or a provider-key prompt. Scope is prepared in the template.
+setup = subprocess.run(['relai', 'setup', '--theme', 'light'],
+                       env={**os.environ, **env}, stdin=subprocess.DEVNULL,
+                       capture_output=True, timeout=30)
+if setup.returncode:
+    raise SystemExit('Session CLI setup failed')
 # Idempotent retries: don't start another server. Credentials remain session-scoped.
 try:
     urllib.request.urlopen('http://127.0.0.1:8080/healthz', timeout=1)

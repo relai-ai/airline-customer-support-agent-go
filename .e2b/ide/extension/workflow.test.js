@@ -22,3 +22,9 @@ test('packaged webview script compiles after helper injection', () => {
   const script = html.match(/<script nonce="NONCE">([\s\S]*?)<\/script>/)[1];
   assert.doesNotThrow(()=>new vm.Script(script));
 });
+test('short editable requests cover real evaluation and verified retry, without a report prompt', () => {
+  const {workflowSteps}=require('./workflow');
+  assert.ok(workflowSteps.evaluate.prompt.includes('Run the RELAI test'));
+  assert.ok(workflowSteps.verify.prompt.includes('apply the verified changes'));
+  assert.ok(Object.values(workflowSteps).every(s=>s.prompt.length<220));
+});

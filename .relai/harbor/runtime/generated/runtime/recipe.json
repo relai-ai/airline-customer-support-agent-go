@@ -4,6 +4,7 @@
   "commands": [
     "apt-get update && apt-get install -y --no-install-recommends python3 ca-certificates && rm -rf /var/lib/apt/lists/*",
     "cd /app/dependencies && go mod download && go mod verify",
+    "cd /app/dependencies && GOCACHE=/tmp/relai-go-build GOMAXPROCS=1 GOGC=50 go build -p=1 github.com/openai/openai-go/v3 github.com/anthropics/anthropic-sdk-go",
     "command -v python3 >/dev/null 2>&1 || { echo 'RELAI Harbor requires python3 for its launcher; provide it in base_image or install it in runtime setup.' >&2; exit 1; }",
     "(command -v python3 >/dev/null 2>&1 || { echo 'RELAI explicit dependency inputs require python3 for checksum checks; it is also required by the Harbor launcher. Provide python3 in base_image.' >&2; exit 1; }) && python3 -c 'import base64,hashlib,json,pathlib; expected=json.loads(base64.b64decode(\"eyIvYXBwL2RlcGVuZGVuY2llcy9nby5tb2QiOiJiZTNkY2Y4NWQ0NDA4N2IyMGEwZTViOWM5OTM1MzI4MzQ3NWVmYTEwMDgwMzBlZTM5Njc0ODhmYmM3M2Y3MmFkIiwiL2FwcC9kZXBlbmRlbmNpZXMvZ28uc3VtIjoiYWNjYjM2YTNkNTc1MjE0ZDMxNDA3MDcxZDY4ZDU4Njc3NjVlOWZhNGM0NTJhMDFhMTVjZjYyZDY2MjEyNjIzNSJ9\")); assert all(hashlib.sha256(pathlib.Path(p).read_bytes()).hexdigest()==h for p,h in expected.items()), \"explicit staged dependency input changed\"'"
   ],
@@ -21,7 +22,7 @@
     {
       "source": "generated/runtime/inputs/project_adapter.py",
       "destination": "/app/project_adapter.py",
-      "sha256": "067158d508e9ff3bb2679fa31e9d10b047712c1ba853386a8559b173e29ae2e9"
+      "sha256": "8b31f0f0cbd77ab9b821534bdbcff13e7f3acf27e0589eed4187d76295bcc296"
     },
     {
       "source": "generated/runtime/launcher/run.py",

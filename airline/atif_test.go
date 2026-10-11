@@ -12,11 +12,13 @@ import (
 func TestATIFOrderedRedactedSnapshots(t *testing.T) {
 	t.Setenv("RELAI_ATIF_TRAJECTORY_PATH", filepath.Join(t.TempDir(), "trajectory.json"))
 	t.Setenv("OPENAI_API_KEY", "test-sensitive-value")
+	t.Setenv("RELAI_TEAM_API_KEY", "test-session-token")
+	t.Setenv("RELAI_API_KEY", "test-cli-token")
 	r := newATIFRecorder()
 	var wg sync.WaitGroup
 	for i := 0; i < 10; i++ {
 		wg.Add(1)
-		go func() { defer wg.Done(); r.user("hello test-sensitive-value") }()
+		go func() { defer wg.Done(); r.user("hello test-sensitive-value test-session-token test-cli-token") }()
 	}
 	wg.Wait()
 	info, err := os.Stat(r.path)
@@ -32,7 +34,7 @@ func TestATIFOrderedRedactedSnapshots(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if strings.Contains(string(b), "test-sensitive-value") || strings.Contains(string(b), "hidden") || strings.Contains(string(b), "private") {
+	if strings.Contains(string(b), "test-session-token") || strings.Contains(string(b), "test-cli-token") || strings.Contains(string(b), "test-sensitive-value") || strings.Contains(string(b), "hidden") || strings.Contains(string(b), "private") {
 		t.Fatal("sensitive value leaked")
 	}
 	var doc struct {

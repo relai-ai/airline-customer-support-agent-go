@@ -28,7 +28,7 @@ func newATIFRecorder() *atifRecorder {
 	}
 	r := &atifRecorder{path: path}
 	// Exact sensitive-name allowlist matching .relai/runtime-manifest.json.
-	for _, name := range []string{"OPENAI_API_KEY", "ANTHROPIC_API_KEY"} {
+	for _, name := range []string{"OPENAI_API_KEY", "ANTHROPIC_API_KEY", "RELAI_TEAM_API_KEY", "RELAI_API_KEY"} {
 		if value := os.Getenv(name); value != "" {
 			r.secrets = append(r.secrets, value)
 		}
@@ -145,7 +145,10 @@ func (r *atifRecorder) model(text, model string, calls []map[string]any) int {
 	if text == "" {
 		return -1
 	}
-	step := map[string]any{"step_id": len(r.steps) + 1, "source": "agent", "message": text, "model_name": model}
+	step := map[string]any{"step_id": len(r.steps) + 1, "source": "agent", "message": text}
+	if model != "" {
+		step["model_name"] = model
+	}
 	if len(calls) > 0 {
 		step["tool_calls"] = calls
 	}

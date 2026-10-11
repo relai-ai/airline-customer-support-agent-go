@@ -1,0 +1,11 @@
+{
+  "version": "relai.optimizer_scope.v1",
+  "allowed_change_scope": "structural_changes_allowed",
+  "keep_models_fixed": true,
+  "allowed_model_candidates": [],
+  "allow_api_key_backed_tools": false,
+  "cost_optimization": "disabled",
+  "custom_instructions": "",
+  "created_at": "1791697337",
+  "summary": "Structural changes allowed: prompt, code, structural, and tool changes are allowed, subject to the other scope constraints. The optimizer must keep the current AI models unchanged. It must not add new API-key-backed or potentially paid tools to your agent. Cost optimization is disabled."
+}
