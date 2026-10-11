@@ -26,4 +26,5 @@ function workflowView(i) {
   return step === 'complete' ? { step, label: 'Results ready', action: 'Send message', guidance: 'Review the comparison below or ask a follow-up question.', prompt: '' } : { step, ...workflowSteps[step] };
 }
 function shouldPrefill(draft, previousPreset) { return !draft.trim() || draft === previousPreset; }
-if (typeof module !== 'undefined') module.exports = { workflowSteps, workflowView, shouldPrefill, startingRequest, stepValue };
+function restoreOutputScroll(element, previous, live) { element.scrollTop = live ? element.scrollHeight : (previous ?? 0); }
+if (typeof module !== 'undefined') module.exports = { workflowSteps, workflowView, shouldPrefill, startingRequest, stepValue, restoreOutputScroll };

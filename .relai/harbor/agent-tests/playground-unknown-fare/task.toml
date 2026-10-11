@@ -30,4 +30,4 @@ input_type = "fixed"
 input_asset = "environment/scenario.json"
 mock_targets = []
 mock_assets = []
-evaluators = [{ id = "judge-unknown-fare", type = "llm_judge", path = "tests/evaluator.toml", min_score = 0.0, max_score = 1.0 }]
+evaluators = [{ id = "verify-unknown-fare-fallback", type = "code", path = "tests/evaluate.py", min_score = 0.0, max_score = 1.0 }, { id = "judge-unknown-fare", type = "llm_judge", path = "tests/evaluator.toml", min_score = 0.0, max_score = 1.0 }]

@@ -21,3 +21,5 @@ Investigate the an unfamiliar ticket type challenge. Read demo/challenges/unknow
 ## Evidence policy
 
 A suspicious code path is not a demonstrated agent failure. Record the exact checkpoint, scenario, model profile, command, trajectory and evaluated outcome before changing the catalog status. A passing baseline is a resilience result, not a failed challenge.
+
+The reference evaluation also checks the recorded baggage-tool result for the original defect: returning the exact Standard allowance for an unrecognized fare. This is scored separately from the customer-facing judge, so the assistant avoiding the bad allowance cannot hide that observed tool defect. No unknown-fare tool call means conditional coverage; passing this exact regression check alone does not prove every possible policy response is correct.

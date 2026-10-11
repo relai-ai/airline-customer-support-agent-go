@@ -43,3 +43,15 @@ test('scenario context stays visible and both modes expose the real RELAI workfl
   assert.ok(stepValue.prepare.includes('learning environment'));
   assert.ok(stepValue.optimize.includes('candidate improvements'));
 });
+
+test('live output follows new lines and completed output retains its reading position', () => {
+  const {restoreOutputScroll}=require('./workflow');
+  const output={scrollTop:0,scrollHeight:900};
+  restoreOutputScroll(output,120,true);
+  assert.equal(output.scrollTop,900);
+  output.scrollHeight=1200;
+  restoreOutputScroll(output,900,true);
+  assert.equal(output.scrollTop,1200);
+  restoreOutputScroll(output,120,false);
+  assert.equal(output.scrollTop,120);
+});
