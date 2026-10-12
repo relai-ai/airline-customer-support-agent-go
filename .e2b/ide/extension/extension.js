@@ -257,12 +257,16 @@ function activate(context) {
         ) {
           await reviewChange(msg.file);
         } else if (msg.action === "changes") {
-          if (msg.recorded === true && recording)
-            await reviewChange(
-              recording.files.find((file) => file.path === "airline/tools.go")
-                ?.path ?? recording.files[0].path,
+          if (msg.recorded === true && recording) {
+            const selected = await vscode.window.showQuickPick(
+              recording.files.map((file) => ({
+                label: file.path,
+                description: file.before === null ? "Added" : "Modified",
+              })),
+              { title: "RELAI optimized changes", placeHolder: "Choose a file to compare before and after" },
             );
-          else await vscode.commands.executeCommand("workbench.view.scm");
+            if (selected) await reviewChange(selected.label);
+          } else await vscode.commands.executeCommand("workbench.view.scm");
         }
       } catch (error) {
         current.webview.postMessage({ type: "error", message: error.message });
