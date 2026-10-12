@@ -65,6 +65,7 @@ test("recorded and edited requests dispatch distinct actions, and apply is expli
   class Element {
     constructor(tag = "div") {
       this.tag = tag;
+      this.tagName = tag.toUpperCase();
       this.children = [];
       this.value = "";
       this.textContent = "";
@@ -127,6 +128,25 @@ test("recorded and edited requests dispatch distinct actions, and apply is expli
     html.match(/<script nonce="NONCE">([\s\S]*?)<\/script>/)[1],
     context,
   );
+  const flatten = (n) => [n, ...n.children.flatMap(flatten)];
+  const formatted = flatten(
+    context.formatted(
+      "A test defines:\n- **Input:** a request\n- **Environment:** tools\n- **Evaluators:** `judge`\n\n<script>alert(1)</script>",
+    ),
+  );
+  assert.equal(formatted.filter((n) => n.tag === "li").length, 3);
+  assert.deepEqual(
+    formatted.filter((n) => n.tag === "strong").map((n) => n.textContent),
+    ["Input:", "Environment:", "Evaluators:"],
+  );
+  assert.equal(formatted.find((n) => n.tag === "code").textContent, "judge");
+  assert.equal(
+    formatted.some((n) => n.tag === "script"),
+    false,
+  );
+  assert.ok(
+    formatted.some((n) => n.textContent === "<script>alert(1)</script>"),
+  );
   const { prompts } = require("./recorded");
   const recording = {
     verificationStatus: "verified",
@@ -134,7 +154,10 @@ test("recorded and edited requests dispatch distinct actions, and apply is expli
     steps: prompts
       .slice(0, 3)
       .map(() => ({ text: "Real evidence", durationSeconds: 60 })),
-    turns: [],
+    turns: [
+      { user: "First traveler", agent: "First answer" },
+      { user: "Second traveler", agent: "Second answer" },
+    ],
     comparison: {
       before: "baseline",
       after: "verified",
@@ -151,6 +174,29 @@ test("recorded and edited requests dispatch distinct actions, and apply is expli
   assert.equal(sent.at(-1).step, 0);
   handlers.message({ data: { type: "recorded", recordedProgress: 1 } });
   assert.equal(elements.get("prompt").value, prompts[1]);
+  handlers.message({ data: { type: "recorded", recordedProgress: 2 } });
+  flatten(elements.get("history"))
+    .find((n) => n.textContent === "Explore the simulation")
+    .click();
+  assert.ok(
+    flatten(elements.get("history")).some(
+      (n) => n.textContent === "EXCHANGE 1 OF 2",
+    ),
+  );
+  flatten(elements.get("history"))
+    .find((n) => n.textContent === "Next exchange →")
+    .click();
+  assert.ok(
+    flatten(elements.get("history")).some(
+      (n) => n.textContent === "EXCHANGE 2 OF 2",
+    ),
+  );
+  assert.equal(
+    flatten(elements.get("history")).find(
+      (n) => n.textContent === "Next exchange →",
+    ).disabled,
+    true,
+  );
   elements.get("prompt").value = "My own question";
   elements.get("prompt").oninput();
   assert.equal(elements.get("send")["aria-label"], "Send message");

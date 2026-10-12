@@ -414,9 +414,6 @@
             placeholder="Ask the code assistant…"
           ></textarea>
           <div class="actions">
-            <button id="live" class="link" hidden>
-              Switch to live workspace
-            </button>
             <button
               id="send"
               class="send-button"
@@ -460,9 +457,6 @@
             </button>
           </div>
         </div>
-        <p id="verification-note" class="muted" hidden>
-          Final verification is pending.
-        </p>
       </div>
     </section>
     <script nonce="NONCE">
@@ -497,12 +491,78 @@
       function save() {
         vscode.setState({ draft: el("prompt").value, live });
       }
+      // Build text-only DOM nodes; model output never becomes executable HTML.
+      function formatted(content) {
+        const root = node("div", "");
+        const inline = (target, text) => {
+          for (const part of text.split(/(\*\*[^*\n]+\*\*|`[^`\n]+`)/g)) {
+            target.append(
+              part.startsWith("**") && part.endsWith("**")
+                ? node("strong", part.slice(2, -2))
+                : part.startsWith("`") && part.endsWith("`")
+                  ? node("code", part.slice(1, -1))
+                  : node("span", part),
+            );
+          }
+        };
+        let paragraph = [],
+          list,
+          code;
+        const flush = () => {
+          if (paragraph.length) {
+            const p = node("p", "");
+            inline(p, paragraph.join("\n"));
+            root.append(p);
+            paragraph = [];
+          }
+        };
+        for (const line of String(content).split("\n")) {
+          if (line.trim().startsWith("```")) {
+            flush();
+            list = null;
+            if (code) {
+              root.append(node("pre", code.join("\n")));
+              code = null;
+            } else code = [];
+            continue;
+          }
+          if (code) {
+            code.push(line);
+            continue;
+          }
+          const item = line.match(/^\s*(?:[-*+] |\d+\. )(.*)$/);
+          if (item) {
+            flush();
+            const tag = /^\s*\d+\./.test(line) ? "ol" : "ul";
+            if (!list || list.tagName.toLowerCase() !== tag) {
+              list = node(tag, "");
+              root.append(list);
+            }
+            const li = node("li", "");
+            inline(li, item[1]);
+            list.append(li);
+          } else {
+            list = null;
+            const heading = line.match(/^#{1,3}\s+(.*)$/);
+            if (heading) {
+              flush();
+              const h = node("h3", "");
+              inline(h, heading[1]);
+              root.append(h);
+            } else if (!line.trim()) flush();
+            else paragraph.push(line);
+          }
+        }
+        flush();
+        if (code) root.append(node("pre", code.join("\n")));
+        return root;
+      }
       function message(role, content) {
         const n = document.createElement("div");
         n.className = "message " + (role === "user" ? "user" : "assistant");
         n.append(
           node("small", role === "user" ? "YOU" : "CODE ASSISTANT + RELAI"),
-          node("p", content),
+          formatted(content),
         );
         return n;
       }
@@ -511,6 +571,46 @@
         n.dataset.viewKey = key;
         n.append(node("summary", label), node("pre", value));
         return n;
+      }
+      function simulationViewer() {
+        const viewer = node("div", ""),
+          body = node("div", "");
+        body.hidden = true;
+        let turn = 0;
+        const show = () => {
+          const exchange = recording.turns[turn];
+          body.replaceChildren(
+            node(
+              "small",
+              "EXCHANGE " + (turn + 1) + " OF " + recording.turns.length,
+            ),
+            node("small", "TRAVELER"),
+            formatted(exchange.user),
+            node("small", "AIRLINE AGENT"),
+            formatted(exchange.agent),
+          );
+          const controls = node("div", "");
+          const previous = button("Previous", () => {
+            turn--;
+            show();
+          });
+          previous.disabled = turn === 0;
+          const next = button("Next exchange →", () => {
+            turn++;
+            show();
+          });
+          next.disabled = turn === recording.turns.length - 1;
+          controls.append(previous, next);
+          body.append(controls);
+        };
+        viewer.append(
+          button("Explore the simulation", () => {
+            body.hidden = !body.hidden;
+            if (!body.hidden) show();
+          }),
+          body,
+        );
+        return viewer;
       }
       function recordedHistory() {
         const root = el("history");
@@ -523,7 +623,9 @@
           const timing = index === 0 ? recording.initialization : step;
           let timingText =
             index === 0
-              ? "Precomputed · RELAI initialization"
+              ? recording.initialization
+                ? "Precomputed · RELAI initialization"
+                : "Precomputed · risk analysis"
               : "Precomputed · " + (step.durationLabel || "original runtime");
           if (Number.isFinite(timing?.durationSeconds))
             timingText +=
@@ -534,99 +636,15 @@
           const badge = node("span", timingText);
           badge.className = "badge";
           reply.prepend(badge);
-          if (step.highlights?.length) {
-            const highlights = node("div", "");
-            highlights.className = "result-highlights";
-            for (const item of step.highlights) {
-              const card = node("div", "");
-              card.className = "result-highlight";
-              card.dataset.tone = item.tone || "neutral";
-              card.append(
-                node("small", item.label),
-                node("strong", item.value),
-              );
-              highlights.append(card);
-            }
-            reply.append(highlights);
-          }
-          const inspection = document.createElement("details");
-          inspection.className = "run-details";
-          inspection.dataset.viewKey = "recorded-details:" + index;
-          inspection.append(node("summary", "Inspect run details"));
-          if (
-            index === 0 &&
-            !Number.isFinite(recording.initialization?.durationSeconds)
-          )
-            inspection.append(
-              node(
-                "p",
-                "The initialization timing receipt was not saved for this recording. No duration is inferred from reading the risk inventory.",
-              ),
-            );
-          if (step.commands)
-            inspection.append(
-              details("Commands", step.commands, "recorded-command:" + index),
-            );
           if (index === 1) {
             const sample = node("div", "");
             sample.className = "sample-reply";
             sample.append(
-              node("small", "ACTUAL AGENT RESPONSE · FIRST EXCHANGE"),
-              node("p", recording.turns[0]?.agent || ""),
+              node("small", "ACTUAL AGENT RESPONSE"),
+              formatted(recording.turns[0]?.agent || ""),
             );
-            reply.append(sample);
-            const turns = document.createElement("details");
-            turns.dataset.viewKey = "recorded-transcript";
-            turns.append(
-              node(
-                "summary",
-                "Full simulation · " + recording.turns.length + " exchanges",
-              ),
-            );
-            recording.turns.forEach((t, i) => {
-              const row = node("div", "");
-              row.className = "turn";
-              row.append(
-                node("small", "TURN " + (i + 1)),
-                node("p", "Traveler: " + t.user),
-                node("p", "Agent: " + t.agent),
-              );
-              turns.append(row);
-            });
-            inspection.append(turns);
+            reply.append(sample, simulationViewer());
           }
-          if (index === 2) {
-            const compare = node("div", "");
-            compare.className = "comparison";
-            for (const [key, label] of [
-              ["before", "Before"],
-              ["after", "After"],
-              ["regressions", "Regression checks"],
-            ]) {
-              const card = node("div", "");
-              card.append(
-                node("h3", label),
-                node("p", recording.comparison[key]),
-              );
-              compare.append(card);
-            }
-            reply.append(compare);
-            const files = node("div", "");
-            files.className = "review-files";
-            for (const file of recording.files || [])
-              files.append(
-                button("Review " + file.path + " ↗", () =>
-                  post("review-change", { file: file.path }),
-                ),
-              );
-            reply.append(files);
-            inspection.append(details("Recorded patch", recording.diff));
-          }
-          if (step.evidence)
-            inspection.append(
-              details("Evidence", step.evidence, "recorded-evidence:" + index),
-            );
-          reply.append(inspection);
           root.append(reply);
         }
         if (progress >= 4) {
@@ -650,7 +668,6 @@
         el("mode").textContent = recorded
           ? "Precomputed walkthrough"
           : "Live workspace";
-        el("live").hidden = live || progress >= 4;
         const actionLabel = busy
           ? "Stop"
           : awaitingVerification
@@ -664,7 +681,6 @@
         el("send").setAttribute("title", actionLabel);
         el("send-arrow").hidden = busy;
         el("send-stop").hidden = !busy;
-        el("verification-note").hidden = !awaitingVerification;
         el("send").disabled =
           !recording ||
           awaitingVerification ||
@@ -813,15 +829,9 @@
         composer();
         post("send", { prompt, runWorkflow: true });
       };
-      el("live").onclick = () => {
-        live = true;
-        el("prompt").value = "";
-        save();
-        composer();
-      };
       el("terminal").onclick = () => post("terminal");
       el("changes").onclick = () =>
-        post("changes", { recorded: !live && progress >= 3 && progress < 4 });
+        post("changes", { recorded: progress >= 3 && progress < 4 });
       el("agent-source").onclick = () => post("source", { file: "agent" });
       el("agent-tools").onclick = () => post("source", { file: "tools" });
       for (const b of document.querySelectorAll("[data-folder]"))

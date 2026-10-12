@@ -55,7 +55,7 @@ The panel introduces the SkyServe agent and source, EvalsWiki and evaluation fol
 then opens **Code assistant + RELAI**. Its first three editable requests replay a
 clearly labeled precomputed run: risk analysis, a genuinely adaptive ten-or-more-turn
 seat-change evaluation and simulation, and optimization with independent verification.
-Results lead with measured outcomes; commands, transcripts and evidence remain under one collapsed details control. Initialization duration is shown only with a completed `relai init` receipt. Folder cards explicitly open the real repository folders in the Explorer. Proposed changes open in read-only native VS Code diffs before application.
+Each replayed request reveals a short measured finding. The adaptive simulation can be explored one exchange at a time; command logs, raw patches and evidence paths stay in the repository. Initialization duration is shown only with a completed `relai init` receipt. Folder cards explicitly open the real repository folders in the Explorer. The single Code changes action opens a read-only native VS Code diff before application.
 No recorded step starts a live command or displays a fake running indicator.
 
 The fourth request explicitly applies the verified code patch to this workspace.
