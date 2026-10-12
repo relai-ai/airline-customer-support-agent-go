@@ -27,4 +27,25 @@ function workflowView(i) {
 }
 function shouldPrefill(draft, previousPreset) { return !draft.trim() || draft === previousPreset; }
 function restoreOutputScroll(element, previous, live) { element.scrollTop = live ? element.scrollHeight : (previous ?? 0); }
-if (typeof module !== 'undefined') module.exports = { workflowSteps, workflowView, shouldPrefill, startingRequest, stepValue, restoreOutputScroll };
+function commandResultView(result) {
+  let value = result.content;
+  if (typeof value === 'string') {
+    try { value = JSON.parse(value); } catch { /* Plain command output. */ }
+  }
+  const output = typeof value === 'string' ? value : String(value?.output ?? value?.message ?? value?.error ?? '');
+  const failed = result.status === 'error' || value?.status === 'failed' || (typeof value?.exitCode === 'number' && value.exitCode !== 0);
+  let summary;
+  if (!failed) summary = output ? 'Command completed. ' + (typeof value === 'string' && !output.includes('\n') ? output : '') : 'Command completed.';
+  else if (value?.timedOut) summary = 'The command timed out before it finished.';
+  else if (/HTTP 503/.test(output)) summary = 'The RELAI service was unavailable' + (output.includes('/review-anchor/') ? ' during optimization review' : '') + ' (HTTP 503). The command did not complete.';
+  else if (/HTTP 413|Payload Too Large|request body.*too large/i.test(output)) summary = 'The request exceeded the playground’s payload limit. The command did not complete.';
+  else if (/HTTP 401|session.*expired/i.test(output)) summary = 'The playground session could not be authenticated or has expired. Start a fresh session before retrying.';
+  else if (/HTTP 504|upstream.*timed out/i.test(output)) summary = 'The backend took too long to respond. The command did not complete.';
+  else {
+    const reason = output.split('\n').filter(line => /error|failed|requires|denied/i.test(line)).at(-1);
+    summary = 'The command did not complete' + (typeof value?.exitCode === 'number' ? ' (exit code ' + value.exitCode + ')' : '') + '.' + (reason ? ' ' + reason : '');
+  }
+  const metadata = failed && typeof value?.exitCode === 'number' ? 'Exit code: ' + value.exitCode + '\n\n' : '';
+  return { summary: summary.trim(), details: metadata + (output || (value && typeof value === 'object' ? JSON.stringify(value, null, 2) : '')) };
+}
+if (typeof module !== 'undefined') module.exports = { workflowSteps, workflowView, shouldPrefill, startingRequest, stepValue, restoreOutputScroll, commandResultView };

@@ -601,7 +601,7 @@
         const n = document.createElement("div");
         n.className = "message " + (role === "user" ? "user" : "assistant");
         n.append(
-          node("small", role === "user" ? "YOU" : "CODE ASSISTANT + RELAI"),
+          node("small", role === "user" ? "YOU" : "Code Assistant + RELAI"),
           formatted(content),
         );
         return n;
@@ -825,7 +825,6 @@
               ),
             );
             if (job && !job.result) {
-              row.append(working("Running in your workspace…"));
               const out = node(
                 "pre",
                 job.progress?.output || "Waiting for command output…",
@@ -844,16 +843,13 @@
             }
             root.append(row);
           }
-          if (m.result)
-            root.append(
-              details(
-                "Live result · " + m.result.status,
-                typeof m.result.content === "string"
-                  ? m.result.content
-                  : JSON.stringify(m.result.content, null, 2),
-                "live-result:" + m.result.call_id,
-              ),
-            );
+          if (m.result) {
+            const result = commandResultView(m.result);
+            const row = node("div", "");
+            row.append(formatted(result.summary));
+            if (result.details) row.append(details("Technical details", result.details, "live-result:" + m.result.call_id));
+            root.append(row);
+          }
         }
         busy = Boolean(sent || replayPending || i.pendingTurn) || i.jobs?.some((j) => !j.result);
         const next = i.messages
@@ -962,7 +958,7 @@
             ["Use RELAI to create an agent test for unvalidated seat changes with at least 10 turns and a sophisticated adversarial user. Show me the readable simulation results.",
              "Use RELAI to create a new agent test for the unvalidated seat-change risk with at least 10 turns and a sophisticated adversarial user. Show me the readable results of the agent simulation against this test."],
             ["Use RELAI to fix the issue discovered in this agent test.", "Use RELAI to optimize the agent."],
-            ["These changes look great. Apply them."],
+            ["These changes look great. Apply them.", "these changes look great; apply"],
           ];
           el("prompt").value =
             saved.draft && !previousPresets[progress]?.includes(saved.draft)

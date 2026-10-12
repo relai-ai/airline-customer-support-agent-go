@@ -243,3 +243,15 @@ test("recorded and edited requests dispatch distinct actions, and apply is expli
   assert.equal(sent.at(-1).action, "recorded");
   assert.equal(sent.at(-1).step, 3);
 });
+
+test("command failures are human-readable and JSON-escaped logs become normal text", () => {
+  const { commandResultView } = require("./workflow");
+  const result = commandResultView({ status: "error", content: JSON.stringify({ status: "failed", exitCode: 1, output: "Optimizer\nPOST /api/v1/backend-agent/optimizer/review-anchor/ failed with HTTP 503 after 3 attempts" }) });
+  assert.match(result.summary, /unavailable during optimization review/);
+  assert.ok(!result.summary.includes('"status"'));
+  assert.ok(result.details.includes("Optimizer\nPOST"));
+  assert.ok(!result.details.includes('\\nPOST'));
+  assert.match(commandResultView({ status: "error", content: { exitCode: 1, output: "HTTP 413 Payload Too Large" } }).summary, /payload limit/);
+  assert.match(commandResultView({ status: "error", content: { timedOut: true, output: "waiting" } }).summary, /timed out/);
+  assert.match(commandResultView({ status: "success", content: "Comparison recorded." }).summary, /Comparison recorded/);
+});
