@@ -1,28 +1,18 @@
-# From a plausible answer to evidence of improvement
+# Seat-change playground
 
-This prepared airline agent has already gone through one RELAI improvement cycle.
-The recorded target was to decline off-topic requests while continuing to help
-with legitimate airline questions, including after an off-topic turn.
+The walkthrough starts with the measured airline source, investigates seat-change
+risks, replays an adaptive adversarial test, and shows the independently verified
+optimization patch. Review the diff and explicitly apply it before trying the
+improved agent. Editable requests can also use the live session gateway.
 
-## Recorded result — not a live run
+- [Recording and provenance](../recorded/README.md)
+- [Measured verification and limitations](../recorded/verification.json)
+- [Workspace and runtime setup](../../.e2b/README.md)
 
-The saved evaluation score improved from **0.4444 to 1.0** on that recorded task.
-The two saved regression runs completed with their listed evaluator scores at 1.0.
-These are individual recorded runs using **gpt-4.1**, not a statistical reliability
-estimate, a speed benchmark, or proof of performance on the current model profile.
+The independent aggregate improved from 10% to 90% in the recorded trial. The
+semantic judge retained one deduction; this is evidence of one measured trial,
+not universal reliability. The regression tasks in `tests/` cover off-topic
+handling and commercial grounding and remain available for reruns.
 
-- [Results and limitations](results.json)
-- [Off-topic and recovery conversation](airline-off-topic-refusal.trajectory.json)
-- [Seat-change grounding conversation](airline-seat-fee-grounding.trajectory.json)
-
-## Try the same process on a new scenario
-
-1. Choose a challenge in the RELAI assistant panel.
-2. Describe what you expect in your own words.
-3. Review the proposed test and approve its execution.
-4. Compare the baseline with the result after optimization.
-5. Inspect the code changes and rerun regressions.
-
-A scenario that already passes is a useful result. The assistant must not invent a
-failure or weaken a test to manufacture an improvement. Airline data is synthetic;
-new commands, file changes and execution results are real.
+Destroy the sandbox and create a fresh one to reset it. Never snapshot injected
+credentials or visitor data.

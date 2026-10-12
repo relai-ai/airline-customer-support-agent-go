@@ -8,4 +8,4 @@ Label recorded fallback results as recorded; limited regression results do not p
 
 ## Evidence
 
-[Staff runbook](relai://repo/DEMO.md), [checkpoint guidance](relai://repo/demo/README.md), [E2B guidance](relai://repo/.e2b/README.md), and [challenge evidence policy](relai://repo/demo/challenges/unknown-fare/README.md).
+[Recording provenance](relai://repo/demo/recorded/README.md) and [release checks](relai://repo/.e2b/README.md).

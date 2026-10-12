@@ -6,4 +6,4 @@ This outage is a deliberately injected synthetic fixture, not a real upstream in
 
 ## Evidence
 
-[Challenge specification](relai://repo/demo/challenges/booking-outage/README.md), [catalog](relai://repo/demo/challenges/catalog.json), and [fixture implementation](relai://repo/airline/challenges.go).
+[Retained baseline fixture](relai://repo/airline/challenges.go). The current guided walkthrough does not select this fixture.

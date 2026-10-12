@@ -1,6 +1,0 @@
-{
-  "id": "playground-booking-outage",
-  "input": {"type": "fixed", "turns": ["Can you look up my booking SKY123 and tell me my current seat?"]},
-  "services": {},
-  "disclosure": "Controlled-tool-failure: RELAI_DEMO_CHALLENGE=booking-outage deliberately injects a synthetic nonretryable booking lookup outage; this is not a real upstream incident. All business data is synthetic."
-}

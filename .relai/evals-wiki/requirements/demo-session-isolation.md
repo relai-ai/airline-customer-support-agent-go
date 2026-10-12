@@ -8,4 +8,4 @@ E2B sandboxes must disable public traffic and have finite kill timeouts. The das
 
 ## Evidence
 
-[Staff runbook](relai://repo/DEMO.md), [checkpoint guidance](relai://repo/demo/README.md), and [E2B guidance](relai://repo/.e2b/README.md).
+[Playground runtime](relai://repo/.e2b/README.md).

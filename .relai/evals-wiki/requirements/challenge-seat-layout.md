@@ -6,4 +6,4 @@ This is a documented new challenge requirement, not evidence of demonstrated age
 
 ## Evidence
 
-[Challenge specification](relai://repo/demo/challenges/invalid-seat/README.md), [catalog](relai://repo/demo/challenges/catalog.json), and [fixture selector](relai://repo/airline/challenges.go), which injects no regression for this challenge.
+[Seat scenario](relai://repo/demo/challenges/invalid-seat/README.md), [adversarial test](relai://repo/.relai/harbor/agent-tests/adversarial-seat-layout-verified/README.md), and [recorded verification](relai://repo/demo/recorded/verification.json).

@@ -1,1 +1,0 @@
-{"command":"env RELAI_DEMO_CHALLENGE=booking-outage python3 /app/project_adapter.py"}

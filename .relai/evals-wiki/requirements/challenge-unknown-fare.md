@@ -6,4 +6,4 @@ This is a documented new challenge requirement, not a claim of baseline complian
 
 ## Evidence
 
-[Challenge specification](relai://repo/demo/challenges/unknown-fare/README.md), [catalog](relai://repo/demo/challenges/catalog.json), and [fixture selector](relai://repo/airline/challenges.go), which injects no behavioral regression for this challenge.
+[Baggage tool](relai://repo/airline/tools.go) and [grounding instructions](relai://repo/airline/agent.go). This remains a risk hypothesis; no unknown-fare evaluation is packaged in the current walkthrough.

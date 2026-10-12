@@ -2,7 +2,7 @@
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
-# This hook installs tools only. Never authenticate or call models in a prebuild.
+# Install the playground tools only. Never authenticate or call models in a prebuild.
 mkdir -p "$HOME/.local/bin" "$HOME/.local/share/relai-demo"
 export PATH="$HOME/.local/bin:$PATH"
 npm install --global --prefix "$HOME/.local" @openai/codex@0.156.0
@@ -33,4 +33,4 @@ go build -o /tmp/relai-airline-demo ./cmd/airline-support
   relai --version
   uv --version
 } > "$HOME/.local/share/relai-demo/tool-versions.txt"
-printf '\nEnvironment installed. Read DEMO.md before authenticating or presenting.\n'
+printf '\nEnvironment installed. Read .e2b/README.md for the playground runtime.\n'

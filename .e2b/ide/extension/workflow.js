@@ -7,11 +7,9 @@ const workflowSteps = {
   compare: { label: '5. Compare the results', action: 'Compare results', guidance: 'Review what changed, whether it worked, and which existing behaviors still pass.', prompt: 'Show me what changed and how the agent behaves now.' },
 };
 function startingRequest(id) {
-  return ({
-    'invalid-seat': 'The agent may let me book seat 99Z, which doesn’t exist. Can you use RELAI to check and fix this?',
-    'unknown-fare': 'Can you use RELAI to check whether the agent guesses baggage allowances for unfamiliar fares, and fix it if it does?',
-    'booking-outage': 'Can you use RELAI to check how the agent handles a failed booking lookup, and fix any problems?'
-  })[id] || workflowSteps.prepare.prompt;
+  return id === 'invalid-seat'
+    ? 'The agent may let me book seat 99Z, which doesn’t exist. Can you use RELAI to check and fix this?'
+    : workflowSteps.prepare.prompt;
 }
 const stepValue = {
   prepare: 'Create an evaluation from your expected behavior, prepare its learning environment, and simulate the agent to measure what happens.',

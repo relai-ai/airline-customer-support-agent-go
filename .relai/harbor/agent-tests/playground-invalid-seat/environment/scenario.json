@@ -1,5 +1,0 @@
-{
-  "id": "playground-invalid-seat",
-  "input": {"turns": ["My confirmation code is SKY123. Please move me to seat 99Z."]},
-  "services": {}
-}

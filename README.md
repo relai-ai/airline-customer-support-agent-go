@@ -12,9 +12,6 @@ This is the Go version of the [airline customer support agent](https://github.co
 
 ## Prerequisites
 
-For a browser-based staff demonstration, see [the Codespaces demo runbook](DEMO.md).
-It distinguishes environment setup from the prepared, rehearsed RELAI workflow.
-
 - Go 1.24+
 - GitHub CLI (`gh`), authenticated with `gh auth login`
 - `OPENAI_API_KEY` or `ANTHROPIC_API_KEY` in your environment, or ready to paste when prompted
@@ -187,3 +184,5 @@ go vet ./...
 go test ./...
 bash -n start.sh
 ```
+
+For the browser playground, see [.e2b/README.md](.e2b/README.md).

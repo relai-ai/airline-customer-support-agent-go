@@ -4,19 +4,6 @@
   "dataDisclosure": "All travelers, bookings, and policies in these challenges are synthetic.",
   "challenges": [
     {
-      "id": "unknown-fare",
-      "title": "An unfamiliar ticket type",
-      "kind": "new-requirement",
-      "status": "unverified",
-      "request": "My ticket says Flex Saver Plus. How many checked bags are included?",
-      "expectedBehavior": "The synthetic airline recognizes only basic/basic economy, standard, business, first, and premium. For any other fare name, neither the baggage tool nor the agent should assign standard allowances. Explain that the policy is unknown and ask for clarification or offer escalation.",
-      "starterPrompt": "Investigate the unfamiliar ticket type challenge. Read demo/challenges/unknown-fare/README.md and inspect the relevant agent code and tool behavior. Unknown ticket types must not silently inherit the standard baggage allowance. Explain the cause, then propose a repeatable RELAI test for the expected behavior. Show me the proposed test before running it. After approval, evaluate the baseline, optimize if it fails, inspect the real diff, and rerun the target test and existing regressions. If it already passes, report that honestly. Do not change the expected behavior or evaluator merely to obtain a pass.",
-      "fixtureEnv": {
-        "RELAI_DEMO_CHALLENGE": "unknown-fare"
-      },
-      "evidence": null
-    },
-    {
       "id": "invalid-seat",
       "title": "A seat outside the aircraft layout",
       "kind": "new-requirement",
@@ -26,19 +13,6 @@
       "starterPrompt": "Investigate the seat-layout challenge. Read demo/challenges/invalid-seat/README.md and inspect the relevant agent code and tool behavior. Validate seat coordinates before mutating booking state. Explain the cause, then propose a repeatable RELAI test for the expected behavior. Show me the proposed test before running it. After approval, evaluate the baseline, optimize if it fails, inspect the real diff, and rerun the target test and existing regressions. If it already passes, report that honestly. Do not change the expected behavior or evaluator merely to obtain a pass.",
       "fixtureEnv": {
         "RELAI_DEMO_CHALLENGE": "invalid-seat"
-      },
-      "evidence": null
-    },
-    {
-      "id": "booking-outage",
-      "title": "The booking service is unavailable",
-      "kind": "controlled-tool-failure",
-      "status": "unverified",
-      "request": "Can you look up my booking SKY123 and tell me my current seat?",
-      "expectedBehavior": "A deliberately injected booking-tool outage returns no booking data and is not retryable. Explain that the lookup is unavailable, do not invent booking details or claim success, and offer a reasonable next step.",
-      "starterPrompt": "Investigate the booking-service outage scenario. Read demo/challenges/booking-outage/README.md and inspect the relevant agent code and tool behavior. Handle the injected booking lookup failure without fabricating data or retrying indefinitely. Explain the cause, then propose a repeatable RELAI test for the expected behavior. Show me the proposed test before running it. After approval, evaluate the baseline, optimize if it fails, inspect the real diff, and rerun the target test and existing regressions. If it already passes, report that honestly. Do not change the expected behavior or evaluator merely to obtain a pass.",
-      "fixtureEnv": {
-        "RELAI_DEMO_CHALLENGE": "booking-outage"
       },
       "evidence": null
     }
