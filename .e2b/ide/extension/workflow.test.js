@@ -1,57 +1,166 @@
-const { test } = require('node:test');
-const assert = require('node:assert/strict');
-const { workflowView, shouldPrefill } = require('./workflow');
-test('handoff advances only from persisted assistant completion and passes honest baselines to verification', () => {
-  assert.equal(workflowView({}).step, 'prepare');
-  assert.equal(workflowView({step:'evaluate'}).step, 'evaluate');
-  assert.equal(workflowView({step:'evaluate',nextStep:'optimize'}).step,'optimize');
-  assert.equal(workflowView({step:'evaluate',nextStep:'verify'}).step,'verify');
-  assert.equal(workflowView({step:'verify',nextStep:'compare'}).step,'compare');
-  assert.equal(workflowView({nextStep:'complete'}).prompt,'');
+const { test } = require("node:test");
+const assert = require("node:assert/strict");
+const { workflowView, shouldPrefill } = require("./workflow");
+test("handoff advances only from persisted assistant completion and passes honest baselines to verification", () => {
+  assert.equal(workflowView({}).step, "prepare");
+  assert.equal(workflowView({ step: "evaluate" }).step, "evaluate");
+  assert.equal(
+    workflowView({ step: "evaluate", nextStep: "optimize" }).step,
+    "optimize",
+  );
+  assert.equal(
+    workflowView({ step: "evaluate", nextStep: "verify" }).step,
+    "verify",
+  );
+  assert.equal(
+    workflowView({ step: "verify", nextStep: "compare" }).step,
+    "compare",
+  );
+  assert.equal(workflowView({ nextStep: "complete" }).prompt, "");
 });
-test('polling and step transitions preserve edited and unsent drafts', () => {
-  assert.equal(shouldPrefill('My follow-up question','Old suggestion'),false);
-  assert.equal(shouldPrefill('Old suggestion','Old suggestion'),true);
-  assert.equal(shouldPrefill('','Old suggestion'),true);
+test("polling and step transitions preserve edited and unsent drafts", () => {
+  assert.equal(shouldPrefill("My follow-up question", "Old suggestion"), false);
+  assert.equal(shouldPrefill("Old suggestion", "Old suggestion"), true);
+  assert.equal(shouldPrefill("", "Old suggestion"), true);
 });
-test('packaged webview script compiles after helper injection', () => {
-  const fs = require('node:fs');
-  const path = require('node:path');
-  const vm = require('node:vm');
-  const html = fs.readFileSync(path.join(__dirname,'panel.html'),'utf8').replace('WORKFLOW_HELPERS',fs.readFileSync(path.join(__dirname,'workflow.js'),'utf8'));
+test("packaged webview script compiles after helper injection", () => {
+  const fs = require("node:fs");
+  const path = require("node:path");
+  const vm = require("node:vm");
+  const html = fs
+    .readFileSync(path.join(__dirname, "panel.html"), "utf8")
+    .replace(
+      "WORKFLOW_HELPERS",
+      fs.readFileSync(path.join(__dirname, "workflow.js"), "utf8"),
+    );
   const script = html.match(/<script nonce="NONCE">([\s\S]*?)<\/script>/)[1];
-  assert.doesNotThrow(()=>new vm.Script(script));
+  assert.doesNotThrow(() => new vm.Script(script));
 });
-test('short editable requests cover real evaluation and verified retry, without a report prompt', () => {
-  const {workflowSteps}=require('./workflow');
-  assert.ok(workflowSteps.prepare.prompt.includes('check this behavior'));
-  assert.ok(workflowSteps.evaluate.prompt.includes('Run the RELAI test'));
-  assert.ok(workflowSteps.verify.prompt.includes('If verified, apply it here'));
-  assert.ok(Object.values(workflowSteps).every(s=>s.prompt.length<220));
-});
-
-test('scenario context stays visible and both modes expose the real RELAI workflow', () => {
-  const fs=require('node:fs');
-  const html=fs.readFileSync(require('node:path').join(__dirname,'panel.html'),'utf8');
-  assert.ok(html.includes('<section id="scenario-detail"'));
-  assert.ok(!html.includes('<details id="scenario-detail"'));
-  assert.ok(!html.includes("el('scenario-detail').open"));
-  assert.ok(html.includes('https://cli-docs.relai.ai/plugins#install-the-plugin'));
-  const {startingRequest,stepValue}=require('./workflow');
-  assert.ok(startingRequest('unknown-fare').includes('fix it if it does'));
-  assert.ok(startingRequest('invalid-seat').includes('may let me book')); // not an asserted observed failure
-  assert.ok(stepValue.prepare.includes('learning environment'));
-  assert.ok(stepValue.optimize.includes('candidate improvements'));
+test("short editable requests cover real evaluation and verified retry, without a report prompt", () => {
+  const { workflowSteps } = require("./workflow");
+  assert.ok(workflowSteps.prepare.prompt.includes("check this behavior"));
+  assert.ok(workflowSteps.evaluate.prompt.includes("Run the RELAI test"));
+  assert.ok(workflowSteps.verify.prompt.includes("If verified, apply it here"));
+  assert.ok(Object.values(workflowSteps).every((s) => s.prompt.length < 220));
 });
 
-test('live output follows new lines and completed output retains its reading position', () => {
-  const {restoreOutputScroll}=require('./workflow');
-  const output={scrollTop:0,scrollHeight:900};
-  restoreOutputScroll(output,120,true);
-  assert.equal(output.scrollTop,900);
-  output.scrollHeight=1200;
-  restoreOutputScroll(output,900,true);
-  assert.equal(output.scrollTop,1200);
-  restoreOutputScroll(output,120,false);
-  assert.equal(output.scrollTop,120);
+test("live output follows new lines and completed output retains its reading position", () => {
+  const { restoreOutputScroll } = require("./workflow");
+  const output = { scrollTop: 0, scrollHeight: 900 };
+  restoreOutputScroll(output, 120, true);
+  assert.equal(output.scrollTop, 900);
+  output.scrollHeight = 1200;
+  restoreOutputScroll(output, 900, true);
+  assert.equal(output.scrollTop, 1200);
+  restoreOutputScroll(output, 120, false);
+  assert.equal(output.scrollTop, 120);
+});
+
+test("recorded and edited requests dispatch distinct actions, and apply is explicit", () => {
+  const fs = require("node:fs"),
+    vm = require("node:vm"),
+    path = require("node:path");
+  const sent = [],
+    handlers = {};
+  class Element {
+    constructor(tag = "div") {
+      this.tag = tag;
+      this.children = [];
+      this.value = "";
+      this.textContent = "";
+      this.scrollHeight = 100;
+      this.scrollTop = 0;
+      this.clientHeight = 100;
+      this.dataset = {};
+    }
+    append(...items) {
+      this.children.push(...items);
+    }
+    prepend(...items) {
+      this.children.unshift(...items);
+    }
+    replaceChildren(...items) {
+      this.children = items;
+    }
+    querySelectorAll() {
+      return [];
+    }
+    focus() {}
+    setAttribute(name, value) {
+      this[name] = value;
+    }
+    click() {
+      this.onclick?.();
+    }
+  }
+  const elements = new Map();
+  const doc = {
+    getElementById: (id) => {
+      if (!elements.has(id)) elements.set(id, new Element());
+      return elements.get(id);
+    },
+    createElement: (tag) => new Element(tag),
+    querySelectorAll: () => [],
+  };
+  const html = fs
+    .readFileSync(path.join(__dirname, "panel.html"), "utf8")
+    .replace(
+      "WORKFLOW_HELPERS",
+      fs.readFileSync(path.join(__dirname, "workflow.js"), "utf8"),
+    );
+  const context = {
+    document: doc,
+    window: {
+      addEventListener: (_event, fn) => {
+        handlers.message = fn;
+      },
+    },
+    acquireVsCodeApi: () => ({
+      getState: () => null,
+      setState: () => {},
+      postMessage: (value) => sent.push(value),
+    }),
+    setTimeout: () => 1,
+    clearTimeout: () => {},
+  };
+  vm.runInNewContext(
+    html.match(/<script nonce="NONCE">([\s\S]*?)<\/script>/)[1],
+    context,
+  );
+  const { prompts } = require("./recorded");
+  const recording = {
+    verificationStatus: "verified",
+    prompts,
+    steps: prompts
+      .slice(0, 3)
+      .map(() => ({ text: "Real evidence", durationSeconds: 60 })),
+    turns: [],
+    comparison: {
+      before: "baseline",
+      after: "verified",
+      regressions: "passed",
+    },
+    diff: "patch",
+  };
+  handlers.message({
+    data: { type: "loaded", recording, recordedProgress: 0 },
+  });
+  assert.equal(elements.get("prompt").value, prompts[0]);
+  elements.get("send").click();
+  assert.equal(sent.at(-1).action, "recorded");
+  assert.equal(sent.at(-1).step, 0);
+  handlers.message({ data: { type: "recorded", recordedProgress: 1 } });
+  assert.equal(elements.get("prompt").value, prompts[1]);
+  elements.get("prompt").value = "My own question";
+  elements.get("prompt").oninput();
+  assert.equal(elements.get("send")["aria-label"], "Send message");
+  elements.get("send").click();
+  assert.equal(sent.at(-1).action, "send");
+  assert.equal(sent.at(-1).prompt, "My own question");
+  handlers.message({
+    data: { type: "loaded", recording, recordedProgress: 3 },
+  });
+  elements.get("send").click();
+  assert.equal(sent.at(-1).action, "recorded");
+  assert.equal(sent.at(-1).step, 3);
 });

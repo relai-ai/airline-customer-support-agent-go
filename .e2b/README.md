@@ -1,9 +1,10 @@
 # Airline E2B environment
 
-This template prepares the airline source, Go, Node, Python, Codex, RELAI, uv,
-Docker and Compose, plus the optimized source and sanitized regression evidence.
-Model access, RELAI session seeding and the second demonstrated failure remain
-separate. See `demo/README.md` for measured results and limitations.
+This template prepares the original airline source, Go, Node, Python, Codex,
+RELAI, uv, Docker and Compose. The developer walkthrough stores measured
+optimization evidence and its patch separately; only an explicit application
+request changes the visitor's agent files. Model access uses the scoped session
+gateway, with provider keys kept on the backend.
 
 Authenticate on the host with `npx --yes @e2b/cli@2.21.2 auth login`, then run
 `bash .e2b/build.sh`. Record the resulting template/build IDs before promoting it.
@@ -50,27 +51,36 @@ then starts the IDE. Browser HTTP/WebSocket access is authenticated by the
 playground service on an isolated per-session origin; code-server itself is
 reachable only through that proxy. Do not enable public E2B traffic.
 
-The panel offers three scenarios with their common agent-problem categories,
-then one choice between the RELAI playground coding assistant and a manual
-terminal. The assistant simulates the workflow used with Codex, Claude Code or
-Cursor; it is not an embedded instance of those products. Each editable prompt authorizes one step: prepare the test, evaluate, optimize a
-measured failure, verify the resulting branch and regressions, then compare.
-Routine commands continue within that step; the assistant explains its results
-and pauses before prefilling the next request. An unsent draft is never overwritten.
-Stop revokes continuation and cancels running commands.
-Older sessions without workflow consent still require command approval.
+The panel introduces the SkyServe agent and source, EvalsWiki and evaluation folders,
+then opens **Code assistant + RELAI**. Its first three editable requests replay a
+clearly labeled precomputed run: risk analysis, a genuinely adaptive ten-or-more-turn
+seat-change evaluation and simulation, and optimization with independent verification.
+Results lead with measured outcomes; commands, transcripts and evidence remain under one collapsed details control. Initialization duration is shown only with a completed `relai init` receipt. Folder cards explicitly open the real repository folders in the Explorer. Proposed changes open in read-only native VS Code diffs before application.
+No recorded step starts a live command or displays a fake running indicator.
 
-Routine commands and output stay in collapsed details. The final comparison
-quotes completed command results, with source command receipts and explicit
-missing checks. Model interpretation is labeled separately; no score is inferred
-from command success and a passing baseline does not force optimization.
-The terminal, files, tests, and changes are real. Recorded GPT-4.1 scores are not evidence of current
-production-profile performance. The Go agent supports explicit
-`AIRLINE_MODEL_PROVIDER=relai` routing through the same restricted gateway.
+The fourth request explicitly applies the verified code patch to this workspace.
+Source hashes and `git apply --check` protect user edits; conflicts are preserved.
+After applying, freeform requests run live through the
+session-scoped gateway. Editing a recorded request changes its send action to **Send message**;
+it never attaches a recorded answer to a different user prompt. Users may also skip
+the replay and use the live conversation or the real terminal directly.
 
-Build a separate local image for fixture testing:
-`docker build --platform linux/amd64 -f .e2b/Dockerfile -t relai-airline-ide:local .`
-Run the dashboard repository's `scripts/ide-smoke.ts` with Node/tsx to verify
+The original source remains unchanged in the template; recorded optimizer changes
+are stored separately until application. A recorded result proves only its measured
+trial, not universal reliability. The guided example focuses on unvalidated seat
+changes. No provider API-key configuration is needed
+in the playground. New workspace lifetimes default to 120 minutes when the companion
+service and backend lifetime support have been deployed together. Lifetime is
+separate from the backend request budget; replay consumes no model requests.
+The recording process may use separate normally capped authoring and optimization
+sessions. Preserve that provenance and measure independent verification before
+publishing an accepted patch.
+
+Build the local image from the verified recording bundle:
+`docker build -f .e2b/Dockerfile -t relai-airline-ide:local .`
+The build validates the original source hashes and recording integrity. Browser
+smoke tests use a fixture model response; they do not establish optimization quality.
+Run the dashboard repository's `apps/playground-api/scripts/ide-smoke.ts` with Node/tsx to verify
 startup, the extension, WebSockets and access revocation without live AI calls.
 The earlier E2B build IDs above do not contain this IDE.
 
@@ -82,6 +92,6 @@ correctly. A model may still pass, so only live evaluation establishes a failure
 Optimizer setup must use the CLI's interactive scope selection, never a hand-written
 scope artifact. Tests and evaluators are not optimizer edit targets.
 
-Extension handoff/draft regression checks: `node --test .e2b/ide/extension/workflow.test.js`.
-The companion playground service must support `step` requests and `finish_step`
-handoffs before promoting this template. Backend APIs are unchanged.
+Extension checks: `node --test .e2b/ide/extension/*.test.js`.
+The companion service must support live conversation continuation before promoting
+this template. The backend must accept two-hour scoped grants.

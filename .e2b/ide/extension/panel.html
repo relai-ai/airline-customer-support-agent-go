@@ -1,89 +1,873 @@
-<!doctype html><html><head><meta charset="utf-8"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'nonce-NONCE'; script-src 'nonce-NONCE'"><meta name="viewport" content="width=device-width,initial-scale=1">
-<style nonce="NONCE">
-body{font:14px/1.6 var(--vscode-font-family);color:var(--vscode-foreground);max-width:900px;margin:auto;padding:28px}h1{font-size:28px;line-height:1.2;letter-spacing:-.6px}h2{font-size:18px}.muted,small{color:var(--vscode-descriptionForeground)}.card{border:1px solid var(--vscode-panel-border);border-radius:10px;padding:20px;margin:16px 0}button{cursor:pointer;background:var(--vscode-button-background);color:var(--vscode-button-foreground);border:0;padding:10px 14px;border-radius:6px;margin:5px 8px 5px 0}button:disabled{opacity:.5;cursor:wait}textarea{box-sizing:border-box;width:100%;min-height:90px;background:var(--vscode-input-background);color:var(--vscode-input-foreground);border:1px solid var(--vscode-input-border);padding:12px;font:inherit;border-radius:6px}pre{white-space:pre-wrap;overflow-wrap:anywhere;max-height:300px;overflow:auto;padding:14px;background:var(--vscode-textCodeBlock-background)}.score{font-size:28px;font-weight:650}.message{margin:18px 0;border-left:2px solid var(--vscode-focusBorder);padding:0 16px;white-space:pre-wrap}.steps{font-size:12px;letter-spacing:.05em}details{margin:12px 0}summary{cursor:pointer}#status{padding:8px 0}[hidden]{display:none!important}button:focus-visible,textarea:focus-visible{outline:2px solid var(--vscode-focusBorder)}
-p{margin:14px 0 20px}h2{margin:0 0 16px}h3{font-size:14px;margin:24px 0 8px}.card{padding:26px;margin:28px 0}.card button{margin-top:18px}.steps{margin:28px 0}.message{margin:28px 0;padding:12px 18px}.message small{display:block;margin-bottom:12px}details{margin:24px 0}summary{padding:8px 0}pre{margin:18px 0}blockquote{border-left:3px solid var(--vscode-focusBorder);margin:22px 0;padding:12px 18px;background:var(--vscode-textCodeBlock-background)}.preset-grid{display:grid;gap:20px}.preset-grid>div{border-top:1px solid var(--vscode-panel-border);padding-top:12px}.preset-grid p{font-size:13px;color:var(--vscode-descriptionForeground);margin:10px 0 0}.utilities{margin-top:28px}
-.challenge{display:flex;flex-direction:column;align-items:flex-start;gap:16px}.challenge>h2,.challenge>p{margin:0}.challenge>small{display:block;margin-top:8px}.challenge>button{margin:0}
-.mode-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px}.mode-grid .card{margin:12px 0;display:flex;flex-direction:column;align-items:flex-start}.mode-grid button{margin-top:auto}.assistant-panel{border:1px solid var(--vscode-panel-border);border-radius:12px;overflow:hidden;margin:24px 0;background:var(--vscode-editor-background)}.assistant-header{padding:20px 24px;border-bottom:1px solid var(--vscode-panel-border)}.assistant-header h2{margin:0}.assistant-header p{font-size:12px;color:var(--vscode-descriptionForeground);margin:8px 0 0}.conversation{padding:0 24px}.conversation:empty{display:none}.user-message{background:var(--vscode-textCodeBlock-background);border:0;border-radius:10px;margin-left:32px}.assistant-message{border:0;padding-left:0;white-space:normal}.message p{margin:10px 0}.message h3,.message h4{margin:20px 0 10px}.composer{padding:20px 24px;border-top:1px solid var(--vscode-panel-border)}.composer h3{margin:0 0 12px}.composer .preset-grid{gap:16px;grid-template-columns:repeat(auto-fit,minmax(210px,1fr))}.assistant-panel .utilities{margin:0;padding:16px 24px;border-top:1px solid var(--vscode-panel-border)}.scenario small{display:block;margin-bottom:16px}
-.next-action{border-top:1px solid var(--vscode-panel-border);padding:16px 0 24px;margin:20px 0}.next-action details{margin:0 0 16px}.next-action button{margin-top:12px}.composer label{display:block;margin:16px 0 12px}.composer>button{margin-top:18px}
-.selection-summary{display:flex;gap:16px;align-items:center;flex-wrap:wrap;margin:24px 0}.selection-summary p{margin:0}.problem{font-weight:600}.comparison-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px}.comparison-grid .card{margin:0}#comparison{margin:32px 0}.comparison-grid blockquote{white-space:pre-wrap;overflow-wrap:anywhere;max-height:280px;overflow:auto}.assistant-header p{font-size:14px}.workflow-status{padding:16px 0;border-bottom:1px solid var(--vscode-panel-border)}
-
-html,body{height:100%;overflow:hidden}body{box-sizing:border-box;max-width:none;padding:0;display:flex;flex-direction:column;font:14px/1.5 var(--vscode-font-family)}body>small,body>h1,body>p.muted,body>#reference{display:none}#choices{overflow:auto;padding:28px;max-width:850px;margin:auto;width:calc(100% - 56px)}#selected{min-height:0;flex:1;display:flex;flex-direction:column;padding:0 20px}.selection-summary{flex-shrink:0;gap:12px;margin:0;padding:12px 0;border-bottom:1px solid var(--vscode-panel-border);font-size:12px}.selection-summary p{flex:1}.selection-summary button{padding:6px 10px;margin:0;background:transparent;color:var(--vscode-textLink-foreground)}#scenario-detail{flex-shrink:0;margin:0;font-size:12px}#scenario-detail .card{margin:0;padding:10px 0;border:0}#scenario-detail small,#scenario-detail h2,#scenario-detail #problem,#scenario-detail #situation{display:none}#scenario-detail blockquote{margin:6px 0;padding:8px 12px}#scenario-detail h3{font-size:12px;margin:6px 0}#scenario-detail p{margin:4px 0}#stage-value{font-size:12px;margin:4px 0 8px;color:var(--vscode-descriptionForeground)}#mode-choice,#terminal-mode{overflow:auto;padding:24px 0}#assistant-mode{display:flex;flex:1;min-height:0;margin:0;border:0;border-radius:0;flex-direction:column}.assistant-header{padding:10px 0;border:0;flex-shrink:0}.assistant-header h2{font-size:14px}.assistant-header p{font-size:12px;margin:4px 0 0}.conversation{flex:1;min-height:0;overflow:auto;padding:8px 4px 20px;scrollbar-gutter:stable}.conversation:empty{display:block}.message{padding:10px 14px;margin:12px 0;max-width:90%}.message small{font-size:11px;margin-bottom:6px}.message p{margin:6px 0}.user-message{margin-left:auto;width:fit-content}.assistant-message{max-width:100%;padding-left:0}.composer{flex-shrink:0;padding:12px 0 10px;border-top:1px solid var(--vscode-panel-border);background:var(--vscode-editor-background)}.composer label{display:none}.composer textarea{min-height:72px;max-height:120px;resize:vertical;padding:10px;font-size:14px}.composer>button{margin:8px 0 0;padding:8px 14px}.composer .preset-grid{display:inline-flex;margin:0 10px;gap:0}.composer .preset-grid button{background:transparent;color:var(--vscode-textLink-foreground);font-size:12px;padding:6px;margin:0}.composer-targets{display:flex;align-items:center;gap:8px;margin-bottom:8px}.composer-targets button{background:transparent;color:var(--vscode-descriptionForeground);padding:5px 10px;margin:0;font-size:12px}.composer-targets button[aria-pressed=true]{color:var(--vscode-button-foreground);background:var(--vscode-button-background)}#workspace-actions{margin-left:auto}.assistant-panel .utilities{padding:0;margin:0}.workflow-status{padding:4px 0;font-size:12px;border:0;flex-shrink:0}.workflow-status p{margin:0}.workflow-status button{display:none}.next-action{margin:8px 0;padding:0;border:0}.next-action details, .conversation>details{margin:8px 0;font-size:12px}.next-action summary,.conversation>details>summary{padding:2px 0;color:var(--vscode-descriptionForeground)}.next-action p{margin:4px 0;color:var(--vscode-descriptionForeground);font-size:12px}.next-action button{padding:6px 10px;margin:4px 6px 4px 0}pre{margin:6px 0;max-height:180px;font-size:12px}#status{font-size:12px;flex-shrink:0;margin:0 20px;padding:0;color:var(--vscode-errorForeground)}#status:empty{display:none}.comparison-inline{margin:16px 0;border:1px solid var(--vscode-panel-border);border-radius:8px;padding:14px}.comparison-inline h3{margin:0 0 8px}.comparison-grid{gap:12px;grid-template-columns:repeat(2,minmax(0,1fr))}.comparison-grid .card{padding:10px;border:0;background:var(--vscode-textCodeBlock-background)}.comparison-grid h3{font-size:12px}.comparison-grid blockquote{margin:0;padding:0;border:0;background:none;font-size:12px;max-height:130px}.comparison-inline details{margin:8px 0}.comparison-actions{display:flex;align-items:center;flex-wrap:wrap;gap:12px;margin-top:16px}.comparison-actions button{margin:0;padding:6px 10px}body>p:last-of-type{display:none}.chat-empty{color:var(--vscode-descriptionForeground);margin:12px 0}.agent-message{border-left:2px solid var(--vscode-focusBorder);padding-left:14px}.long-message details{margin:8px 0}.long-message summary{font-size:12px;color:var(--vscode-textLink-foreground)}@media(max-width:480px){#selected{padding:0 12px}.assistant-header p{font-size:11px}.comparison-grid{grid-template-columns:1fr}.selection-summary{font-size:11px}.composer-targets{gap:2px}.composer-targets button{padding:5px 6px}}
-</style></head>
-<body><small>RELAI · LIVE PLAYGROUND</small><h1>Turn an agent mistake into a verified improvement.</h1><p class="muted">Your own copy of the airline sample is ready. Investigate a scenario, create a test, and see what changes.</p>
-<details id="reference"><summary>What RELAI improved in this sample · recorded reference</summary><div class="card"><div id="scores" class="score">Loading measured results…</div><p id="score-context"></p><p class="muted">These are saved results from a specific test run, not a guarantee of overall reliability. Your new runs appear below.</p><button id="evidence">See the evidence</button></div></details>
-<section id="choices"><h2>1. Choose a scenario</h2><p id="disclosure" class="muted"></p><p class="muted">Changing scenarios keeps your code changes. Previous conversations are saved; returning to a scenario resumes its conversation.</p><div id="cards"></div></section>
-<section id="selected" hidden tabindex="-1">
-<div class="selection-summary"><p id="selection-summary"></p><button id="change-scenario">Change scenario</button><button id="switch-mode" hidden>Switch method</button></div><section id="scenario-detail" aria-label="Selected scenario and expected behavior"><div class="card scenario"><small>YOUR SELECTED SCENARIO</small><h2 id="title"></h2><p id="problem" class="problem"></p><p id="situation"></p><blockquote id="symptom"></blockquote><h3>What should happen</h3><p id="expected"></p><p id="verification" class="muted"></p></div></section>
-<section id="mode-choice"><h2>2. How would you like to investigate?</h2><p>Both options work on this scenario in the same prepared workspace. You can switch at any time.</p><div class="mode-grid"><div class="card"><small>GUIDED</small><h2>Coding assistant</h2><p>Experience how you would use RELAI through a coding assistant such as Codex, Claude Code, or Cursor.</p><button id="use-assistant">Open coding assistant</button></div><div class="card"><small>MANUAL</small><h2>Manual terminal</h2><p>Open the workspace terminal and run RELAI commands yourself. The selected scenario, code, and session access are ready.</p><button id="use-terminal">Open terminal</button></div></div></section>
-
-<section id="terminal-mode" hidden><h2>Run RELAI in the terminal</h2><p>RELAI and workspace access are configured. No API key is needed.</p><ol><li>Create a test and evaluator for the selected scenario.</li><li>Prepare its learning environment and simulate the agent.</li><li>Optimize a measured failure using evaluation feedback.</li><li>Rerun the test and regressions, then compare the results and changes.</li></ol><p>Read this scenario:</p><pre id="terminal-context"></pre><p><a href="https://cli-docs.relai.ai/">RELAI documentation</a> · <a href="https://cli-docs.relai.ai/plugins#install-the-plugin">Use RELAI in your coding assistant</a></p><p>Use <code>relai test create --help</code>, <code>relai simulate --help</code>, and <code>relai optimize --help</code> for the installed command options.</p><button id="reopen-terminal">Show terminal</button></section>
-<section id="assistant-mode" class="assistant-panel" hidden aria-label="Coding assistant conversation"><header class="assistant-header"><h2>RELAI coding assistant</h2><p>Experience how you would use RELAI through a coding assistant such as Codex, Claude Code, or Cursor.</p><p id="stage-value"></p></header><div id="workflow-status" class="utilities workflow-status" role="status"></div><div id="history" class="conversation" role="log" aria-live="polite"></div><section id="next-step" class="composer"><div class="composer-targets"><button id="talk-agent" type="button">Airline agent</button><button id="talk-assistant" type="button">Coding assistant</button><button id="workspace-actions" type="button">Code changes</button></div><label for="prompt">Your message</label><textarea id="prompt" maxlength="12000" placeholder="Ask a question or describe what you want to do with RELAI."></textarea><button id="send" type="button">Send message</button><div id="presets" class="preset-grid"></div></section></section>
-</section><p id="status" role="status" aria-live="polite"></p><p class="muted">Both modes use the same files. Switching modes keeps your work. To reset or end your temporary workspace, return to onboarding.</p>
-<script nonce="NONCE">
-WORKFLOW_HELPERS
-const vscode=acquireVsCodeApi(), el=id=>document.getElementById(id);let catalog=[],busy=false,timer,sentDraft=null,attemptedResult=null,attemptedCommand=null,comparisonSeen=null,browsingScenarios=false;
-let target='agent',drafts={agent:'',assistant:''},lastAgentCount=0;let selectedId=null, mode=null,activeStep='prepare',lastPreset=null,presetStep=null;let savedChoice=vscode.getState();let restoredTarget=Boolean(savedChoice?.target);
-if(savedChoice?.drafts){drafts=savedChoice.drafts;target=savedChoice.target==='assistant'?'assistant':'agent';el('prompt').value=drafts[target]||'';}if(typeof savedChoice?.draft==='string'){el('prompt').value=savedChoice.draft;lastPreset=savedChoice.lastPreset||null;presetStep=savedChoice.presetStep||null;}
-function saveDraft(){drafts[target]=el('prompt').value;vscode.setState({mode,challengeId:selectedId,draft:el('prompt').value,lastPreset,presetStep,target,drafts});}
-function setTarget(value){drafts[target]=el('prompt').value;target=value;el('prompt').value=drafts[target]||'';el('talk-agent').setAttribute('aria-pressed',String(target==='agent'));el('talk-assistant').setAttribute('aria-pressed',String(target==='assistant'));el('prompt').placeholder=target==='agent'?'Message the airline agent…':'Message the coding assistant…';saveDraft();setBusy(busy);}
-el('talk-agent').onclick=()=>setTarget('agent');el('talk-assistant').onclick=()=>setTarget('assistant');el('workspace-actions').onclick=()=>post('changes');
-function showMode(){el('mode-choice').hidden=!selectedId||Boolean(mode);el('assistant-mode').hidden=mode!=='assistant';el('terminal-mode').hidden=mode!=='terminal';el('switch-mode').hidden=!mode;el('selection-summary').textContent=selectedId?(catalog.find(c=>c.id===selectedId)?.title+' · '+(problems[selectedId]||'Agent behavior')+(mode?' · '+(mode==='assistant'?'Coding assistant':'Manual terminal'):'')):'';}
-function chooseMode(value){if(!selectedId)return;mode=value;showMode();saveDraft();post("mode",{mode,challengeId:selectedId});if(mode==='terminal')post('terminal');else{post('assistant');el('prompt').focus();}}
-el('use-assistant').onclick=()=>chooseMode('assistant');el('use-terminal').onclick=()=>chooseMode('terminal');el('reopen-terminal').onclick=()=>post('terminal');el('switch-mode').onclick=()=>{mode=null;showMode();saveDraft();post('mode',{mode:null,challengeId:selectedId});el('mode-choice').scrollIntoView({block:'nearest'});};
-el('change-scenario').onclick=()=>{if(busy)return;saveDraft();browsingScenarios=true;el('choices').hidden=false;el('selected').hidden=true;el('status').textContent='';el('cards').querySelector('button')?.focus();};
-function selectScenario(id){if(busy)return;browsingScenarios=false;if(id===selectedId){render(currentState);return;}drafts={agent:'',assistant:''};lastAgentCount=0;lastPreset=null;presetStep=null;restoredTarget=false;attemptedCommand=null;attemptedResult=null;el('prompt').value='';post('choose',{id});}
-function post(action,fields={}){vscode.postMessage({action,...fields});}
-function text(tag,value){const e=document.createElement(tag);e.textContent=value;return e;}
-// Render only a small Markdown subset with DOM text nodes. Model output never becomes HTML.
-function richMessage(value){
- const box=document.createElement('div');let fence=null;
- function inline(node,line){for(const part of line.split(/(\*\*[^*]+\*\*|`[^`]+`)/g)){if(part.startsWith('**')&&part.endsWith('**'))node.append(text('strong',part.slice(2,-2)));else if(part.startsWith('`')&&part.endsWith('`'))node.append(text('code',part.slice(1,-1)));else node.append(document.createTextNode(part));}}
- for(const line of value.split('\n')){
-  if(line.startsWith('```')){if(fence)fence=null;else{fence=text('pre','');box.append(fence);}continue;}
-  if(fence){fence.textContent+=line+'\n';continue;}
-  if(!line.trim())continue;
-  const heading=line.match(/^(#{1,4})\s+(.*)/);const bullet=line.match(/^[-*]\s+(.*)/);
-  const node=document.createElement(heading?'h'+Math.min(heading[1].length+1,4):bullet?'p':line.startsWith('> ')?'blockquote':'p');
-  inline(node,heading?heading[2]:bullet?'• '+bullet[1]:line.startsWith('> ')?line.slice(2):line);box.append(node);
- }
- return box;
-}
-function button(label,action){const e=text('button',label);e.onclick=action;return e;}
-function setBusy(value){busy=value;el('send').disabled=!value&&!el('prompt').value.trim();el('send').textContent=value?'Stop':'Send';el('change-scenario').disabled=value;el('change-scenario').title=value?'Stop the current work before changing scenarios':'';for(const b of el('presets').querySelectorAll('button'))b.disabled=value;}
-el('prompt').oninput=()=>{saveDraft();el('send').disabled=!busy&&!el('prompt').value.trim();};
-el('send').onclick=()=>{const prompt=el('prompt').value.trim();if(busy){const job=currentState?.jobs.find(j=>!j.result);const agent=currentState?.agentTurns?.find(t=>!t.response&&!t.error);post(job||agent?'cancel':'stop',job||agent?{id:job?.id||agent.jobId}:{});return;}if(!prompt)return;sentDraft=el('prompt').value;const kind=target;setBusy(true);el('status').textContent='';post(kind==='agent'?'try-agent':'send',{prompt,...(kind==='assistant'?(activeStep!=='complete'?{runWorkflow:true,step:activeStep}:{runWorkflow:false}):{})});timer=setTimeout(()=>post('refresh'),1500);};
-el('prompt').onkeydown=e=>{if(e.key==='Enter'&&!e.shiftKey&&!e.isComposing){e.preventDefault();if(!busy)el('send').click();}};
-let currentState;
-const problems={'unknown-fare':'Missing policy and unsupported assumptions','invalid-seat':'Invalid actions and business constraints','booking-outage':'Tool failures and invented results'};
-const situations={
-'unknown-fare':'A traveler asks about baggage for a fare the airline does not recognize. We will check whether the agent notices the missing policy instead of guessing an allowance.',
-'invalid-seat':'A traveler requests a seat outside the aircraft layout. We will check whether the agent validates the seat before changing the booking.',
-'booking-outage':'The booking service is deliberately unavailable in this scenario. We will check whether the agent explains the problem instead of inventing booking details.'};
-function workLabel(i){const job=i.jobs.find(j=>!j.result);if(!job)return i.pendingTurn?'Reviewing results and preparing the next step…':'Working';const c=job.command;return /relai\s+test\s+create/.test(c)?'Creating the repeatable RELAI test…':/relai\s+optimize/.test(c)?'Optimizing against the measured failure…':/relai\s+simulate/.test(c)?'Evaluating the agent and collecting real results…':/go\s+test/.test(c)?'Checking regressions…':'Running the next workspace command…';}
-function renderPresets(i){
- const running=Boolean(i.pendingTurn)||i.jobs.some(j=>!j.result)||i.agentTurns?.some(t=>!t.response&&!t.error);
- const waiting=i.messages.some(m=>(m.tool_calls||[]).some(c=>c.name==='run_command'&&!i.jobs.some(j=>j.callId===c.id)&&!i.messages.some(r=>r.result?.call_id===c.id)));
- const view=workflowView(i);if(view.step==='prepare')view.prompt=startingRequest(selectedId);activeStep=view.step;el('stage-value').textContent=target==='assistant'?(stepValue[view.step]||''):'Try the scenario with the airline agent, then ask the coding assistant to investigate.';el('presets').replaceChildren();
- if(!running&&!waiting&&target==='assistant'&&(presetStep!==view.step||!el('prompt').value.trim())){
-  if(shouldPrefill(el('prompt').value,lastPreset)||Object.values(workflowSteps).some(v=>v.prompt===el('prompt').value)){el('prompt').value=view.prompt;drafts.assistant=view.prompt;}
-  lastPreset=view.prompt;presetStep=view.step;
- }
- if(!running&&target==='assistant'&&view.prompt&&el('prompt').value!==view.prompt)el('presets').append(button('Suggested request',()=>{el('prompt').value=view.prompt;lastPreset=view.prompt;saveDraft();el('prompt').focus();setBusy(false);}));
- saveDraft();setBusy(running);el('talk-agent').disabled=running;el('talk-assistant').disabled=running;
- const status=el('workflow-status');status.replaceChildren();status.hidden=!running;if(running)status.append(text('p',i.agentTurns?.some(t=>!t.response&&!t.error)?'Airline agent is responding…':workLabel(i)));
-}
-function comparisonCard(i){if(!i.comparison)return null;const c=i.comparison;const root=document.createElement('section');root.className='comparison-inline';root.append(text('h3','Before → after'));const explanation=document.createElement('details');explanation.dataset.viewKey='comparison:explanation';explanation.append(text('summary','Comparison details'),text('p',c.explanation));root.append(explanation);const grid=document.createElement('div');grid.className='comparison-grid';for(const [key,label] of [['before','Baseline'],['after','Verified result'],['changes','Changes'],['regressions','Regressions']]){const card=document.createElement('div');card.className='card';card.append(text('h3',label));const evidence=c[key];if(evidence){card.append(text('blockquote',evidence.excerpt));const job=i.jobs.find(j=>j.callId===evidence.callId);const detail=document.createElement('details');detail.dataset.viewKey='comparison:'+key;detail.append(text('summary','Evidence'),text('pre',job?.command||''),text('pre',job?.result?.output||''));card.append(detail);}else card.append(text('p','Not run.'));grid.append(card);}const own=document.createElement('a');own.href='https://cli-docs.relai.ai/plugins#install-the-plugin';own.textContent='Use RELAI in your own project';const actions=document.createElement('div');actions.className='comparison-actions';actions.append(own,button('Open code changes',()=>post('changes')),button('Try the agent again',()=>{setTarget('agent');el('prompt').value=catalog.find(c=>c.id===selectedId).request;saveDraft();el('prompt').focus();setBusy(false);}));root.append(grid,actions);return root;}
-function render(i){currentState=i;clearTimeout(timer);setBusy(false);if(!i)return;const challenge=catalog.find(c=>c.id===i.challengeId);if(!challenge)return;if(selectedId!==challenge.id){selectedId=challenge.id;if(!restoredTarget)target=i.messages.length?'assistant':'agent';mode=savedChoice?.challengeId===selectedId&&['assistant','terminal'].includes(savedChoice.mode)?savedChoice.mode:mode;}showMode();el('terminal-context').textContent='cat demo/challenges/'+challenge.id+'/README.md';el('choices').hidden=!browsingScenarios;el('selected').hidden=browsingScenarios;el('reference').open=false;el('title').textContent=challenge.title;el('problem').textContent='An example of: '+(problems[challenge.id]||'Agent behavior');el('situation').textContent=situations[challenge.id]||'We will investigate this scenario, define a repeatable test, and check the agent’s actual behavior.';el('symptom').textContent=challenge.request;el('expected').textContent=challenge.expectedBehavior;el('verification').textContent=['optimize','verify','compare','complete'].includes(i.nextStep)||['optimize','verify','compare'].includes(i.step)?'Live evaluation results are shown in the conversation below.':challenge.status==='unverified'?'We have not yet tested this scenario with the current model. The agent may pass; we will report the actual result.':challenge.status==='verified-pass'?'Recorded baseline passed. Explore resilience.':'Recorded baseline failure available.';
-const history=el('history'),nearBottom=history.scrollHeight-history.scrollTop-history.clientHeight<100,oldScroll=history.scrollTop,openDetails=new Set([...history.querySelectorAll('details[data-view-key]')].filter(d=>d.open).map(d=>d.dataset.viewKey)),scrollPositions=new Map([...history.querySelectorAll('pre[data-scroll-key]')].map(p=>[p.dataset.scrollKey,p.scrollTop]));history.replaceChildren();
-const turns=i.agentTurns||[];
-if(!drafts.agent)drafts.agent=challenge.request;
-if(!drafts.assistant)drafts.assistant=startingRequest(challenge.id);
-if(!i.messages.length&&!turns.length&&!el('prompt').value.trim())el('prompt').value=target==='agent'?drafts.agent:drafts.assistant;
-function renderTrial(t){const user=document.createElement('div');user.className='message user-message';user.append(text('small','YOU · TRAVELER'),text('p',t.prompt));history.append(user);const reply=document.createElement('div');reply.className='message agent-message';reply.append(text('small','AIRLINE AGENT · FRESH RUN'),richMessage(t.response||t.error||'Responding…'));history.append(reply);}
-if(turns.length>lastAgentCount&&turns.at(-1)?.response&&!i.messages.length){lastAgentCount=turns.length;setTarget('assistant');el('prompt').value=drafts.assistant;}
-el('talk-agent').setAttribute('aria-pressed',String(target==='agent'));el('talk-assistant').setAttribute('aria-pressed',String(target==='assistant'));
-for(const [messageIndex,m] of i.messages.entries()){for(const t of turns.filter(t=>(t.messageIndex??0)===messageIndex))renderTrial(t);if(m.content){const box=richMessage(m.content);box.className='message '+(m.role==='user'?'user-message':'assistant-message');box.prepend(text('small',m.role==='user'?'YOU\n':'RELAI ASSISTANT\n'));history.append(box);}for(const call of m.tool_calls||[]){if(call.name!=='run_command')continue;const box=document.createElement('div');box.className='next-action';const detail=document.createElement('details');detail.dataset.viewKey='command:'+call.id;detail.append(text('summary','Technical command details'),text('pre',call.arguments.command));box.append(detail);const job=i.jobs.find(j=>j.callId===call.id),done=i.messages.some(m=>m.result?.call_id===call.id);if(!job&&!done&&!i.runWorkflow){box.append(button('Run proposed action',()=>post('approve',{id:call.id,approved:true})),button('Decline',()=>post('approve',{id:call.id,approved:false})));}else if(job&&!job.result){box.append(text('p','Running in your workspace…'));detail.append(button('Stop command',()=>post('cancel',{id:job.id})));if(job.progress?.output){const progress=text('pre',job.progress.output);progress.className='live-progress';progress.dataset.scrollKey='output:'+call.id;progress.setAttribute('aria-label','Live command progress');box.append(progress);}}history.append(box);}if(m.result&&!m.result.content?.startsWith?.('Step complete.')){const box=document.createElement('details');box.dataset.viewKey='result:'+m.result.call_id;const output=text('pre',typeof m.result.content==='string'?m.result.content:m.result.content.output||JSON.stringify(m.result.content));output.dataset.scrollKey='output:'+m.result.call_id;box.append(text('summary','Live command result · '+m.result.status),output);history.append(box);}}
-renderPresets(i);const comparison=comparisonCard(i);if(comparison)history.append(comparison);for(const t of turns.filter(t=>(t.messageIndex??0)>=i.messages.length))renderTrial(t);for(const d of history.querySelectorAll('details[data-view-key]'))d.open=openDetails.has(d.dataset.viewKey);for(const p of history.querySelectorAll('pre[data-scroll-key]'))restoreOutputScroll(p,scrollPositions.get(p.dataset.scrollKey),p.classList.contains('live-progress'));history.scrollTop=nearBottom?history.scrollHeight:oldScroll;const nextCall=i.messages.flatMap(m=>m.tool_calls||[]).find(c=>c.name==='run_command'&&!i.messages.some(m=>m.result?.call_id===c.id)&&!i.jobs.some(j=>j.callId===c.id));if(i.runWorkflow&&nextCall&&!i.pendingTurn&&!i.jobs.some(j=>!j.result)&&attemptedCommand!==nextCall.id){attemptedCommand=nextCall.id;post('continue');}const last=i.messages.at(-1);const unresolved=i.messages.some(m=>(m.tool_calls||[]).some(c=>!i.messages.some(r=>r.result?.call_id===c.id)));if(i.runWorkflow!==false&&!i.comparison&&last?.result&&last.result.status!=='denied'&&last.result.content?.status!=='cancelled'&&!unresolved&&!i.pendingTurn&&i.continuedResultId!==last.result.call_id&&attemptedResult!==last.result.call_id){attemptedResult=last.result.call_id;setBusy(true);post('continue');}if(i.jobs.some(j=>!j.result)||i.pendingTurn||i.agentTurns?.some(t=>!t.response&&!t.error))timer=setTimeout(()=>post('refresh'),2000);}
-window.addEventListener('message',({data:d})=>{if(d.type==='error'){sentDraft=null;setBusy(false);el('status').textContent=d.message;return;}if(d.type==='loaded'){el('cards').replaceChildren();if(d.workMode)savedChoice=d.workMode;catalog=d.catalog.challenges;el('disclosure').textContent=d.catalog.dataDisclosure;const r=d.evidence;el('scores').textContent=Number.isFinite(r.optimization?.before)&&Number.isFinite(r.optimization?.after)?Math.round(r.optimization.before*100)+'% → '+Math.round(r.optimization.after*100)+'% recorded evaluation score':'Recorded score unavailable';el('score-context').textContent='Sample improvement: stay within airline support while still helping with valid requests. Recorded model: '+r.model+'. '+(r.limitations||[]).join(' ');for(const c of catalog){const card=document.createElement('div');card.className='card challenge';card.append(text('h2',c.title),text('p',situations[c.id]||c.request),text('p','An example of: '+(problems[c.id]||'Agent behavior')),text('blockquote',c.request),text('small',c.status==='unverified'?'Scenario to test · baseline verification pending':c.status),button('Try this scenario',()=>selectScenario(c.id)));el('cards').append(card);}}if(d.type==='state'&&sentDraft!==null&&(d.investigation?.messages.some(m=>m.role==='user'&&m.content===sentDraft.trim())||d.investigation?.agentTurns?.some(t=>t.prompt===sentDraft.trim()))){if(el('prompt').value===sentDraft)el('prompt').value='';sentDraft=null;}if(d.type==='state'||d.type==='loaded')render(d.investigation);});
-el('evidence').onclick=()=>post('evidence');post('load');
-</script></body></html>
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'none'; style-src 'nonce-NONCE'; script-src 'nonce-NONCE'"
+    />
+    <style nonce="NONCE">
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        font: 14px/1.55 var(--vscode-font-family);
+        color: var(--vscode-foreground);
+        background: var(--vscode-editor-background);
+      }
+      header,
+      .composer {
+        flex-shrink: 0;
+        padding: 18px 24px;
+        border-bottom: 1px solid var(--vscode-panel-border);
+      }
+      header {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+      }
+      h1 {
+        font-size: 18px;
+        margin: 0;
+      }
+      h2 {
+        font-size: 18px;
+        margin: 0 0 12px;
+      }
+      h3 {
+        font-size: 14px;
+        margin: 18px 0 8px;
+      }
+      p {
+        margin: 8px 0 16px;
+      }
+      .message p {
+        white-space: pre-line;
+      }
+      small,
+      .muted {
+        color: var(--vscode-descriptionForeground);
+      }
+      button {
+        font: inherit;
+        cursor: pointer;
+        border: 0;
+        border-radius: 6px;
+        padding: 8px 12px;
+        background: var(--vscode-button-background);
+        color: var(--vscode-button-foreground);
+      }
+      button:disabled {
+        opacity: 0.5;
+        cursor: default;
+      }
+      .link {
+        background: transparent;
+        color: var(--vscode-textLink-foreground);
+        padding: 4px 0;
+        text-align: left;
+      }
+      header .link {
+        margin-left: auto;
+      }
+      .content {
+        min-height: 0;
+        flex: 1;
+        overflow: auto;
+        padding: 24px;
+        scrollbar-gutter: stable;
+      }
+      .intro {
+        max-width: 800px;
+        margin: 0 auto 24px;
+      }
+      .folders {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+        gap: 16px;
+        border: 1px solid var(--vscode-panel-border);
+        border-radius: 8px;
+        padding: 16px;
+      }
+      .folders small {
+        display: block;
+      }
+      .conversation {
+        max-width: 900px;
+        margin: auto;
+      }
+      .message {
+        margin: 20px 0;
+        padding: 12px 0;
+      }
+      .user {
+        background: var(--vscode-textCodeBlock-background);
+        border-radius: 10px;
+        padding: 12px 16px;
+        margin-left: auto;
+        max-width: 85%;
+        width: fit-content;
+      }
+      .badge {
+        display: inline-block;
+        font-size: 11px;
+        border: 1px solid var(--vscode-panel-border);
+        border-radius: 20px;
+        padding: 3px 9px;
+        margin: 0 8px 8px 0;
+        color: var(--vscode-descriptionForeground);
+      }
+      pre {
+        font: 12px/1.6 var(--vscode-editor-font-family);
+        background: var(--vscode-textCodeBlock-background);
+        white-space: pre-wrap;
+        overflow-wrap: anywhere;
+        padding: 12px;
+        max-height: 260px;
+        overflow: auto;
+      }
+      details {
+        margin: 16px 0;
+      }
+      summary {
+        cursor: pointer;
+        color: var(--vscode-textLink-foreground);
+      }
+      .turn {
+        border-left: 2px solid var(--vscode-focusBorder);
+        padding-left: 12px;
+        margin: 16px 0;
+      }
+      .turn p {
+        margin: 4px 0;
+      }
+      .comparison {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 16px;
+      }
+      .comparison > div {
+        border: 1px solid var(--vscode-panel-border);
+        border-radius: 8px;
+        padding: 16px;
+      }
+      .composer {
+        border-top: 1px solid var(--vscode-panel-border);
+        border-bottom: 0;
+      }
+      .composer-inner {
+        max-width: 900px;
+        margin: auto;
+      }
+      textarea {
+        display: block;
+        width: 100%;
+        min-height: 74px;
+        max-height: 180px;
+        resize: vertical;
+        font: inherit;
+        padding: 12px;
+        margin: 10px 0;
+        background: var(--vscode-input-background);
+        color: var(--vscode-input-foreground);
+        border: 1px solid var(--vscode-input-border);
+        border-radius: 8px;
+      }
+      .actions {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        flex-wrap: wrap;
+      }
+      .suggestions {
+        display: flex;
+        gap: 16px;
+        flex-wrap: wrap;
+        margin-top: 12px;
+        font-size: 12px;
+      }
+      #status {
+        color: var(--vscode-errorForeground);
+        margin: 0;
+      }
+      button:focus-visible,
+      textarea:focus-visible {
+        outline: 2px solid var(--vscode-focusBorder);
+      }
+      .agent-flow {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 14px;
+        padding: 12px 0;
+      }
+      .folders {
+        border: 0;
+        padding: 0;
+        gap: 12px;
+      }
+      .folder-card {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        padding: 18px;
+        border: 1px solid var(--vscode-panel-border);
+        background: var(--vscode-editor-background);
+        color: var(--vscode-foreground);
+        text-align: left;
+      }
+      .folder-card:hover {
+        border-color: var(--vscode-focusBorder);
+        background: var(--vscode-list-hoverBackground);
+      }
+      .folder-card code {
+        font: 11px var(--vscode-editor-font-family);
+        overflow-wrap: anywhere;
+      }
+      .folder-card span {
+        color: var(--vscode-textLink-foreground);
+        margin-top: auto;
+        font-size: 12px;
+      }
+      .composer-context {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 10px;
+      }
+      .assistant-label {
+        font-weight: 600;
+        font-size: 12px;
+      }
+      .composer-context .badge {
+        margin: 0;
+      }
+      .prompt-box {
+        border: 1px solid var(--vscode-input-border, var(--vscode-panel-border));
+        border-radius: 16px;
+        background: var(--vscode-input-background);
+        padding: 6px 12px 10px;
+      }
+      .prompt-box:focus-within {
+        border-color: var(--vscode-focusBorder);
+      }
+      .prompt-box textarea {
+        border: 0;
+        background: transparent;
+        margin: 0;
+        padding: 8px 0;
+        resize: none;
+        min-height: 64px;
+        outline: none;
+      }
+      .prompt-box textarea:focus-visible {
+        outline: none;
+      }
+      .send-button {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        padding: 0;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        margin-left: auto;
+        background: var(--vscode-foreground);
+        color: var(--vscode-editor-background);
+      }
+      .result-highlights {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 10px;
+        margin: 14px 0;
+      }
+      .result-highlight {
+        border: 1px solid var(--vscode-panel-border);
+        border-radius: 10px;
+        padding: 14px;
+      }
+      .result-highlight strong {
+        display: block;
+        margin-top: 5px;
+        font-size: 16px;
+      }
+      .result-highlight[data-tone="failure"] {
+        border-left: 3px solid var(--vscode-errorForeground);
+      }
+      .sample-reply {
+        border-left: 3px solid var(--vscode-errorForeground);
+        background: var(--vscode-textCodeBlock-background);
+        padding: 12px 16px;
+        border-radius: 0 8px 8px 0;
+        margin: 16px 0;
+      }
+      .sample-reply p {
+        margin: 6px 0;
+      }
+      .review-files {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px 20px;
+        margin: 16px 0;
+      }
+      .run-details {
+        margin-top: 18px;
+      }
+      [hidden] {
+        display: none !important;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Code assistant + RELAI</h1>
+      <button class="link" id="terminal">Open terminal</button
+      ><button class="link" id="changes">Code changes</button>
+    </header>
+    <main class="content" id="content">
+      <section class="intro">
+        <div class="badge">Agent repository · RELAI initialized</div>
+        <h2>Meet SkyServe, your airline support agent</h2>
+        <p>
+          This is the agent’s actual repository. SkyServe looks up bookings and
+          changes seats using Go tools. RELAI is already initialized here to
+          find risks, create evaluations, simulate conversations and improve the
+          agent.
+        </p>
+        <div class="agent-flow" aria-label="How the agent works">
+          <span>Traveler request</span><span aria-hidden="true">→</span>
+          <button class="link" id="agent-source" title="Open airline/agent.go">
+            SkyServe agent ↗
+          </button>
+          <span aria-hidden="true">→</span>
+          <button class="link" id="agent-tools" title="Open airline/tools.go">
+            Booking tools ↗
+          </button>
+        </div>
+        <p class="muted">Click a card to open its folder in the Explorer.</p>
+        <div class="folders">
+          <button
+            class="folder-card"
+            data-folder="source"
+            aria-label="Open agent source folder in Explorer"
+          >
+            <strong>Agent source</strong><code>airline/</code>
+            <small>The agent’s instructions, booking state and Go tools.</small
+            ><span>Open folder ↗</span>
+          </button>
+          <button
+            class="folder-card"
+            data-folder="wiki"
+            aria-label="Open initialized RELAI EvalsWiki folder in Explorer"
+          >
+            <strong>RELAI’s EvalsWiki</strong><code>.relai/evals-wiki/</code>
+            <small
+              >RELAI records requirements, risks and findings here to guide
+              testing and improvement.</small
+            ><span>Open folder ↗</span>
+          </button>
+          <button
+            class="folder-card"
+            data-folder="tests"
+            aria-label="Open RELAI evaluation folder in Explorer"
+          >
+            <strong>RELAI’s evaluations</strong
+            ><code>.relai/harbor/agent-tests/</code>
+            <small
+              >RELAI creates repeatable tests, simulation environments and
+              evaluators to measure behavior.</small
+            ><span>Open folder ↗</span>
+          </button>
+        </div>
+        <p id="folder-status" class="muted" aria-live="polite"></p>
+        <p class="muted">
+          Experience how you would use RELAI through a coding assistant such as
+          Codex, Claude Code, or Cursor. The first steps replay a real
+          precomputed run; your files change only when you apply the verified
+          fix.
+        </p>
+      </section>
+      <section
+        id="history"
+        class="conversation"
+        aria-label="Code assistant conversation"
+      ></section>
+    </main>
+    <section class="composer">
+      <div class="composer-inner">
+        <div class="composer-context">
+          <span class="assistant-label">Code assistant + RELAI</span
+          ><span id="mode" class="badge">Loading…</span>
+        </div>
+        <p id="status" role="status"></p>
+        <div class="prompt-box">
+          <textarea
+            id="prompt"
+            maxlength="12000"
+            aria-label="Message Code assistant + RELAI"
+            placeholder="Ask the code assistant…"
+          ></textarea>
+          <div class="actions">
+            <button id="live" class="link" hidden>
+              Switch to live workspace
+            </button>
+            <button
+              id="send"
+              class="send-button"
+              disabled
+              aria-label="Send message"
+              title="Send message"
+            >
+              <svg
+                id="send-arrow"
+                width="22"
+                height="22"
+                viewBox="0 0 24 24"
+                fill="none"
+                aria-hidden="true"
+              >
+                <path
+                  d="M12 20V4M5 11l7-7 7 7"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+              <svg
+                id="send-stop"
+                hidden
+                width="18"
+                height="18"
+                viewBox="0 0 20 20"
+                aria-hidden="true"
+              >
+                <rect
+                  x="4"
+                  y="4"
+                  width="12"
+                  height="12"
+                  rx="2"
+                  fill="currentColor"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+        <p id="verification-note" class="muted" hidden>
+          Final verification is pending.
+        </p>
+      </div>
+    </section>
+    <script nonce="NONCE">
+      WORKFLOW_HELPERS;
+      const vscode = acquireVsCodeApi(),
+        el = (id) => document.getElementById(id);
+      let recording,
+        progress = 0,
+        live = false,
+        busy = false,
+        state,
+        timer,
+        lastSuggestion = null,
+        sent = null,
+        attemptedCommand = null,
+        attemptedResult = null;
+      const saved = vscode.getState() || {};
+      function post(action, fields = {}) {
+        vscode.postMessage({ action, ...fields });
+      }
+      function node(tag, value) {
+        const n = document.createElement(tag);
+        n.textContent = value;
+        return n;
+      }
+      function button(label, action) {
+        const n = node("button", label);
+        n.className = "link";
+        n.onclick = action;
+        return n;
+      }
+      function save() {
+        vscode.setState({ draft: el("prompt").value, live });
+      }
+      function message(role, content) {
+        const n = document.createElement("div");
+        n.className = "message " + (role === "user" ? "user" : "assistant");
+        n.append(
+          node("small", role === "user" ? "YOU" : "CODE ASSISTANT + RELAI"),
+          node("p", content),
+        );
+        return n;
+      }
+      function details(label, value, key = label) {
+        const n = document.createElement("details");
+        n.dataset.viewKey = key;
+        n.append(node("summary", label), node("pre", value));
+        return n;
+      }
+      function recordedHistory() {
+        const root = el("history");
+        root.replaceChildren();
+        if (!recording) return;
+        for (let index = 0; index < Math.min(progress, 3); index++) {
+          const step = recording.steps[index];
+          root.append(message("user", recording.prompts[index]));
+          const reply = message("assistant", step.text);
+          const timing = index === 0 ? recording.initialization : step;
+          let timingText =
+            index === 0
+              ? "Precomputed · RELAI initialization"
+              : "Precomputed · " + (step.durationLabel || "original runtime");
+          if (Number.isFinite(timing?.durationSeconds))
+            timingText +=
+              ": " +
+              (timing.durationSeconds < 60
+                ? Math.round(timing.durationSeconds) + " sec"
+                : Math.round((timing.durationSeconds / 60) * 10) / 10 + " min");
+          const badge = node("span", timingText);
+          badge.className = "badge";
+          reply.prepend(badge);
+          if (step.highlights?.length) {
+            const highlights = node("div", "");
+            highlights.className = "result-highlights";
+            for (const item of step.highlights) {
+              const card = node("div", "");
+              card.className = "result-highlight";
+              card.dataset.tone = item.tone || "neutral";
+              card.append(
+                node("small", item.label),
+                node("strong", item.value),
+              );
+              highlights.append(card);
+            }
+            reply.append(highlights);
+          }
+          const inspection = document.createElement("details");
+          inspection.className = "run-details";
+          inspection.dataset.viewKey = "recorded-details:" + index;
+          inspection.append(node("summary", "Inspect run details"));
+          if (
+            index === 0 &&
+            !Number.isFinite(recording.initialization?.durationSeconds)
+          )
+            inspection.append(
+              node(
+                "p",
+                "The initialization timing receipt was not saved for this recording. No duration is inferred from reading the risk inventory.",
+              ),
+            );
+          if (step.commands)
+            inspection.append(
+              details("Commands", step.commands, "recorded-command:" + index),
+            );
+          if (index === 1) {
+            const sample = node("div", "");
+            sample.className = "sample-reply";
+            sample.append(
+              node("small", "ACTUAL AGENT RESPONSE · FIRST EXCHANGE"),
+              node("p", recording.turns[0]?.agent || ""),
+            );
+            reply.append(sample);
+            const turns = document.createElement("details");
+            turns.dataset.viewKey = "recorded-transcript";
+            turns.append(
+              node(
+                "summary",
+                "Full simulation · " + recording.turns.length + " exchanges",
+              ),
+            );
+            recording.turns.forEach((t, i) => {
+              const row = node("div", "");
+              row.className = "turn";
+              row.append(
+                node("small", "TURN " + (i + 1)),
+                node("p", "Traveler: " + t.user),
+                node("p", "Agent: " + t.agent),
+              );
+              turns.append(row);
+            });
+            inspection.append(turns);
+          }
+          if (index === 2) {
+            const compare = node("div", "");
+            compare.className = "comparison";
+            for (const [key, label] of [
+              ["before", "Before"],
+              ["after", "After"],
+              ["regressions", "Regression checks"],
+            ]) {
+              const card = node("div", "");
+              card.append(
+                node("h3", label),
+                node("p", recording.comparison[key]),
+              );
+              compare.append(card);
+            }
+            reply.append(compare);
+            const files = node("div", "");
+            files.className = "review-files";
+            for (const file of recording.files || [])
+              files.append(
+                button("Review " + file.path + " ↗", () =>
+                  post("review-change", { file: file.path }),
+                ),
+              );
+            reply.append(files);
+            inspection.append(details("Recorded patch", recording.diff));
+          }
+          if (step.evidence)
+            inspection.append(
+              details("Evidence", step.evidence, "recorded-evidence:" + index),
+            );
+          reply.append(inspection);
+          root.append(reply);
+        }
+        if (progress >= 4) {
+          root.append(
+            message("user", recording.prompts[3]),
+            message(
+              "assistant",
+              "Applied the verified improvement to this workspace. You can now run RELAI on your own requests, inspect the code, or test the seat-change fix yourself.",
+            ),
+          );
+        }
+      }
+      function composer() {
+        const preset = recording?.prompts[progress] || "";
+        const recorded = !live && progress < 4;
+        const awaitingVerification =
+          recorded &&
+          progress === 3 &&
+          el("prompt").value.trim() === preset &&
+          recording.verificationStatus !== "verified";
+        el("mode").textContent = recorded
+          ? "Precomputed walkthrough"
+          : "Live workspace";
+        el("live").hidden = live || progress >= 4;
+        const actionLabel = busy
+          ? "Stop"
+          : awaitingVerification
+            ? "Verification pending"
+            : recorded && el("prompt").value.trim() === preset
+              ? progress === 3
+                ? "Apply verified changes"
+                : "Show precomputed result"
+              : "Send message";
+        el("send").setAttribute("aria-label", actionLabel);
+        el("send").setAttribute("title", actionLabel);
+        el("send-arrow").hidden = busy;
+        el("send-stop").hidden = !busy;
+        el("verification-note").hidden = !awaitingVerification;
+        el("send").disabled =
+          !recording ||
+          awaitingVerification ||
+          (!busy && !el("prompt").value.trim());
+      }
+      function renderLive(i) {
+        state = i;
+        clearTimeout(timer);
+        const root = el("history"),
+          content = el("content"),
+          follow =
+            content.scrollHeight - content.scrollTop - content.clientHeight <
+            100,
+          oldScroll = content.scrollTop,
+          expanded = new Set(
+            [...root.querySelectorAll("details[data-view-key]")]
+              .filter((d) => d.open)
+              .map((d) => d.dataset.viewKey),
+          );
+        recordedHistory();
+        function restore() {
+          for (const d of root.querySelectorAll("details[data-view-key]"))
+            d.open = expanded.has(d.dataset.viewKey);
+          content.scrollTop = follow ? content.scrollHeight : oldScroll;
+        }
+        if (!i) {
+          busy = false;
+          composer();
+          restore();
+          return;
+        }
+        for (const m of i.messages || []) {
+          if (m.content) root.append(message(m.role, m.content));
+          for (const call of m.tool_calls || []) {
+            if (call.name !== "run_command") continue;
+            const job = i.jobs?.find((j) => j.callId === call.id),
+              done = i.messages.some((m) => m.result?.call_id === call.id);
+            const row = document.createElement("div");
+            row.append(
+              details(
+                "Command",
+                call.arguments.command,
+                "live-command:" + call.id,
+              ),
+            );
+            if (job && !job.result) {
+              row.append(node("p", "Running in your workspace…"));
+              const out = node(
+                "pre",
+                job.progress?.output || "Waiting for command output…",
+              );
+              out.className = "live-output";
+              row.append(out);
+            } else if (!job && !done) {
+              row.append(
+                button("Run proposed command", () =>
+                  post("approve", { id: call.id, approved: true }),
+                ),
+                button("Decline", () =>
+                  post("approve", { id: call.id, approved: false }),
+                ),
+              );
+            }
+            root.append(row);
+          }
+          if (m.result)
+            root.append(
+              details(
+                "Live result · " + m.result.status,
+                typeof m.result.content === "string"
+                  ? m.result.content
+                  : JSON.stringify(m.result.content, null, 2),
+                "live-result:" + m.result.call_id,
+              ),
+            );
+        }
+        busy = Boolean(i.pendingTurn) || i.jobs?.some((j) => !j.result);
+        const next = i.messages
+          ?.flatMap((m) => m.tool_calls || [])
+          .find(
+            (c) =>
+              c.name === "run_command" &&
+              !i.jobs?.some((j) => j.callId === c.id) &&
+              !i.messages.some((m) => m.result?.call_id === c.id),
+          );
+        if (i.runWorkflow && next && !busy && attemptedCommand !== next.id) {
+          attemptedCommand = next.id;
+          busy = true;
+          post("continue");
+        }
+        const last = i.messages?.at(-1);
+        if (
+          i.runWorkflow &&
+          last?.result &&
+          last.result.status !== "denied" &&
+          last.result.content?.status !== "cancelled" &&
+          !next &&
+          !busy &&
+          attemptedResult !== last.result.call_id
+        ) {
+          attemptedResult = last.result.call_id;
+          busy = true;
+          post("continue");
+        }
+        composer();
+        for (const out of root.querySelectorAll(".live-output"))
+          out.scrollTop = out.scrollHeight;
+        restore();
+        if (busy) timer = setTimeout(() => post("refresh"), 2000);
+      }
+      function nextDraft() {
+        const suggestion = recording.prompts[progress] || "";
+        if (shouldPrefill(el("prompt").value, lastSuggestion)) {
+          el("prompt").value = suggestion;
+        }
+        lastSuggestion = suggestion;
+        save();
+      }
+      el("prompt").oninput = () => {
+        save();
+        composer();
+      };
+      el("prompt").onkeydown = (e) => {
+        if (e.key === "Enter" && !e.shiftKey && !e.isComposing) {
+          e.preventDefault();
+          if (!busy && !el("send").disabled) el("send").click();
+        }
+      };
+      el("send").onclick = () => {
+        if (busy) {
+          const job = state?.jobs?.find((j) => !j.result);
+          post(job ? "cancel" : "stop", job ? { id: job.id } : {});
+          return;
+        }
+        const prompt = el("prompt").value.trim();
+        if (!prompt) return;
+        el("status").textContent = "";
+        if (!live && progress < 4 && prompt === recording.prompts[progress]) {
+          el("send").disabled = true;
+          post("recorded", { step: progress });
+          return;
+        }
+        live = true;
+        sent = el("prompt").value;
+        busy = true;
+        composer();
+        post("send", { prompt, runWorkflow: true });
+      };
+      el("live").onclick = () => {
+        live = true;
+        el("prompt").value = "";
+        save();
+        composer();
+      };
+      el("terminal").onclick = () => post("terminal");
+      el("changes").onclick = () =>
+        post("changes", { recorded: !live && progress >= 3 && progress < 4 });
+      el("agent-source").onclick = () => post("source", { file: "agent" });
+      el("agent-tools").onclick = () => post("source", { file: "tools" });
+      for (const b of document.querySelectorAll("[data-folder]"))
+        b.onclick = () => post("folder", { folder: b.dataset.folder });
+      window.addEventListener("message", ({ data: d }) => {
+        if (d.type === "folder-opened") {
+          el("folder-status").textContent =
+            "Opened " + d.path + " in the Explorer.";
+        }
+        if (d.type === "error") {
+          busy = false;
+          el("status").textContent = d.message;
+          composer();
+          return;
+        }
+        if (d.type === "loaded") {
+          recording = d.recording;
+          progress = d.recordedProgress;
+          live = progress >= 4 || Boolean(saved.live);
+          el("prompt").value = saved.draft || recording.prompts[progress] || "";
+          lastSuggestion = recording.prompts[progress] || null;
+          renderLive(d.investigation);
+          save();
+        }
+        if (d.type === "recorded") {
+          progress = d.recordedProgress;
+          live = progress >= 4;
+          nextDraft();
+          renderLive(state);
+          el("content").scrollTop = el("content").scrollHeight;
+        }
+        if (d.type === "state") {
+          if (
+            sent &&
+            d.investigation?.messages?.some(
+              (m) => m.role === "user" && m.content === sent.trim(),
+            )
+          ) {
+            if (el("prompt").value === sent) el("prompt").value = "";
+            sent = null;
+            save();
+          }
+          renderLive(d.investigation);
+        }
+      });
+      post("load");
+    </script>
+  </body>
+</html>

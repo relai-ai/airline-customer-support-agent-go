@@ -22,6 +22,7 @@ COPY cmd/ ./cmd/
 COPY benchmarks/ ./benchmarks/
 COPY demo/checkpoint/ ./demo/checkpoint/
 COPY demo/challenges/ ./demo/challenges/
+COPY demo/recorded/ ./demo/recorded/
 # Public RELAI test definitions only. Never include local auth/config or run state.
 COPY .relai/harbor/ ./.relai/harbor/
 COPY .relai/evals-wiki/ ./.relai/evals-wiki/
@@ -46,3 +47,4 @@ COPY .e2b/ide/try-agent.py /opt/playground/try-agent.py
 COPY .e2b/ide/extension/ /opt/playground/extensions/relai.relai-playground-0.1.0/
 RUN chmod -R a+rX /opt/playground && chown -R user:user /opt/playground/extensions
 USER user
+RUN node /opt/playground/extensions/relai.relai-playground-0.1.0/validate-recording.js /home/user/airline
