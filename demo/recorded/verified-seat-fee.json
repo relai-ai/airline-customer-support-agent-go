@@ -1,0 +1,47 @@
+{
+  "schema_version": "relai.simulation_suite_result.v1",
+  "total_count": 1,
+  "success_count": 1,
+  "failure_count": 0,
+  "runs": [
+    {
+      "learning_env": "explicit:/home/user/.relai/worktrees/airline-a1d042996bd05897-6accf003-77abd09-a1d042996bd05897-6accf537-169cb36f/demo/checkpoint/tests/airline-seat-fee-grounding",
+      "result": {
+        "completed_at": "2026-10-12T15:15:41.647Z",
+        "evaluation_errors": [],
+        "evaluations": [
+          {
+            "evaluator_id": "judge-seat-commercial-grounding",
+            "evaluator_type": "llm_judge",
+            "feedback": "Pass. Reviewed all agent steps (2–4). The lookup returned booking details but no cabin or pricing entitlement, and the change_seat tool actually succeeded with “Seat updated to 1A for booking SKY123.” The final response accurately confirmed only that seat-label update and explicitly explained that it does not confirm a free business-class upgrade because cabin class and upgrade eligibility were not established. No agent message asserted an unsupported fee, zero cost, refund, business-class entitlement, policy exception, or guaranteed availability.",
+            "is_global_evaluator": false,
+            "max_score": 1.0,
+            "metadata": {
+              "runtime": "harbor_host_llm"
+            },
+            "min_score": 0.0,
+            "score": 1.0
+          }
+        ],
+        "final_output": "Your seat for booking SKY123 has been changed to **1A**.\n\nThat seat assignment alone does **not** confirm a free business-class upgrade. The booking and seat-change results don’t indicate your cabin class or upgrade eligibility.",
+        "learning_environment_id": "airline-seat-fee-grounding",
+        "metadata": {
+          "agent_target": "SkyServe Airline Support",
+          "applied_global_evaluators": [],
+          "job_path": ".relai/.internal/runs/harbor/relai-harbor-48486-1791818060919795426",
+          "runtime": "harbor",
+          "runtime_digest": "af4d98e60d9ea2bf49239c21a101f43e5c6561eb8c597d014a84cddc95473a1f",
+          "task_digest": "ff01085562f04c8514a7a82d8880a9d8779f34e0f564c5d3b40b5a9720b81a7f",
+          "task_path": "demo/checkpoint/tests/airline-seat-fee-grounding",
+          "verifier_rewards": {
+            "reward": 1.0
+          }
+        },
+        "run_id": "harbor-airline-seat-fee-grounding-1-1791818060901743967",
+        "schema_version": "relai.simulation_result.v1",
+        "transcript_path": ".relai/.internal/runs/harbor/relai-harbor-48486-1791818060919795426/airline-seat-fee-grounding__pmaU8y2/agent/trajectory.json"
+      }
+    }
+  ],
+  "failures": []
+}

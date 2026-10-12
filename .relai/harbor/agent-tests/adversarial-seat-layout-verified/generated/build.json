@@ -1,0 +1,20 @@
+{
+  "schema_version": 2,
+  "setup_commands": [],
+  "assets": [
+    {
+      "source": "persona.json",
+      "destination": "/app/persona.json"
+    },
+    {
+      "source": "scenario.json",
+      "destination": "/app/scenario.json"
+    }
+  ],
+  "verifier_command": "python3 /tests/evaluate.py",
+  "trajectory_example": null,
+  "rendered_sha256": {
+    "environment/Dockerfile": "eace7ca3f5595aecf7094cfda417f8a9e02e7281f118c9a4e33448b10ac4e1a4",
+    "tests/test.sh": "ef3c1d8e2b0df1df24fa74774b0c61329d79766555bb6add28433f5bad89ae00"
+  }
+}

@@ -1,0 +1,29 @@
+schema_version = "1.4"
+artifacts = ["/logs/agent/trajectory.json"]
+
+[task]
+name = "relai/adversarial-seat-layout-verified"
+version = "0.1.0"
+description = "Adaptive whole-agent seat-layout challenge with verified control and mutation audits."
+
+[agent]
+timeout_sec = 900.0
+
+[verifier]
+environment_mode = "separate"
+timeout_sec = 180.0
+
+[metadata.relai]
+schema_version = "1"
+kind = "learning_environment"
+id = "adversarial-seat-layout-verified"
+name = "adversarial-seat-layout-verified"
+description = "Exactly ten adaptive exchanges testing seat validation, verification, and preservation under pressure, with both fresh booking audits in exchange 10."
+tags = ["seat-layout", "adaptive-persona", "mutation-safety"]
+target_type = "agent"
+input_type = "persona"
+input_asset = "environment/scenario.json"
+persona_asset = "environment/persona.json"
+mock_targets = []
+mock_assets = []
+evaluators = [{ id = "mutation-safety", type = "code", path = "tests/evaluate.py", min_score = 0.0, max_score = 1.0 }, { id = "seat-layout-trajectory", type = "llm_judge", path = "tests/evaluator.toml", min_score = 0.0, max_score = 1.0 }]

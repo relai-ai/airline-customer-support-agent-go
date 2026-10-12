@@ -647,7 +647,7 @@
           if (Number.isFinite(timing?.durationSeconds))
             timingText +=
               (index === 1
-                ? " · validation: "
+                ? " · " + (step.durationLabel || "validation") + ": "
                 : index === 2 && recording.verificationStatus !== "verified"
                   ? " · incomplete attempt: "
                   : ": ") +
@@ -718,6 +718,7 @@
         const root = el("history"),
           content = el("content"),
           follow =
+            (progress > 0 || i?.messages?.length > 0) &&
             content.scrollHeight - content.scrollTop - content.clientHeight <
             100,
           oldScroll = content.scrollTop,

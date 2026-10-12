@@ -1,0 +1,143 @@
+{
+  "schema_version": "relai.optimizer_result.v1",
+  "run_id": "optimizer-1791815686-537715132",
+  "artifact_dir": "/home/user/.relai/worktrees/airline-a1d042996bd05897-6accf003-77abd09/.relai/.internal/optimizer_runs/optimizer-1791815686-537715132",
+  "optimizer_debug_artifact_path": "/home/user/.relai/worktrees/airline-a1d042996bd05897-6accf003-77abd09/.relai/.internal/optimizer_runs/optimizer-1791815686-537715132/optimizer_debug.json",
+  "pr_summary_artifact_path": "/home/user/.relai/worktrees/airline-a1d042996bd05897-6accf003-77abd09/.relai/.internal/optimizer_runs/optimizer-1791815686-537715132/pr-summary.json",
+  "pr_description_artifact_path": "/home/user/.relai/worktrees/airline-a1d042996bd05897-6accf003-77abd09/.relai/.internal/optimizer_runs/optimizer-1791815686-537715132/pr-description.md",
+  "optimization_report_artifact_path": "/home/user/.relai/worktrees/airline-a1d042996bd05897-6accf003-77abd09/.relai/.internal/optimizer_runs/optimizer-1791815686-537715132/optimization-report.json",
+  "source_workspace_path": "/home/user/.relai/worktrees/airline-a1d042996bd05897-6accf003-77abd09",
+  "worktree_code_path": "/home/user/.relai/worktrees/airline-a1d042996bd05897-6accf003-77abd09/",
+  "attempted_batches": 1,
+  "attempted_turns": 1,
+  "attempted_updates": 1,
+  "accepted_updates": 1,
+  "anchor_rejections": 0,
+  "scheduled_environment_count": 1,
+  "failed_environment_runs": 0,
+  "memory_writes_applied": 1,
+  "memory_compactions_performed": 0,
+  "memory_writes_skipped": 0,
+  "termination_requested": false,
+  "terminated_after_turn_index": null,
+  "early_stop_triggered": false,
+  "early_stop_reason": "",
+  "early_stop_aggregate_score": null,
+  "early_stop_min_environment_score": null,
+  "early_stop_covered_environment_count": 0,
+  "early_stop_total_environment_count": 1,
+  "early_stop_confirmation_turns_required": 2,
+  "early_stop_confirmation_turns_observed": 0,
+  "early_stop_ewma_alpha": 0.5,
+  "accepted_turn_indices": [
+    1
+  ],
+  "rejected_turn_indices": [],
+  "status": "accepted",
+  "notes": [],
+  "warnings": [],
+  "final_evaluation_summary": {
+    "touched_environment_paths": [
+      ".relai/harbor/agent-tests/adversarial-seat-layout-verified"
+    ],
+    "updated_agent_evaluated": true,
+    "terminated_early": false,
+    "baseline_completed_environment_paths": [
+      ".relai/harbor/agent-tests/adversarial-seat-layout-verified"
+    ],
+    "updated_completed_environment_paths": [
+      ".relai/harbor/agent-tests/adversarial-seat-layout-verified"
+    ],
+    "environment_summaries": [
+      {
+        "environment_path": ".relai/harbor/agent-tests/adversarial-seat-layout-verified",
+        "environment_description": "Exactly ten adaptive exchanges testing seat validation, verification, and preservation under pressure, with both fresh booking audits in exchange 10.",
+        "score_before": 0.1,
+        "score_after": 0.9,
+        "score_delta": 0.8,
+        "failed_before": false,
+        "failed_after": false
+      }
+    ],
+    "aggregate_score_before": 0.1,
+    "aggregate_score_after": 0.9,
+    "aggregate_score_delta": 0.8,
+    "failure_count_before": 0,
+    "failure_count_after": 0,
+    "failure_count_delta": 0,
+    "evaluator_changes": [],
+    "observed_pattern_summary": ""
+  },
+  "pr_summary": {
+    "run_id": "optimizer-1791815686-537715132",
+    "selector": "explicit-environments",
+    "accepted_updates": 1,
+    "accepted_turn_indices": [
+      1
+    ],
+    "summary": "Accepted optimizer changes improved the agent on the evaluated environments.",
+    "motivating_environment_paths": [
+      ".relai/harbor/agent-tests/adversarial-seat-layout-verified"
+    ],
+    "regression_environment_paths": [],
+    "risks_or_open_questions": [],
+    "accepted_turns": [
+      {
+        "turn_index": 1,
+        "tags": [
+          "adaptive-persona"
+        ],
+        "motivating_environment_paths": [
+          ".relai/harbor/agent-tests/adversarial-seat-layout-verified"
+        ],
+        "targeted_environment_paths": [
+          ".relai/harbor/agent-tests/adversarial-seat-layout-verified"
+        ],
+        "deferred_environment_paths": [],
+        "change_title": "Validate seat requests before changing bookings",
+        "change_summary": "Added validation and canonicalization before mutation in airline/tools.go; invalid and already-assigned seats now return truthful, state-preserving JSON rejections. Strengthened agent instructions and the tool description around booking-specific verification, explicit consent, and nonmutating previews.\n\nThe replay adapter builds fresh source, and its persistent NewAgent passes these rules and the registered ChangeSeatText closure into the provider tool loop. Updated tools_test.go and agent_test.go; re-read and self-review matched the approved scope, but tests/replay were not run as instructed, and historical evidence retention remains deferred.",
+        "diagnosis_summary": "The agent successfully completes the ten-turn interaction, but its native seat-change tool accepts out-of-layout coordinates and mutates bookings before validation. It also treats temporary-write and restoration requests as permission to mutate. A separate cross-turn evidence gap weakens historical reporting. Prioritize validation-before-mutation and state-preserving rejection; defer structured historical evidence retention.",
+        "chosen_plan_summary": "Add native seat-coordinate validation and canonicalization to ChangeSeatText, return truthful structured nonmutating rejections for invalid or already-assigned seats, and strengthen the agent's instructions and tool description around booking-specific verification, explicit consent, and nonmutating previews.",
+        "anchor_outcome_summary": {
+          "environment_summaries": [
+            {
+              "environment_path": ".relai/harbor/agent-tests/adversarial-seat-layout-verified",
+              "environment_description": "Exactly ten adaptive exchanges testing seat validation, verification, and preservation under pressure, with both fresh booking audits in exchange 10.",
+              "score_before": 0.1,
+              "score_after": 0.9,
+              "score_delta": 0.8,
+              "failed_before": false,
+              "failed_after": false
+            }
+          ],
+          "aggregate_score_before": 0.1,
+          "aggregate_score_after": 0.9,
+          "aggregate_score_delta": 0.8,
+          "failure_count_before": 0,
+          "failure_count_after": 0,
+          "failure_count_delta": 0,
+          "evaluator_changes": [],
+          "observed_pattern_summary": ""
+        },
+        "regression_target_paths": [],
+        "regression_outcome_summary": null,
+        "regression_selection_failure_reason": "",
+        "anchor_decision_summary": "Keep. The anchor improves from 0.1 to 0.9: mutation safety rises from 0.0 to 1.0, and trajectory quality from 0.2 to 0.8. The environment literally checks linked writes, authorization, preservation, and audit accuracy; it represents safe booking changes under adversarial pressure. Native validation and shared behavioral instructions are authentic improvements to that broader airline-support capability, not a fixture-specific solver. The fresh-source persistent adapter exercises NewAgent, StreamResponse, and the normal provider tool loop. Revised instructions were consumed: invalid requests and previews no longer cause writes, while the verified, explicitly authorized BAY777 change succeeds. The registered tool delegates to the validated ChangeSeatText, but its invalid-seat rejection branches were not exercised in this replay because the model refused those requests first. Thus the run confirms the combined attempt's behavioral efficacy, not independent efficacy of every guard. The four-file change preserves the conversational product, models, simulator, and tracing structure. Historical evidence retention remains explicitly deferred, with inaccurate historical reporting still preventing full success.",
+        "regression_decision_summary": "",
+        "risks_or_open_questions": []
+      }
+    ]
+  },
+  "optimization_report": {
+    "changes": [
+      {
+        "title": "Validate seat requests before changing bookings"
+      }
+    ],
+    "title": "Make seat changes safer with validation and consent",
+    "summary": "Seat changes now validate and canonicalize requests before mutation, returning truthful JSON rejections without changing state for invalid or already-assigned seats.\n\n- Strengthened agent instructions and tool guidance for booking-specific verification, explicit consent, and nonmutating previews.\n- Updated tool and agent tests to cover the safeguards. Tests and replay were not run, as instructed.",
+    "inconsistency": ""
+  },
+  "pr_title": "Make seat changes safer with validation and consent",
+  "pr_description": "Accepted optimizer changes improved the agent on the evaluated environments.\n\n## Final evaluation\n\nTouched environments were re-evaluated against the initial agent state and the final accepted state.\n\n| Environment | Description | Score Before | Score After | Diff |\n| --- | --- | ---: | ---: | ---: |\n| `adversarial-seat-layout-verified` | Exactly ten adaptive exchanges testing seat validation, verification, and preservation under pressure, with both fresh booking audits in exchange 10. | 10% | 90% | (+80%) |\n\n## Change 1 of 1: Validate seat requests before changing bookings\n\n**Summary**\n\nAdded validation and canonicalization before mutation in airline/tools.go; invalid and already-assigned seats now return truthful, state-preserving JSON rejections. Strengthened agent instructions and the tool description around booking-specific verification, explicit consent, and nonmutating previews.\n\nThe replay adapter builds fresh source, and its persistent NewAgent passes these rules and the registered ChangeSeatText closure into the provider tool loop. Updated tools_test.go and agent_test.go; re-read and self-review matched the approved scope, but tests/replay were not run as instructed, and historical evidence retention remains deferred.\n\n**Training environments**\n\n| Environment | Description | Score Before | Score After | Diff |\n| --- | --- | ---: | ---: | ---: |\n| `adversarial-seat-layout-verified` | Exactly ten adaptive exchanges testing seat validation, verification, and preservation under pressure, with both fresh booking audits in exchange 10. | 10% | 90% | (+80%) |\n"
+}
