@@ -176,7 +176,7 @@ test("recorded and edited requests dispatch distinct actions, and apply is expli
   assert.equal(elements.get("prompt").value, prompts[1]);
   handlers.message({ data: { type: "recorded", recordedProgress: 2 } });
   flatten(elements.get("history"))
-    .find((n) => n.textContent === "Explore the simulation")
+    .find((n) => n.textContent === "▸ Explore the simulation")
     .click();
   assert.ok(
     flatten(elements.get("history")).some(

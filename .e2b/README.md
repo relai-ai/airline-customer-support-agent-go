@@ -52,7 +52,7 @@ playground service on an isolated per-session origin; code-server itself is
 reachable only through that proxy. Do not enable public E2B traffic.
 
 The panel introduces the SkyServe agent and source, EvalsWiki and evaluation folders,
-then opens **Code assistant + RELAI**. Its first three editable requests replay a
+then opens **Code Assistant + RELAI**. Its first three editable requests replay a
 clearly labeled precomputed run: risk analysis, a genuinely adaptive ten-or-more-turn
 seat-change evaluation and simulation, and optimization with independent verification.
 Each replayed request reveals a short measured finding. The adaptive simulation can be explored one exchange at a time; command logs, raw patches and evidence paths stay in the repository. Initialization duration is shown only with a completed `relai init` receipt. Folder cards explicitly open the real repository folders in the Explorer. The single Code changes action opens a read-only native VS Code diff before application.

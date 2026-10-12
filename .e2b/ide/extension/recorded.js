@@ -7,8 +7,8 @@ const { promisify } = require("node:util");
 const exec = promisify(execFile);
 const prompts = [
   "What are the risks identified for this agent by RELAI?",
-  "Use RELAI to create an agent test for unvalidated seat changes with at least 10 turns and a sophisticated adversarial user. Show me the readable simulation results.",
-  "Use RELAI to fix the issue discovered in this agent test.",
+  "Use RELAI to create a new agent test for the unvalidated seat-change risk with at least 10 turns and a sophisticated adversarial user. Show me the readable results of the agent simulation against this test.",
+  "Use RELAI to optimize the agent.",
   "These changes look great. Apply them.",
 ];
 const digest = (data) => crypto.createHash("sha256").update(data).digest("hex");

@@ -322,11 +322,28 @@
       [hidden] {
         display: none !important;
       }
+      .simulation-controls {
+        display: flex;
+        justify-content: space-between;
+        gap: 24px;
+        margin-top: 24px;
+      }
+      .simulation-controls button:last-child {
+        margin-left: auto;
+      }
+      .simulation-controls + small,
+      .simulation-controls small {
+        display: block;
+      }
+      .simulation-exchange > small {
+        display: block;
+        margin: 20px 0 8px;
+      }
     </style>
   </head>
   <body>
     <header>
-      <h1>Code assistant + RELAI</h1>
+      <h1>Code Assistant + RELAI</h1>
       <button class="link" id="terminal">Open terminal</button
       ><button class="link" id="changes">Code changes</button>
     </header>
@@ -385,24 +402,21 @@
             ><span>Open folder ↗</span>
           </button>
         </div>
-        <p id="folder-status" class="muted" aria-live="polite"></p>
         <p class="muted">
           Experience how you would use RELAI through a coding assistant such as
-          Codex, Claude Code, or Cursor. The first steps replay a real
-          precomputed run; your files change only when you apply the verified
-          fix.
+          Codex, Claude Code, or Cursor.
         </p>
       </section>
       <section
         id="history"
         class="conversation"
-        aria-label="Code assistant conversation"
+        aria-label="Code Assistant conversation"
       ></section>
     </main>
     <section class="composer">
       <div class="composer-inner">
         <div class="composer-context">
-          <span class="assistant-label">Code assistant + RELAI</span
+          <span class="assistant-label">Code Assistant + RELAI</span
           ><span id="mode" class="badge">Loading…</span>
         </div>
         <p id="status" role="status"></p>
@@ -410,7 +424,7 @@
           <textarea
             id="prompt"
             maxlength="12000"
-            aria-label="Message Code assistant + RELAI"
+            aria-label="Message Code Assistant + RELAI"
             placeholder="Ask the code assistant…"
           ></textarea>
           <div class="actions">
@@ -575,6 +589,7 @@
       function simulationViewer() {
         const viewer = node("div", ""),
           body = node("div", "");
+        body.className = "simulation-exchange";
         body.hidden = true;
         let turn = 0;
         const show = () => {
@@ -590,6 +605,7 @@
             formatted(exchange.agent),
           );
           const controls = node("div", "");
+          controls.className = "simulation-controls";
           const previous = button("Previous", () => {
             turn--;
             show();
@@ -603,13 +619,15 @@
           controls.append(previous, next);
           body.append(controls);
         };
-        viewer.append(
-          button("Explore the simulation", () => {
-            body.hidden = !body.hidden;
-            if (!body.hidden) show();
-          }),
-          body,
-        );
+        const toggle = button("▸ Explore the simulation", () => {
+          body.hidden = !body.hidden;
+          toggle.textContent =
+            (body.hidden ? "▸ " : "▾ ") + "Explore the simulation";
+          toggle.setAttribute("aria-expanded", String(!body.hidden));
+          if (!body.hidden) show();
+        });
+        toggle.setAttribute("aria-expanded", "false");
+        viewer.append(toggle, body);
         return viewer;
       }
       function recordedHistory() {
@@ -621,15 +639,18 @@
           root.append(message("user", recording.prompts[index]));
           const reply = message("assistant", step.text);
           const timing = index === 0 ? recording.initialization : step;
-          let timingText =
-            index === 0
-              ? recording.initialization
-                ? "Precomputed · RELAI initialization"
-                : "Precomputed · risk analysis"
-              : "Precomputed · " + (step.durationLabel || "original runtime");
+          let timingText = [
+            "Precomputed relai init",
+            "Precomputed relai test create",
+            "Precomputed relai optimize",
+          ][index];
           if (Number.isFinite(timing?.durationSeconds))
             timingText +=
-              ": " +
+              (index === 1
+                ? " · validation: "
+                : index === 2 && recording.verificationStatus !== "verified"
+                  ? " · incomplete attempt: "
+                  : ": ") +
               (timing.durationSeconds < 60
                 ? Math.round(timing.durationSeconds) + " sec"
                 : Math.round((timing.durationSeconds / 60) * 10) / 10 + " min");
@@ -666,7 +687,12 @@
           el("prompt").value.trim() === preset &&
           recording.verificationStatus !== "verified";
         el("mode").textContent = recorded
-          ? "Precomputed walkthrough"
+          ? [
+              "Precomputed relai init",
+              "Precomputed relai test create",
+              "Precomputed relai optimize",
+              "Apply optimized changes",
+            ][progress]
           : "Live workspace";
         const actionLabel = busy
           ? "Stop"
@@ -837,10 +863,6 @@
       for (const b of document.querySelectorAll("[data-folder]"))
         b.onclick = () => post("folder", { folder: b.dataset.folder });
       window.addEventListener("message", ({ data: d }) => {
-        if (d.type === "folder-opened") {
-          el("folder-status").textContent =
-            "Opened " + d.path + " in the Explorer.";
-        }
         if (d.type === "error") {
           busy = false;
           el("status").textContent = d.message;
@@ -851,7 +873,16 @@
           recording = d.recording;
           progress = d.recordedProgress;
           live = progress >= 4 || Boolean(saved.live);
-          el("prompt").value = saved.draft || recording.prompts[progress] || "";
+          const previousPresets = [
+            "What are the risks identified for this agent by RELAI?",
+            "Use RELAI to create an agent test for unvalidated seat changes with at least 10 turns and a sophisticated adversarial user. Show me the readable simulation results.",
+            "Use RELAI to fix the issue discovered in this agent test.",
+            "These changes look great. Apply them.",
+          ];
+          el("prompt").value =
+            saved.draft && saved.draft !== previousPresets[progress]
+              ? saved.draft
+              : recording.prompts[progress] || "";
           lastSuggestion = recording.prompts[progress] || null;
           renderLive(d.investigation);
           save();
