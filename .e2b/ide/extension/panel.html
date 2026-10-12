@@ -199,13 +199,6 @@
       textarea:focus-visible {
         outline: 2px solid var(--vscode-focusBorder);
       }
-      .agent-flow {
-        display: flex;
-        flex-wrap: wrap;
-        align-items: center;
-        gap: 14px;
-        padding: 12px 0;
-      }
       .folders {
         border: 0;
         padding: 0;
@@ -281,6 +274,8 @@
         background: var(--vscode-foreground);
         color: var(--vscode-editor-background);
       }
+      .send-button[data-busy="true"] #send-arrow,
+      .send-button[data-busy="false"] #send-stop { display: none; }
       .result-highlights {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
@@ -396,16 +391,6 @@
           find risks, create evaluations, simulate conversations and improve the
           agent.
         </p>
-        <div class="agent-flow" aria-label="How the agent works">
-          <span>Traveler request</span><span aria-hidden="true">→</span>
-          <button class="link" id="agent-source" title="Open airline/agent.go">
-            SkyServe agent ↗
-          </button>
-          <span aria-hidden="true">→</span>
-          <button class="link" id="agent-tools" title="Open airline/tools.go">
-            Booking tools ↗
-          </button>
-        </div>
         <p class="muted">Click a card to open its folder in the Explorer.</p>
         <div class="folders">
           <button
@@ -422,7 +407,7 @@
             data-folder="relai"
             aria-label="Open initialized RELAI folder in Explorer"
           >
-            <strong>Initialized RELAI</strong><code>.relai/</code>
+            <strong>RELAI</strong><code>.relai/</code>
             <small
               >Created by relai init. evals-wiki/ stores requirements, risks and
               findings; harbor/ holds evaluations, simulators and evaluators.</small
@@ -458,7 +443,6 @@
           ><span id="mode" class="badge" hidden>Loading…</span>
         </div>
         <p id="status" role="status"></p>
-        <div id="working-status"></div>
         <div class="prompt-box">
           <textarea
             id="prompt"
@@ -470,6 +454,7 @@
             <button
               id="send"
               class="send-button"
+              data-busy="false"
               disabled
               aria-label="Send message"
               title="Send message"
@@ -492,7 +477,6 @@
               </svg>
               <svg
                 id="send-stop"
-                hidden
                 width="18"
                 height="18"
                 viewBox="0 0 20 20"
@@ -524,6 +508,9 @@
         timer,
         lastSuggestion = null,
         sent = null,
+        sentStartIndex = 0,
+        replayPending = null,
+        failedSend = null,
         attemptedCommand = null,
         attemptedResult = null;
       const saved = vscode.getState() || {};
@@ -766,10 +753,9 @@
             ][progress]
           : "Live workspace";
         el("mode").hidden = recorded;
-        el("working-status").replaceChildren(
-          ...(busy ? [working("Code Assistant + RELAI is working…")] : []),
-        );
-        const actionLabel = busy
+        const actionLabel = replayPending
+          ? "Loading recorded result"
+          : busy
           ? "Stop"
           : awaitingVerification
             ? "Verification pending"
@@ -780,10 +766,10 @@
               : "Send message";
         el("send").setAttribute("aria-label", actionLabel);
         el("send").setAttribute("title", actionLabel);
-        el("send-arrow").hidden = busy;
-        el("send-stop").hidden = !busy;
+        el("send").setAttribute("data-busy", String(Boolean(busy)));
         el("send").disabled =
           !recording ||
+          Boolean(replayPending) ||
           awaitingVerification ||
           (!busy && !el("prompt").value.trim());
       }
@@ -808,8 +794,18 @@
             d.open = expanded.has(d.dataset.viewKey);
           content.scrollTop = follow ? content.scrollHeight : oldScroll;
         }
+        function pendingMessages() {
+          if (sent || replayPending) root.append(message("user", (sent || replayPending).trim()));
+          if (failedSend) {
+            const failed = message("user", failedSend.trim());
+            failed.append(node("small", "Sending could not be confirmed."));
+            root.append(failed);
+          }
+          if (busy) root.append(working(replayPending ? "Loading recorded result…" : "Code Assistant + RELAI is working…"));
+        }
         if (!i) {
-          busy = false;
+          busy = Boolean(sent || replayPending);
+          pendingMessages();
           composer();
           restore();
           return;
@@ -859,7 +855,7 @@
               ),
             );
         }
-        busy = Boolean(i.pendingTurn) || i.jobs?.some((j) => !j.result);
+        busy = Boolean(sent || replayPending || i.pendingTurn) || i.jobs?.some((j) => !j.result);
         const next = i.messages
           ?.flatMap((m) => m.tool_calls || [])
           .find(
@@ -887,6 +883,7 @@
           busy = true;
           post("continue");
         }
+        pendingMessages();
         composer();
         for (const out of root.querySelectorAll(".live-output"))
           out.scrollTop = out.scrollHeight;
@@ -921,26 +918,39 @@
         if (!prompt) return;
         el("status").textContent = "";
         if (!live && progress < 4 && prompt === recording.prompts[progress]) {
-          el("send").disabled = true;
+          replayPending = el("prompt").value;
+          failedSend = null;
+          el("prompt").value = "";
+          save();
+          renderLive(state);
+          el("content").scrollTop = el("content").scrollHeight;
           post("recorded", { step: progress });
           return;
         }
         live = true;
         sent = el("prompt").value;
-        busy = true;
-        composer();
+        sentStartIndex = state?.messages?.length || 0;
+        failedSend = null;
+        el("prompt").value = "";
+        save();
+        renderLive(state);
+        el("content").scrollTop = el("content").scrollHeight;
         post("send", { prompt, runWorkflow: true });
       };
       el("terminal").onclick = () => post("terminal");
-      el("agent-source").onclick = () => post("source", { file: "agent" });
-      el("agent-tools").onclick = () => post("source", { file: "tools" });
       for (const b of document.querySelectorAll("[data-folder]"))
         b.onclick = () => post("folder", { folder: b.dataset.folder });
       window.addEventListener("message", ({ data: d }) => {
         if (d.type === "error") {
+          failedSend = sent || replayPending;
+          if (failedSend && !el("prompt").value) el("prompt").value = failedSend;
+          sent = null;
+          replayPending = null;
           busy = false;
+          renderLive(state);
           el("status").textContent = d.message;
           composer();
+          save();
           return;
         }
         if (d.type === "loaded") {
@@ -948,13 +958,14 @@
           progress = d.recordedProgress;
           live = progress >= 4 || Boolean(saved.live);
           const previousPresets = [
-            "What are the risks identified for this agent by RELAI?",
-            "Use RELAI to create an agent test for unvalidated seat changes with at least 10 turns and a sophisticated adversarial user. Show me the readable simulation results.",
-            "Use RELAI to fix the issue discovered in this agent test.",
-            "These changes look great. Apply them.",
+            ["What are the risks identified for this agent by RELAI?"],
+            ["Use RELAI to create an agent test for unvalidated seat changes with at least 10 turns and a sophisticated adversarial user. Show me the readable simulation results.",
+             "Use RELAI to create a new agent test for the unvalidated seat-change risk with at least 10 turns and a sophisticated adversarial user. Show me the readable results of the agent simulation against this test."],
+            ["Use RELAI to fix the issue discovered in this agent test.", "Use RELAI to optimize the agent."],
+            ["These changes look great. Apply them."],
           ];
           el("prompt").value =
-            saved.draft && saved.draft !== previousPresets[progress]
+            saved.draft && !previousPresets[progress]?.includes(saved.draft)
               ? saved.draft
               : recording.prompts[progress] || "";
           lastSuggestion = recording.prompts[progress] || null;
@@ -962,6 +973,7 @@
           save();
         }
         if (d.type === "recorded") {
+          replayPending = null;
           progress = d.recordedProgress;
           live = progress >= 4;
           nextDraft();
@@ -971,11 +983,10 @@
         if (d.type === "state") {
           if (
             sent &&
-            d.investigation?.messages?.some(
+            d.investigation?.messages?.slice(sentStartIndex).some(
               (m) => m.role === "user" && m.content === sent.trim(),
             )
           ) {
-            if (el("prompt").value === sent) el("prompt").value = "";
             sent = null;
             save();
           }
