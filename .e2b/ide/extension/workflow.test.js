@@ -203,9 +203,17 @@ test("recorded and edited requests dispatch distinct actions, and apply is expli
   elements.get("send").click();
   assert.equal(sent.at(-1).action, "send");
   assert.equal(sent.at(-1).prompt, "My own question");
+  assert.ok(flatten(elements.get("working-status")).some((n) => n.className === "spinner"));
+  assert.equal(elements.get("send")["aria-label"], "Stop");
+  handlers.message({ data: { type: "error", message: "Runtime unavailable" } });
+  assert.equal(elements.get("status").textContent, "Runtime unavailable");
+  assert.equal(elements.get("working-status").children.length, 0);
   handlers.message({
     data: { type: "loaded", recording, recordedProgress: 3 },
   });
+  flatten(elements.get("history")).find((n) => n.textContent === "Review code changes ↗").click();
+  assert.equal(sent.at(-1).action, "changes");
+  assert.equal(sent.at(-1).recorded, true);
   elements.get("send").click();
   assert.equal(sent.at(-1).action, "recorded");
   assert.equal(sent.at(-1).step, 3);

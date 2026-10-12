@@ -132,10 +132,12 @@ function activate(context) {
           }
         } else if (
           msg.action === "folder" &&
-          ["source", "wiki", "tests"].includes(msg.folder)
+          ["source", "relai", "project", "wiki", "tests"].includes(msg.folder)
         ) {
           const folders = {
             source: "airline",
+            relai: ".relai",
+            project: ".",
             wiki: ".relai/evals-wiki",
             tests: ".relai/harbor/agent-tests",
           };

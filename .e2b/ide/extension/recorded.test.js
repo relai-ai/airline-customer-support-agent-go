@@ -82,6 +82,22 @@ test("native review uses measured snapshots even when the visitor edits the work
   manifest.files[0].afterContent = "// different proposed change\n";
   assert.throws(() => reviewFile(manifest, "airline/tools.go"), /do not match/);
 });
+test("post-apply example must match an actual recorded reply, not a tool-call message", async (t) => {
+  const { root, manifest } = await fixture(t);
+  const trajectory = "demo/recorded/verified-example.json";
+  manifest.fixedExample = { trajectory, user: "Request 99Z", agent: "Rejected; no change." };
+  await fs.writeFile(path.join(root, trajectory), JSON.stringify({ steps: [
+    { source: "user", message: "Request 99Z" },
+    { source: "agent", message: "lookup", tool_calls: [{ function_name: "lookup_booking" }] },
+    { source: "agent", message: "Rejected; no change." },
+  ] }));
+  const save = () => fs.writeFile(path.join(root, "demo/recorded/walkthrough.json"), JSON.stringify(manifest));
+  await save();
+  assert.equal((await loadRecording(root)).fixedExample.agent, "Rejected; no change.");
+  manifest.fixedExample.agent = "Invented success";
+  await save();
+  await assert.rejects(loadRecording(root), /differs from its actual recorded response/);
+});
 test("inventory reads cannot be displayed as initialization timings", async (t) => {
   const { root, manifest } = await fixture(t);
   manifest.initialization = {

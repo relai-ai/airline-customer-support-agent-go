@@ -310,6 +310,33 @@
       .sample-reply p {
         margin: 6px 0;
       }
+      .sample-reply > small {
+        display: block;
+        margin: 12px 0 6px;
+      }
+      .sample-reply > small:first-child { margin-top: 0; }
+      .sample-reply.success {
+        border-left-color: var(--vscode-testing-iconPassed, #278044);
+      }
+      .working {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: var(--vscode-descriptionForeground);
+        margin: 12px 0;
+      }
+      .spinner {
+        width: 14px;
+        height: 14px;
+        border: 2px solid var(--vscode-panel-border);
+        border-top-color: var(--vscode-foreground);
+        border-radius: 50%;
+        animation: spin 0.8s linear infinite;
+      }
+      @keyframes spin { to { transform: rotate(360deg); } }
+      @media (prefers-reduced-motion: reduce) {
+        .spinner { animation-duration: 2s; }
+      }
       .review-files {
         display: flex;
         flex-wrap: wrap;
@@ -335,7 +362,20 @@
       .simulation-controls small {
         display: block;
       }
-      .simulation-exchange > small {
+      .simulation-exchange {
+        height: 420px;
+        display: flex;
+        flex-direction: column;
+        margin-top: 16px;
+      }
+      .simulation-text {
+        flex: 1;
+        min-height: 0;
+        overflow: auto;
+        padding-right: 8px;
+      }
+      .simulation-controls { flex-shrink: 0; }
+      .simulation-text > small {
         display: block;
         margin: 20px 0 8px;
       }
@@ -344,8 +384,7 @@
   <body>
     <header>
       <h1>Code Assistant + RELAI</h1>
-      <button class="link" id="terminal">Open terminal</button
-      ><button class="link" id="changes">Code changes</button>
+      <button class="link" id="terminal">Open terminal</button>
     </header>
     <main class="content" id="content">
       <section class="intro">
@@ -380,25 +419,24 @@
           </button>
           <button
             class="folder-card"
-            data-folder="wiki"
-            aria-label="Open initialized RELAI EvalsWiki folder in Explorer"
+            data-folder="relai"
+            aria-label="Open initialized RELAI folder in Explorer"
           >
-            <strong>RELAI’s EvalsWiki</strong><code>.relai/evals-wiki/</code>
+            <strong>Initialized RELAI</strong><code>.relai/</code>
             <small
-              >RELAI records requirements, risks and findings here to guide
-              testing and improvement.</small
+              >Created by relai init. evals-wiki/ stores requirements, risks and
+              findings; harbor/ holds evaluations, simulators and evaluators.</small
             ><span>Open folder ↗</span>
           </button>
           <button
             class="folder-card"
-            data-folder="tests"
-            aria-label="Open RELAI evaluation folder in Explorer"
+            data-folder="project"
+            aria-label="Open repository folders in Explorer"
           >
-            <strong>RELAI’s evaluations</strong
-            ><code>.relai/harbor/agent-tests/</code>
+            <strong>Project folders</strong><code>cmd/ · demo/ · benchmarks/</code>
             <small
-              >RELAI creates repeatable tests, simulation environments and
-              evaluators to measure behavior.</small
+              >cmd/ runs the agent; demo/ contains the walkthrough; benchmarks/
+              holds datasets. .devcontainer/ configures local development.</small
             ><span>Open folder ↗</span>
           </button>
         </div>
@@ -417,9 +455,10 @@
       <div class="composer-inner">
         <div class="composer-context">
           <span class="assistant-label">Code Assistant + RELAI</span
-          ><span id="mode" class="badge">Loading…</span>
+          ><span id="mode" class="badge" hidden>Loading…</span>
         </div>
         <p id="status" role="status"></p>
+        <div id="working-status"></div>
         <div class="prompt-box">
           <textarea
             id="prompt"
@@ -594,7 +633,11 @@
         let turn = 0;
         const show = () => {
           const exchange = recording.turns[turn];
-          body.replaceChildren(
+          const text = node("div", "");
+          text.className = "simulation-text";
+          text.setAttribute("tabindex", "0");
+          text.setAttribute("aria-label", "Simulation exchange content");
+          text.append(
             node(
               "small",
               "EXCHANGE " + (turn + 1) + " OF " + recording.turns.length,
@@ -617,7 +660,7 @@
           });
           next.disabled = turn === recording.turns.length - 1;
           controls.append(previous, next);
-          body.append(controls);
+          body.replaceChildren(text, controls);
         };
         const toggle = button("▸ Explore the simulation", () => {
           body.hidden = !body.hidden;
@@ -666,6 +709,11 @@
             );
             reply.append(sample, simulationViewer());
           }
+          if (index === 2) {
+            reply.append(button("Review code changes ↗", () =>
+              post("changes", { recorded: progress < 4 }),
+            ));
+          }
           root.append(reply);
         }
         if (progress >= 4) {
@@ -676,7 +724,30 @@
               "Applied the verified improvement to this workspace. You can now run RELAI on your own requests, inspect the code, or test the seat-change fix yourself.",
             ),
           );
+          if (recording.fixedExample) {
+            const example = node("div", "");
+            example.className = "sample-reply success";
+            example.append(
+              node("small", "RECORDED VERIFICATION · THE SAME REQUEST AFTER OPTIMIZATION"),
+              node("small", "TRAVELER"),
+              formatted(recording.fixedExample.user),
+              node("small", "UPDATED AIRLINE AGENT"),
+              formatted(recording.fixedExample.agent),
+              node("p", "The booking remained at 12A. No seat-change tool was called."),
+            );
+            root.append(example);
+          }
         }
+      }
+      function working(label) {
+        const row = node("div", "");
+        row.className = "working";
+        row.setAttribute("role", "status");
+        const spinner = node("span", "");
+        spinner.className = "spinner";
+        spinner.setAttribute("aria-hidden", "true");
+        row.append(spinner, node("span", label));
+        return row;
       }
       function composer() {
         const preset = recording?.prompts[progress] || "";
@@ -694,6 +765,10 @@
               "Apply optimized changes",
             ][progress]
           : "Live workspace";
+        el("mode").hidden = recorded;
+        el("working-status").replaceChildren(
+          ...(busy ? [working("Code Assistant + RELAI is working…")] : []),
+        );
         const actionLabel = busy
           ? "Stop"
           : awaitingVerification
@@ -754,7 +829,7 @@
               ),
             );
             if (job && !job.result) {
-              row.append(node("p", "Running in your workspace…"));
+              row.append(working("Running in your workspace…"));
               const out = node(
                 "pre",
                 job.progress?.output || "Waiting for command output…",
@@ -857,8 +932,6 @@
         post("send", { prompt, runWorkflow: true });
       };
       el("terminal").onclick = () => post("terminal");
-      el("changes").onclick = () =>
-        post("changes", { recorded: progress >= 3 && progress < 4 });
       el("agent-source").onclick = () => post("source", { file: "agent" });
       el("agent-tools").onclick = () => post("source", { file: "tools" });
       for (const b of document.querySelectorAll("[data-folder]"))

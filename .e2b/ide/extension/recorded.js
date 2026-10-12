@@ -95,6 +95,18 @@ async function loadRecording(root) {
     !manifest.prompts.every((p, i) => p === prompts[i])
   )
     throw Error("Recorded prompts do not match the walkthrough");
+  if (manifest.fixedExample) {
+    const example = manifest.fixedExample;
+    if (!/^demo\/recorded\/[a-zA-Z0-9_.-]+\.json$/.test(example.trajectory ?? ""))
+      throw Error("Verification example requires a recorded trajectory");
+    const trajectory = JSON.parse(await regular(root, example.trajectory));
+    const user = trajectory.steps?.find((step) => step.source === "user");
+    const agent = trajectory.steps?.find(
+      (step) => step.source === "agent" && !step.tool_calls?.length && step.message,
+    );
+    if (example.user !== user?.message || example.agent !== agent?.message)
+      throw Error("Verification example differs from its actual recorded response");
+  }
   const patch = await regular(root, "demo/recorded/verified.patch");
   if (digest(patch) !== manifest.patchSha256)
     throw Error("Recorded patch integrity check failed");
