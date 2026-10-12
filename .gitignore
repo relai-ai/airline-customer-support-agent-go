@@ -5,3 +5,35 @@ logs/*.jsonl
 # Test binaries
 *.test
 /airline-support
+
+# RELAI local files
+.relai/config.toml
+.relai/simulator.env
+.relai/runs/
+.relai/challenge-runs/
+.relai/debug/agent-observations/
+.relai/tmp/
+.relai/.cache/
+.relai/harbor/.cache/
+.relai/state.json
+.relai/artifact-registry.json
+.relai/*-session.json
+.relai/*.lock
+.relai/optimizer-state/
+.relai/optimizer_runs/
+.relai/optimizer-scope.json
+.relai/evidence-journal.jsonl
+.relai/.internal/runs/
+.relai/.internal/challenge-runs/
+.relai/.internal/debug/agent-observations/
+.relai/.internal/tmp/
+.relai/.internal/.cache/
+.relai/.internal/state.json
+.relai/.internal/artifact-registry.json
+.relai/.internal/*-session.json
+.relai/.internal/*.lock
+.relai/.internal/optimizer-state/
+.relai/.internal/optimizer_runs/
+.relai/.internal/optimizer-scope.json
+.relai/.internal/evidence-journal.jsonl
+.relai/.internal/workspace-env/

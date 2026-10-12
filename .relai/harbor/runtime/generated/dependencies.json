@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "files": [
+    {
+      "source": "go.mod",
+      "staged": "generated/runtime/dependencies/go.mod",
+      "sha256": "be3dcf85d44087b20a0e5b9c99353283475efa1008030ee3967488fbc73f72ad"
+    },
+    {
+      "source": "go.sum",
+      "staged": "generated/runtime/dependencies/go.sum",
+      "sha256": "accb36a3d575214d31407071d68d5867765e9fa4c452a01a15cf62d662126235"
+    }
+  ]
+}

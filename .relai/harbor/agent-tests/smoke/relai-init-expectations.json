@@ -1,0 +1,1 @@
+{"schema_version":1,"min_agent_turns":2,"tools":[{"name":"lookup_booking","arguments":{"confirmation_code":"SKY123"},"result_contains":["Maya Chen"]},{"name":"change_seat","arguments":{"confirmation_code":"SKY123","requested_seat":"14C"},"result_contains":["Seat updated to 14C"]}]}

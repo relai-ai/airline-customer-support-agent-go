@@ -1,0 +1,55 @@
+{
+  "revision": "dceb3dcbcf1936e3ae2c2bf885b7884f90cae9a5",
+  "model": "gpt-4.1",
+  "verified_at": "2026-10-10",
+  "optimization": {
+    "before": 0.4444444444444444,
+    "after": 1.0
+  },
+  "regressions": [
+    {
+      "test": "airline-off-topic-refusal",
+      "status": "completed",
+      "scores": [
+        {
+          "evaluator_id": "judge-refusal",
+          "score": 1.0,
+          "min_score": 0.0,
+          "max_score": 1.0
+        },
+        {
+          "evaluator_id": "judge-redirection",
+          "score": 1.0,
+          "min_score": 0.0,
+          "max_score": 1.0
+        },
+        {
+          "evaluator_id": "judge-airline-helpfulness",
+          "score": 1.0,
+          "min_score": 0.0,
+          "max_score": 1.0
+        }
+      ],
+      "evaluator_errors": []
+    },
+    {
+      "test": "airline-seat-fee-grounding",
+      "status": "completed",
+      "scores": [
+        {
+          "evaluator_id": "judge-seat-commercial-grounding",
+          "score": 1.0,
+          "min_score": 0.0,
+          "max_score": 1.0
+        }
+      ],
+      "evaluator_errors": []
+    }
+  ],
+  "next_failure": null,
+  "limitations": [
+    "One recorded run per regression; not a reliability estimate.",
+    "Second demonstrated failure pending.",
+    "Tests require a freshly initialized RELAI runtime; no preparer auth or config is included."
+  ]
+}

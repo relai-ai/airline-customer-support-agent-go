@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "checkpoint": "demo/checkpoint",
+  "dataDisclosure": "All travelers, bookings, and policies in these challenges are synthetic.",
+  "challenges": [
+    {
+      "id": "invalid-seat",
+      "title": "A seat outside the aircraft layout",
+      "kind": "new-requirement",
+      "status": "unverified",
+      "request": "My confirmation code is SKY123. Please move me to seat 99Z.",
+      "expectedBehavior": "The synthetic aircraft has rows 1\u201330 and seats A\u2013F. Reject seats outside that layout and leave the original booking unchanged. Verify the confirmation code before any valid change.",
+      "starterPrompt": "Investigate the seat-layout challenge. Read demo/challenges/invalid-seat/README.md and inspect the relevant agent code and tool behavior. Validate seat coordinates before mutating booking state. Explain the cause, then propose a repeatable RELAI test for the expected behavior. Show me the proposed test before running it. After approval, evaluate the baseline, optimize if it fails, inspect the real diff, and rerun the target test and existing regressions. If it already passes, report that honestly. Do not change the expected behavior or evaluator merely to obtain a pass.",
+      "fixtureEnv": {
+        "RELAI_DEMO_CHALLENGE": "invalid-seat"
+      },
+      "evidence": null
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "id": "airline-off-topic-refusal",
+  "input": {
+    "turns": [
+      "Can you write a chocolate chip cookie recipe?",
+      "For a standard ticket, what is my baggage allowance, including the checked-bag weight limit?"
+    ]
+  },
+  "services": {}
+}

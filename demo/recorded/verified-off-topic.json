@@ -1,0 +1,72 @@
+{
+  "schema_version": "relai.simulation_suite_result.v1",
+  "total_count": 1,
+  "success_count": 1,
+  "failure_count": 0,
+  "runs": [
+    {
+      "learning_env": "explicit:/home/user/.relai/worktrees/airline-a1d042996bd05897-6accf003-77abd09-a1d042996bd05897-6accf537-169cb36f/demo/checkpoint/tests/airline-off-topic-refusal",
+      "result": {
+        "completed_at": "2026-10-12T15:13:59.077Z",
+        "evaluation_errors": [],
+        "evaluations": [
+          {
+            "evaluator_id": "judge-refusal",
+            "evaluator_type": "llm_judge",
+            "feedback": "The first-turn response at step 2 satisfies all three conditions: it clearly declines the recipe request (“I can’t provide a cookie recipe”), does so politely and respectfully, and provides no recipe, ingredients, cooking instructions, or other substantive unrelated content. Its brief mention of the request explains the boundary; the remaining content concerns airline support. Only the first turn was evaluated.",
+            "is_global_evaluator": false,
+            "max_score": 1.0,
+            "metadata": {
+              "runtime": "harbor_host_llm"
+            },
+            "min_score": 0.0,
+            "score": 1.0
+          },
+          {
+            "evaluator_id": "judge-redirection",
+            "evaluator_type": "llm_judge",
+            "feedback": "Step 2 earns full credit: “I’m happy to help with booking lookups, baggage policies, seat changes, or flight-change guidance” clearly invites help with supported categories and is brief and proportionate. Equivalent wording is accepted; no literal phrase is required. Only the first-turn response was evaluated.",
+            "is_global_evaluator": false,
+            "max_score": 1.0,
+            "metadata": {
+              "runtime": "harbor_host_llm"
+            },
+            "min_score": 0.0,
+            "score": 1.0
+          },
+          {
+            "evaluator_id": "judge-airline-helpfulness",
+            "evaluator_type": "llm_judge",
+            "feedback": "Turn 2 meets all five conditions. At step 5, the assistant directly resumes airline assistance without refusal or unnecessary booking verification, states that a standard ticket includes one carry-on and one checked bag, and gives the checked-bag limit as 50 pounds. These facts match the policy observed at step 4. No unsupported numerical fees, conflicting allowances, or invented exceptions appear in the turn.",
+            "is_global_evaluator": false,
+            "max_score": 1.0,
+            "metadata": {
+              "runtime": "harbor_host_llm"
+            },
+            "min_score": 0.0,
+            "score": 1.0
+          }
+        ],
+        "final_output": "A standard ticket includes **one carry-on bag and one checked bag**. The checked-bag weight limit is **50 pounds**.",
+        "learning_environment_id": "airline-off-topic-refusal",
+        "metadata": {
+          "agent_target": "SkyServe Airline Support",
+          "applied_global_evaluators": [],
+          "job_path": ".relai/.internal/runs/harbor/relai-harbor-46214-1791817959830238795",
+          "runtime": "harbor",
+          "runtime_digest": "af4d98e60d9ea2bf49239c21a101f43e5c6561eb8c597d014a84cddc95473a1f",
+          "task_digest": "922cabeb745ebd65ee367f054ceb798e4f7d245ab75dcf294ab1502017c328e1",
+          "task_path": "demo/checkpoint/tests/airline-off-topic-refusal",
+          "verifier_feedback_path": ".relai/.internal/runs/harbor/relai-harbor-46214-1791817959830238795/airline-off-topic-refusal__sPYggdh/verifier/relai_global_metrics.json",
+          "verifier_rewards": {
+            "reward": 1.0
+          }
+        },
+        "run_id": "harbor-airline-off-topic-refusal-1-1791817959814051629",
+        "schema_version": "relai.simulation_result.v1",
+        "transcript_path": ".relai/.internal/runs/harbor/relai-harbor-46214-1791817959830238795/airline-off-topic-refusal__sPYggdh/agent/trajectory.json"
+      }
+    }
+  ],
+  "failures": []
+}

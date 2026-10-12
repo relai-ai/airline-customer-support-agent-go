@@ -72,6 +72,15 @@ func (r *openaiRunner) run(
 		}
 
 		message := acc.Choices[0].Message
+		trace := recorder(ctx)
+		step := -1
+		if trace != nil {
+			var calls []map[string]any
+			for _, call := range message.ToolCalls {
+				calls = append(calls, map[string]any{"tool_call_id": call.ID, "function_name": call.Function.Name, "arguments": observedArguments(call.Function.Arguments)})
+			}
+			step = trace.model(message.Content, r.model, calls)
+		}
 		if len(message.ToolCalls) == 0 {
 			return message.Content, nil
 		}
@@ -86,6 +95,7 @@ func (r *openaiRunner) run(
 			if tool, ok := toolIndex[call.Function.Name]; ok {
 				result = tool.Execute(args)
 			}
+			trace.result(step, call.ID, result)
 			messages = append(messages, openai.ToolMessage(result, call.ID))
 		}
 	}

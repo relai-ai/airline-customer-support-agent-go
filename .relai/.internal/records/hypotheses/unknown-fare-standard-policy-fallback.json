@@ -1,0 +1,39 @@
+{
+  "schema_version": "relai.hypothesis.v1",
+  "id": "unknown-fare-standard-policy-fallback",
+  "lifecycle": "proposed",
+  "target": "SkyServe Airline Support",
+  "git_revision": "f137d585d2c55b0481f47b23602d31f809a707e1",
+  "requirement_refs": [
+    "challenge-unknown-fare",
+    "baggage-policy-grounding"
+  ],
+  "expectation_refs": [],
+  "mechanism": "BaggagePolicyText maps unrecognized fare names to standard allowances, returning an authoritative-looking policy rather than an unknown-fare result. The agent is instructed to ground baggage answers in this tool, and unknown-fare selection installs no alternative tool behavior or instructions.",
+  "trigger": "With RELAI_DEMO_CHALLENGE=unknown-fare, ask how many checked bags are included with Flex Saver Plus. Inspect whether baggage_policy receives that fare and how the assistant interprets its output.",
+  "observable_failure": "The assistant assigns Flex Saver Plus one checked bag up to 50 pounds or otherwise treats it as standard, instead of explaining that the policy is unknown and seeking clarification or escalation.",
+  "rationale": "The default branch creates a specific conflict between tool grounding and the scoped unknown-fare expectation. This does not imply that all unfamiliar fares are prohibited in the baseline or that failure has already been observed.",
+  "impact": "medium",
+  "confidence": "high",
+  "triggerability": "high",
+  "citations": [
+    {
+      "reference": "relai://wiki/requirements/challenge-unknown-fare.md",
+      "rationale": "Explicitly excludes Flex Saver Plus from recognized fares and prohibits silently assigning standard allowances."
+    },
+    {
+      "reference": "relai://repo/airline/tools.go",
+      "rationale": "BaggagePolicyText's default branch returns the standard carry-on and checked-bag allowance for unknown names."
+    },
+    {
+      "reference": "relai://repo/airline/challenges.go",
+      "rationale": "unknown-fare is a no-op selection rather than a replacement policy implementation."
+    },
+    {
+      "reference": "relai://repo/airline/agent.go",
+      "rationale": "The prompt directs the agent to use baggage_policy to ground generic policy answers."
+    }
+  ],
+  "artifact_lineage": [],
+  "probes": []
+}

@@ -1,0 +1,46 @@
+{
+  "built_at": "2026-10-12",
+  "project": "playground-dev",
+  "project_id": "2e588861-935b-4f73-a85b-cfc649151eda",
+  "template_alias": "relai-airline-staging-452ebd9",
+  "template_id": "geypry19oo4nm75jf0s9",
+  "build_id": "a5656435-1029-4fe1-a862-97cdb62ade92",
+  "source_commit": "452ebd9d96db4f103dd202f3229a3c24eee192a9",
+  "checks": [
+    "real E2B template build succeeded",
+    "Go tests and vet passed during build",
+    "original source and recorded walkthrough validated during build and fresh probes",
+    "Docker startup readiness passed",
+    "code-server 4.141.0 and RELAI 0.2.9 available",
+    "17 UI and recording tests passed in a fresh sandbox",
+    "fresh-instance reset passed",
+    "no preparer RELAI auth or simulator environment in probe workspace"
+  ],
+  "probes": [
+    {
+      "sandbox_id": "i0qfn7a8mhzsdoes60xdu",
+      "checks": "startup, source/recording integrity, UI tests",
+      "cleanup": "confirmed"
+    },
+    {
+      "sandbox_id": "i37a0yuu852n6v52xpbw0",
+      "checks": "fresh-instance reset, source/recording integrity",
+      "cleanup": "confirmed"
+    }
+  ],
+  "all_owned_probe_sandboxes_cleaned_up": true,
+  "model_calls_during_build_or_probes": false,
+  "remaining": [
+    "authenticated staging IDE launch and WebSockets",
+    "full staging evaluation, optimization and verification",
+    "credential revocation and scheduled staging cleanup",
+    "actual two-hour expiration check"
+  ],
+  "deployment_status": "built and probed; staging service not deployed",
+  "build_inputs": {
+    ".e2b/Dockerfile": "3cf48d562016f9e8af1af13166561748dd234a10aa747ffeb2f40ef89e28bb9a",
+    ".e2b/start.sh": "d74b039acb234daae2a8c04dd704312c82339c345e09b9c86faed86254f37e42",
+    ".e2b/ide/extension/panel.html": "5ce7690fda71b8e89a1d72f3f9f4f2862a396603ee48ae698c9c53281f8f84f8",
+    "demo/recorded/walkthrough.json": "94d2ff4a30b0f8facaa4c12d50e48aba7e12cabc25846429bb2982d4fe9f5454"
+  }
+}

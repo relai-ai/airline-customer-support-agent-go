@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"io"
+	"os"
 )
 
 // AgentName is the display name of the demo agent.
@@ -12,7 +13,12 @@ const AgentName = "SkyServe Airline Support"
 // AirlineAgentInstructions is the system prompt for the support agent.
 const AirlineAgentInstructions = "You are a concise airline customer support agent for a demo airline. " +
 	"Help with booking lookups, baggage policy, seat changes, and flight-change guidance. " +
+	"Do not fulfill substantive requests unrelated to this supported airline assistance. " +
+	"Politely explain the airline-support boundary and briefly invite help with supported topics, without supplying the unrelated content. " +
+	"Handle each turn on its own merits: answer subsequent supported requests normally despite earlier off-topic requests. " +
+	"For mixed requests, help with the supported portion and briefly decline the unrelated portion. " +
 	"Before changing seats or discussing a specific booking, ask for and verify the confirmation code. " +
+	"Generic baggage-policy questions do not require booking verification; use the baggage_policy tool to ground policy answers. " +
 	"Do not invent refund amounts, flight availability, fees, or policy exceptions. " +
 	"Answer naturally and keep responses brief."
 
@@ -28,6 +34,7 @@ type Agent struct {
 	Instructions string
 	Tools        []Tool
 	runner       runner
+	trace        *atifRecorder
 }
 
 // NewAgent builds the airline support agent using the provider selected from
@@ -40,6 +47,11 @@ func NewAgent() (*Agent, error) {
 
 	var r runner
 	switch selection.Provider {
+	case "relai":
+		r, err = newRelaiRunner()
+		if err != nil {
+			return nil, err
+		}
 	case "openai":
 		r = newOpenAIRunner(selection.Model)
 	case "anthropic":
@@ -48,16 +60,30 @@ func NewAgent() (*Agent, error) {
 		return nil, fmt.Errorf("unsupported provider %q", selection.Provider)
 	}
 
-	return &Agent{
+	agent := &Agent{
 		Name:         AgentName,
 		Instructions: AirlineAgentInstructions,
 		Tools:        airlineTools(),
 		runner:       r,
-	}, nil
+		trace:        newATIFRecorder(),
+	}
+	if err := ApplyDemoChallenge(agent, os.Getenv("RELAI_DEMO_CHALLENGE")); err != nil {
+		return nil, err
+	}
+	return agent, nil
 }
 
 // StreamResponse runs a single agent turn over the conversation history,
 // streaming assistant text deltas to out and returning the final text.
 func (a *Agent) StreamResponse(ctx context.Context, history []Message, out io.Writer) (string, error) {
+	if a.trace != nil {
+		for i := len(history) - 1; i >= 0; i-- {
+			if history[i].Role == "user" {
+				a.trace.user(history[i].Content)
+				break
+			}
+		}
+		ctx = context.WithValue(ctx, atifKey{}, a.trace)
+	}
 	return a.runner.run(ctx, a.Instructions, a.Tools, history, out)
 }

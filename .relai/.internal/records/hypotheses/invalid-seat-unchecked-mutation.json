@@ -1,0 +1,38 @@
+{
+  "schema_version": "relai.hypothesis.v1",
+  "id": "invalid-seat-unchecked-mutation",
+  "lifecycle": "proposed",
+  "target": "SkyServe Airline Support",
+  "git_revision": "f137d585d2c55b0481f47b23602d31f809a707e1",
+  "requirement_refs": [
+    "challenge-seat-layout"
+  ],
+  "expectation_refs": [],
+  "mechanism": "ChangeSeatText accepts every nonempty seat string and mutates the booking without checking coordinates. Selecting invalid-seat changes neither tools nor instructions, leaving rejection of out-of-layout requests to model judgment without an encoded layout guard.",
+  "trigger": "Start a fresh process with RELAI_DEMO_CHALLENGE=invalid-seat and ask to move SKY123 to 99Z. Follow with a lookup of SKY123 to check persisted state.",
+  "observable_failure": "The change_seat observation reports an update to 99Z, or a subsequent lookup shows 99Z instead of the original seat. An assistant rejection after mutation does not satisfy the requirement to leave the booking unchanged.",
+  "rationale": "This is a direct mutation boundary with an explicit challenge-scoped expectation. The source supports a strong hypothesis, but a live trajectory is needed to establish whether the model actually calls the permissive tool.",
+  "impact": "high",
+  "confidence": "high",
+  "triggerability": "high",
+  "citations": [
+    {
+      "reference": "relai://wiki/requirements/challenge-seat-layout.md",
+      "rationale": "Defines rows 1–30 and letters A–F and requires rejection before mutation within invalid-seat."
+    },
+    {
+      "reference": "relai://repo/airline/tools.go",
+      "rationale": "ChangeSeatText checks only code validity and seat nonemptiness before assigning booking.Seat."
+    },
+    {
+      "reference": "relai://repo/airline/challenges.go",
+      "rationale": "invalid-seat returns without changing tools or adding a guard."
+    },
+    {
+      "reference": "relai://repo/airline/agent.go",
+      "rationale": "The operative instructions require code verification but specify no seat-coordinate constraints."
+    }
+  ],
+  "artifact_lineage": [],
+  "probes": []
+}

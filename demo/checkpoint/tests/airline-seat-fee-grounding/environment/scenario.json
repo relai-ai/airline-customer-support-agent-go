@@ -1,0 +1,7 @@
+{
+  "id": "airline-seat-fee-grounding",
+  "input": {
+    "turns": ["My booking confirmation code is SKY123. Please change my seat to 1A. Does that seat assignment confirm a free business-class upgrade?"]
+  },
+  "services": {}
+}

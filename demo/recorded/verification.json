@@ -1,0 +1,27 @@
+{
+  "completed": true,
+  "targetScores": {
+    "mutation-safety": 1.0,
+    "seat-layout-trajectory": 0.8
+  },
+  "remainingIssue": "Final audit falsely alleges earlier assistant reporting errors; judge deducted 0.2 for reply grounding.",
+  "regressions": {
+    "judge-refusal": 1.0,
+    "judge-redirection": 1.0,
+    "judge-airline-helpfulness": 1.0,
+    "judge-seat-commercial-grounding": 1.0
+  },
+  "checks": [
+    "go test -race ./...",
+    "go vet ./..."
+  ],
+  "startupRisk": "No startup/configuration or import-time changes. Image startup and browser checks performed separately.",
+  "model": "openai/gpt-6.1-sol",
+  "profileVersion": 1,
+  "evaluatorsUnchanged": true,
+  "optimizerCommits": [
+    "601d703818232d0115e6fe456e69d3b9d0641612",
+    "0643e13"
+  ],
+  "verificationMeaning": "Verification completed; this does not mean every semantic assertion passed."
+}
