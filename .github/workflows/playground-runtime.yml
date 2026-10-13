@@ -1,0 +1,28 @@
+name: Playground runtime checks
+on:
+  pull_request:
+    paths:
+      - '.e2b/**'
+      - 'demo/**'
+      - 'airline/**'
+      - 'go.mod'
+      - 'go.sum'
+      - '.github/workflows/playground-runtime.yml'
+permissions:
+  contents: read
+jobs:
+  offline-runtime:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '1.24.5'
+      - run: go test -race ./...
+      - run: go vet ./...
+      - run: node --test .e2b/ide/extension/*.test.js
+      - run: node .e2b/ide/extension/validate-recording.js .
+      - run: python3 -m unittest discover -s .e2b/ide -p 'test_*.py'

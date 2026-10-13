@@ -751,7 +751,7 @@
               "Precomputed relai optimize",
               "Apply optimized changes",
             ][progress]
-          : "Live workspace";
+          : state?.engine === "codex" ? "Codex · Live workspace" : "Live workspace";
         el("mode").hidden = recorded;
         const actionLabel = replayPending
           ? "Loading recorded result"
@@ -843,7 +843,7 @@
             }
             root.append(row);
           }
-          if (m.result) {
+          if (m.result && i.engine !== "codex") {
             const result = commandResultView(m.result);
             const row = node("div", "");
             row.append(formatted(result.summary));
@@ -851,6 +851,7 @@
             root.append(row);
           }
         }
+        if (i.engine === "codex" && i.changedFiles?.length) root.append(button("Review code changes ↗", () => post("changes")));
         busy = Boolean(sent || replayPending || i.pendingTurn) || i.jobs?.some((j) => !j.result);
         const next = i.messages
           ?.flatMap((m) => m.tool_calls || [])
@@ -913,7 +914,7 @@
         const prompt = el("prompt").value.trim();
         if (!prompt) return;
         el("status").textContent = "";
-        if (!live && progress < 4 && prompt === recording.prompts[progress]) {
+        if (progress < 4 && prompt === recording.prompts[progress]) {
           replayPending = el("prompt").value;
           failedSend = null;
           el("prompt").value = "";
@@ -952,7 +953,7 @@
         if (d.type === "loaded") {
           recording = d.recording;
           progress = d.recordedProgress;
-          live = progress >= 4 || Boolean(saved.live);
+          live = progress >= 4 || (Boolean(saved.live) && Boolean(d.investigation?.messages?.length));
           const previousPresets = [
             ["What are the risks identified for this agent by RELAI?"],
             ["Use RELAI to create an agent test for unvalidated seat changes with at least 10 turns and a sophisticated adversarial user. Show me the readable simulation results.",
