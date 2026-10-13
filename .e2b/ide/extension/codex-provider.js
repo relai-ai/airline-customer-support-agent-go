@@ -27,37 +27,25 @@ function emitResponse(res, response) {
           ? { content: [] }
           : item.type === "function_call"
             ? { arguments: "" }
-            : { input: "" }),
+            : item.type === "custom_tool_call"
+              ? { input: "" }
+              : {}),
       },
     });
     if (item.type === "message") {
-      const part = item.content[0];
-      event("response.content_part.added", {
-        item_id: item.id,
-        output_index,
-        content_index: 0,
-        part: { ...part, text: "" },
-      });
-      // The current backend returns a complete response. Emit its real text once,
-      // not a fabricated token-by-token animation.
-      event("response.output_text.delta", {
-        item_id: item.id,
-        output_index,
-        content_index: 0,
-        delta: part.text,
-      });
-      event("response.output_text.done", {
-        item_id: item.id,
-        output_index,
-        content_index: 0,
-        text: part.text,
-      });
-      event("response.content_part.done", {
-        item_id: item.id,
-        output_index,
-        content_index: 0,
-        part,
-      });
+      for (const [content_index, part] of item.content.entries()) {
+        const fields = { item_id: item.id, output_index, content_index };
+        event("response.content_part.added", {
+          ...fields,
+          part: part.type === "output_text" ? { ...part, text: "" } : part,
+        });
+        // Complete real text, once per part; no fabricated token animation.
+        if (part.type === "output_text") {
+          event("response.output_text.delta", { ...fields, delta: part.text });
+          event("response.output_text.done", { ...fields, text: part.text });
+        }
+        event("response.content_part.done", { ...fields, part });
+      }
     } else if (["function_call", "custom_tool_call"].includes(item.type)) {
       const kind =
         item.type === "function_call"
