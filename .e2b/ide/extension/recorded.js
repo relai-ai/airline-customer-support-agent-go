@@ -45,6 +45,27 @@ async function loadRecording(root) {
       typeof step.text !== "string"
     )
       throw Error("Recorded run metadata unavailable");
+  if (manifest.riskInventory) {
+    const inventory = manifest.riskInventory;
+    if (inventory.command !== "relai wiki list risks" ||
+        inventory.source !== ".relai/evals-wiki/hypotheses/risks.md" ||
+        inventory.snapshot !== "demo/recorded/wiki-risks.md")
+      throw Error("Recorded wiki inventory metadata is invalid");
+    const snapshot = await regular(root, inventory.snapshot);
+    if (digest(snapshot) !== inventory.sha256)
+      throw Error("Recorded wiki inventory integrity check failed");
+    let lifecycle = "";
+    const rows = snapshot.toString().split("\n").flatMap((line) => {
+      if (line.startsWith("## ")) lifecycle = line.slice(3).trim();
+      const match = line.match(/^- \[`([^`]+)`\].*? — ([^;]+); mechanism: (.*?); trigger: (.*?); observable failure: (.*?); requirements:/);
+      if (!match) return [];
+      const [, id, ratings, mechanism, trigger, failure] = match;
+      const [impact, confidence, triggerability] = ratings.split("/");
+      return [{ id, impact, confidence, triggerability, mechanism, trigger, failure, lifecycle }];
+    });
+    if (!rows.length || rows.some((row) => row.lifecycle !== "proposed") || JSON.stringify(rows) !== JSON.stringify(inventory.risks))
+      throw Error("Displayed risks differ from the saved wiki inventory");
+  }
   if (manifest.initialization) {
     const init = manifest.initialization;
     if (!/^demo\/recorded\/[a-zA-Z0-9_.-]+\.json$/.test(init.receipt ?? ""))

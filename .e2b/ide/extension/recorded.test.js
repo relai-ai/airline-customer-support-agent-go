@@ -257,3 +257,27 @@ test("image validation requires the original baseline and rejects an invented di
   );
   await assert.rejects(() => loadRecording(root), /Displayed changes/);
 });
+
+test("displayed risk inventory must match its saved wiki evidence", async (t) => {
+  const { root, manifest } = await fixture(t);
+  const snapshot = "# Risk hypotheses\n\n## proposed\n\n- [`invalid-seat`](relai://wiki/hypotheses/risks/invalid-seat.md) — high/medium/high; mechanism: Unchecked write.; trigger: Request 99Z.; observable failure: Invalid seat saved.; requirements: seat-layout\n";
+  const inventory = {
+    command: "relai wiki list risks",
+    source: ".relai/evals-wiki/hypotheses/risks.md",
+    snapshot: "demo/recorded/wiki-risks.md",
+    sha256: digest(snapshot),
+    risks: [{ id: "invalid-seat", impact: "high", confidence: "medium", triggerability: "high", mechanism: "Unchecked write.", trigger: "Request 99Z.", failure: "Invalid seat saved.", lifecycle: "proposed" }],
+  };
+  manifest.riskInventory = inventory;
+  await fs.writeFile(path.join(root, inventory.snapshot), snapshot);
+  const save = () => fs.writeFile(path.join(root, "demo/recorded/walkthrough.json"), JSON.stringify(manifest));
+  await save();
+  assert.equal((await loadRecording(root)).riskInventory.risks.length, 1);
+  inventory.risks[0].impact = "low";
+  await save();
+  await assert.rejects(loadRecording(root), /Displayed risks differ/);
+  inventory.risks[0].impact = "high";
+  await save();
+  await fs.appendFile(path.join(root, inventory.snapshot), "modified");
+  await assert.rejects(loadRecording(root), /inventory integrity/);
+});
