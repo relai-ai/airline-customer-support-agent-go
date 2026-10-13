@@ -122,6 +122,31 @@
         margin: 0 8px 8px 0;
         color: var(--vscode-descriptionForeground);
       }
+      .risk-inventory {
+        overflow-x: auto;
+        margin: 16px 0;
+      }
+      .risk-inventory table {
+        width: 100%;
+        min-width: 780px;
+        border-collapse: collapse;
+        font-size: 12px;
+      }
+      .risk-inventory caption {
+        text-align: left;
+        padding: 8px 0;
+        font-weight: 600;
+      }
+      .risk-inventory th, .risk-inventory td {
+        text-align: left;
+        vertical-align: top;
+        padding: 10px 8px;
+        border-bottom: 1px solid var(--vscode-panel-border);
+      }
+      .risk-inventory td:first-child {
+        overflow-wrap: anywhere;
+        min-width: 130px;
+      }
       pre {
         font: 12px/1.6 var(--vscode-editor-font-family);
         background: var(--vscode-textCodeBlock-background);
@@ -660,6 +685,37 @@
         viewer.append(toggle, body);
         return viewer;
       }
+      function riskInventoryViewer() {
+        const inventory = recording.riskInventory;
+        const wrapper = node("div", "");
+        wrapper.className = "risk-inventory";
+        wrapper.setAttribute("tabindex", "0");
+        wrapper.setAttribute("aria-label", "Precomputed EvalsWiki risk inventory");
+        wrapper.append(node("small", "SAVED EVALSWIKI · " + inventory.command));
+        const table = document.createElement("table");
+        const caption = document.createElement("caption");
+        caption.textContent = inventory.risks.length + " proposed risk hypotheses";
+        table.append(caption);
+        const head = document.createElement("thead");
+        const headings = document.createElement("tr");
+        for (const label of ["Risk", "What could fail", "Triggered by", "Impact", "Confidence", "Triggerability"]) {
+          const cell = node("th", label);
+          cell.setAttribute("scope", "col");
+          headings.append(cell);
+        }
+        head.append(headings);
+        table.append(head);
+        const body = document.createElement("tbody");
+        for (const risk of inventory.risks) {
+          const row = document.createElement("tr");
+          for (const value of [risk.id, risk.failure, risk.trigger, risk.impact, risk.confidence, risk.triggerability])
+            row.append(node("td", value));
+          body.append(row);
+        }
+        table.append(body);
+        wrapper.append(table);
+        return wrapper;
+      }
       function recordedHistory() {
         const root = el("history");
         root.replaceChildren();
@@ -670,7 +726,7 @@
           const reply = message("assistant", step.text);
           const timing = index === 0 ? recording.initialization : step;
           let timingText = [
-            "Precomputed relai init",
+            recording.riskInventory ? "Precomputed relai wiki list risks" : "Precomputed relai init",
             "Precomputed relai test create",
             "Precomputed relai optimize",
           ][index];
@@ -687,6 +743,8 @@
           const badge = node("span", timingText);
           badge.className = "badge";
           reply.prepend(badge);
+          if (index === 0 && recording.riskInventory)
+            reply.append(riskInventoryViewer());
           if (index === 1) {
             const sample = node("div", "");
             sample.className = "sample-reply";
