@@ -75,3 +75,21 @@ build from `452ebd9`; it does not verify later source or packaging changes.
 `demo/checkpoint/results.json` is a historical receipt retained for the companion
 service readiness check. `demo/challenges/catalog.json` exposes only the seat-change
 scenario for the service catalog endpoint. Neither is a new measurement.
+
+## Real Codex assistant
+
+When the service provisions `PLAYGROUND_ASSISTANT_ENGINE=codex`, the extension
+starts the pinned Codex CLI's `app-server` inside that private workspace for
+custom requests. The prefilled walkthrough still replays the measured recording;
+only explicit apply modifies source. Free-form requests use a persistent Codex
+thread with actual tool execution, real assistant messages, explicit approvals,
+Stop, and native source-control review. Closing the panel stops its child process;
+reopening restores the saved thread and history.
+
+The companion service and backend must include the native Codex Responses route
+before enabling this mode. The sandbox adapter forwards native reasoning/tool
+items through scoped session access; it never receives a provider API key.
+Complete responses are emitted as Codex events after inference finishes. Remote
+compaction and token-level upstream streaming are not implemented; unsupported
+requests fail visibly. Do not promote until the live RELAI workflow, cancellation,
+reload, approval/decline and expiry have been verified on the rebuilt image.

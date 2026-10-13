@@ -3,6 +3,7 @@ const fs = require("node:fs/promises");
 const crypto = require("node:crypto");
 const path = require("node:path");
 const recorded = require("./recorded");
+const { CodexBridge } = require("./codex-bridge");
 function activate(context) {
   let panel, terminal;
   const reviewDocuments = new Map();
@@ -48,6 +49,16 @@ function activate(context) {
     const recordingKey =
       "relai.playground.recording." + env.PLAYGROUND_SESSION_ID;
     const root = "/home/user/airline";
+    const codex =
+      env.PLAYGROUND_ASSISTANT_ENGINE === "codex"
+        ? new CodexBridge(env, root, (investigation) =>
+            current.webview.postMessage({ type: "state", investigation }),
+          )
+        : null;
+    if (codex) {
+      context.subscriptions.push({ dispose: () => codex.close() });
+      current.onDidDispose(() => codex.close());
+    }
     let recording,
       recordingBusy = false;
     const reviewChange = async (name) => {
@@ -98,7 +109,10 @@ function activate(context) {
         // Explicit action allowlist. Webview cannot choose URLs, paths or credentials.
         if (msg.action === "load") {
           recording = await recorded.loadRecording(root);
-          let investigation = await api("/investigation");
+          if (codex) await codex.restore();
+          let investigation = codex
+            ? { investigation: codex.snapshot() }
+            : await api("/investigation");
           if (!investigation.investigation) {
             await api("/investigation", "POST", {
               challengeId: "invalid-seat",
@@ -192,6 +206,14 @@ function activate(context) {
           typeof msg.prompt === "string" &&
           msg.prompt.trim()
         ) {
+          if (codex) {
+            await codex.send(msg.prompt);
+            current.webview.postMessage({
+              type: "state",
+              investigation: codex.snapshot(),
+            });
+            return;
+          }
           current.webview.postMessage({
             type: "state",
             ...(await api("/investigation/turn", "POST", {
@@ -205,6 +227,10 @@ function activate(context) {
           msg.action === "approve" &&
           typeof msg.approved === "boolean"
         ) {
+          if (codex) {
+            await codex.approve(msg.id, msg.approved);
+            return;
+          }
           await api("/investigation/approval", "POST", {
             callId: msg.id,
             approved: msg.approved,
@@ -214,16 +240,34 @@ function activate(context) {
             ...(await api("/investigation")),
           });
         } else if (msg.action === "continue") {
+          if (codex) {
+            current.webview.postMessage({
+              type: "state",
+              investigation: codex.snapshot(),
+            });
+            return;
+          }
           current.webview.postMessage({
             type: "state",
             ...(await api("/investigation/continue", "POST", {})),
           });
         } else if (msg.action === "refresh") {
+          if (codex) {
+            current.webview.postMessage({
+              type: "state",
+              investigation: codex.snapshot(),
+            });
+            return;
+          }
           current.webview.postMessage({
             type: "state",
             ...(await api("/investigation")),
           });
         } else if (msg.action === "stop") {
+          if (codex) {
+            await codex.stop();
+            return;
+          }
           await api("/investigation/abandon-turn", "POST", {});
           current.webview.postMessage({
             type: "state",
@@ -265,7 +309,10 @@ function activate(context) {
                 label: file.path,
                 description: file.before === null ? "Added" : "Modified",
               })),
-              { title: "RELAI optimized changes", placeHolder: "Choose a file to compare before and after" },
+              {
+                title: "RELAI optimized changes",
+                placeHolder: "Choose a file to compare before and after",
+              },
             );
             if (selected) await reviewChange(selected.label);
           } else await vscode.commands.executeCommand("workbench.view.scm");
