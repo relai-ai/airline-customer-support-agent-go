@@ -1025,6 +1025,8 @@
           lastSuggestion = recording.prompts[progress] || null;
           renderLive(d.investigation);
           save();
+          // Acknowledge only after initial data is applied and the browser gets a paint opportunity.
+          requestAnimationFrame(() => requestAnimationFrame(() => post("telemetry-ready")));
         }
         if (d.type === "recorded") {
           replayPending = null;

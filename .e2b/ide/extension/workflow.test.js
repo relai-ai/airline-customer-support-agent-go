@@ -121,6 +121,7 @@ test("recorded and edited requests dispatch distinct actions, and apply is expli
       setState: () => {},
       postMessage: (value) => sent.push(value),
     }),
+    requestAnimationFrame: (callback) => callback(),
     setTimeout: () => 1,
     clearTimeout: () => {},
   };
@@ -168,6 +169,7 @@ test("recorded and edited requests dispatch distinct actions, and apply is expli
   handlers.message({
     data: { type: "loaded", recording, recordedProgress: 0 },
   });
+  assert.equal(sent.filter((message) => message.action === "telemetry-ready").length, 1);
   assert.equal(elements.get("prompt").value, prompts[0]);
   elements.get("send").click();
   assert.equal(sent.at(-1).action, "recorded");
