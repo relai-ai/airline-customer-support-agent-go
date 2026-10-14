@@ -63,3 +63,92 @@ test("malformed environment cannot send a credential to an unsafe URL", async ()
   await telemetry.whenIdle();
   assert.equal(calls, 0);
 });
+
+test("extension activation boots inside an active event loop and panel acknowledgement is emitted once", async () => {
+  const fs = require("node:fs");
+  const vm = require("node:vm");
+  const path = require("node:path");
+  const calls = [];
+  let receiver, reporter;
+  const panel = {
+    onDidDispose() {},
+    webview: {
+      onDidReceiveMessage(callback) {
+        receiver = callback;
+      },
+      postMessage() {},
+      html: "",
+    },
+  };
+  const vscode = {
+    workspace: {
+      registerTextDocumentContentProvider() {
+        return {};
+      },
+    },
+    window: {
+      onDidCloseTerminal() {
+        return {};
+      },
+      createWebviewPanel() {
+        return panel;
+      },
+      showErrorMessage(message) {
+        throw Error(message);
+      },
+    },
+    Uri: {
+      file(value) {
+        return value;
+      },
+    },
+    ViewColumn: { One: 1 },
+    commands: {
+      registerCommand() {
+        return {};
+      },
+    },
+  };
+  const module = { exports: {} };
+  vm.runInNewContext(
+    fs.readFileSync(path.join(__dirname, "extension.js"), "utf8"),
+    {
+      module,
+      require(name) {
+        if (name === "vscode") return vscode;
+        if (name === "node:fs/promises")
+          return {
+            readFile: async (filename) =>
+              filename.endsWith("environment.json")
+                ? JSON.stringify(env)
+                : "<html>fixture</html>",
+          };
+        if (name === "./telemetry")
+          return {
+            actions: require("./telemetry").actions,
+            createTelemetry(read) {
+              reporter = createTelemetry(read, async (_url, init) => {
+                calls.push(JSON.parse(init.body));
+                return new Response(null, { status: 204 });
+              });
+              return reporter;
+            },
+          };
+        if (name === "./recorded") return require("./recorded");
+        return require(name);
+      },
+    },
+  );
+  module.exports.activate({ subscriptions: [], extensionPath: __dirname });
+  await new Promise((resolve) => setImmediate(resolve));
+  await reporter.whenIdle();
+  assert.equal(calls[0].event, "extension_activated");
+  assert.equal(panel.webview.html, "<html>fixture</html>");
+  await receiver({ action: "telemetry-ready" });
+  await receiver({ action: "telemetry-ready" });
+  await reporter.whenIdle();
+  assert.equal(
+    calls.filter((event) => event.event === "relai_panel_ready").length,
+    1,
+  );
+});
