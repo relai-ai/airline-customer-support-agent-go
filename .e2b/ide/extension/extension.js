@@ -3,7 +3,10 @@ const fs = require("node:fs/promises");
 const crypto = require("node:crypto");
 const path = require("node:path");
 const recorded = require("./recorded");
+const { createTelemetry, actions: telemetryActions } = require("./telemetry");
 function activate(context) {
+  const telemetry = createTelemetry(async () => JSON.parse(await fs.readFile("/home/user/.playground/environment.json", "utf8")));
+  telemetry.report("extension_activated");
   let panel, terminal;
   const reviewDocuments = new Map();
   context.subscriptions.push(
@@ -37,6 +40,7 @@ function activate(context) {
       },
     );
     const current = panel;
+    let readyReported = false;
     current.onDidDispose(() => {
       panel = undefined;
     });
@@ -94,6 +98,11 @@ function activate(context) {
       return response.json();
     };
     current.webview.onDidReceiveMessage(async (msg) => {
+      if (msg?.action === "telemetry-ready") {
+        if (!readyReported) { readyReported = true; telemetry.report("relai_panel_ready"); }
+        return;
+      }
+      if (telemetryActions.has(msg?.action)) telemetry.report("playground_action", { action: msg.action });
       try {
         // Explicit action allowlist. Webview cannot choose URLs, paths or credentials.
         if (msg.action === "load") {
@@ -271,6 +280,7 @@ function activate(context) {
           } else await vscode.commands.executeCommand("workbench.view.scm");
         }
       } catch (error) {
+        telemetry.report("playground_failed");
         current.webview.postMessage({ type: "error", message: error.message });
       }
     });
@@ -289,10 +299,9 @@ function activate(context) {
   context.subscriptions.push(
     vscode.commands.registerCommand("relai.playground", open),
   );
-  void open().catch(() =>
-    vscode.window.showErrorMessage(
-      "RELAI playground could not open. Check session provisioning.",
-    ),
-  );
+  void open().catch(() => {
+    telemetry.report("playground_failed", { stage: "panel" });
+    vscode.window.showErrorMessage("RELAI playground could not open. Check session provisioning.");
+  });
 }
 module.exports = { activate };
