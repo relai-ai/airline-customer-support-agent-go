@@ -72,6 +72,8 @@ func (r *openaiRunner) run(
 		}
 
 		message := acc.Choices[0].Message
+		traceStep := -1
+		if traceFrom(ctx) != nil { traceStep = traceModel(ctx, message.Content, message, r.model) }
 		if len(message.ToolCalls) == 0 {
 			return message.Content, nil
 		}
@@ -82,10 +84,12 @@ func (r *openaiRunner) run(
 			if call.Function.Arguments != "" {
 				_ = json.Unmarshal([]byte(call.Function.Arguments), &args)
 			}
+			traceCall(ctx, traceStep, call.ID, call.Function.Name, args)
 			result := "Unknown tool."
 			if tool, ok := toolIndex[call.Function.Name]; ok {
 				result = tool.Execute(args)
 			}
+			traceResult(ctx, traceStep, call.ID, result)
 			messages = append(messages, openai.ToolMessage(result, call.ID))
 		}
 	}

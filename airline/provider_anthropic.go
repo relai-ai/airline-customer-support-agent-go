@@ -80,6 +80,8 @@ func (r *anthropicRunner) run(
 			return "", err
 		}
 
+		traceStep := -1
+		if traceFrom(ctx) != nil { traceStep = traceModel(ctx, anthropicText(message), message, string(message.Model)) }
 		messages = append(messages, message.ToParam())
 
 		var toolResults []anthropic.ContentBlockParamUnion
@@ -89,10 +91,12 @@ func (r *anthropicRunner) run(
 				if len(use.Input) > 0 {
 					_ = json.Unmarshal(use.Input, &args)
 				}
+				traceCall(ctx, traceStep, use.ID, use.Name, args)
 				result := "Unknown tool."
 				if tool, ok := toolIndex[use.Name]; ok {
 					result = tool.Execute(args)
 				}
+				traceResult(ctx, traceStep, use.ID, result)
 				toolResults = append(toolResults, anthropic.NewToolResultBlock(use.ID, result, false))
 			}
 		}
