@@ -112,7 +112,7 @@ func airlineTools() []Tool {
 	return []Tool{
 		{
 			Name:        "lookup_booking",
-			Description: "Look up a demo booking by confirmation code.",
+			Description: "Verify a supplied confirmation code for the user's currently intended demo booking before booking-specific assistance. Returns booking details or a not-found result.",
 			Parameters: map[string]any{
 				"type": "object",
 				"properties": map[string]any{
@@ -139,7 +139,7 @@ func airlineTools() []Tool {
 		},
 		{
 			Name:        "change_seat",
-			Description: "Change a seat for a demo booking when the confirmation code is valid.",
+			Description: "Change a seat only for the user's currently intended demo booking after lookup_booking successfully verifies its confirmation code. Use only for a requested seat change, not a read-only request.",
 			Parameters: map[string]any{
 				"type": "object",
 				"properties": map[string]any{
